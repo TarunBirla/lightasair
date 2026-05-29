@@ -138,7 +138,7 @@
     <div class="container d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center gap-3">
             <span><i class="bi bi-telephone-fill me-1"></i>+44 1234 567890</span>
-            <span><i class="bi bi-envelope-fill me-1"></i>hello@rentease.co.uk</span>
+            <span><i class="bi bi-envelope-fill me-1"></i>hello@lightasair.co.uk</span>
         </div>
         <div class="d-flex align-items-center gap-3">
             <span><i class="bi bi-clock-fill me-1"></i>Mon – Sat: 8am – 7pm</span>
@@ -156,7 +156,7 @@
         <!-- Brand -->
         <a class="navbar-brand" href="/">
             <div class="brand-icon"><i class="bi bi-box-seam-fill"></i></div>
-            Rent<span>Ease</span>
+            Light as<span>AIR</span>
         </a>
 
         <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
