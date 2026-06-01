@@ -1,67 +1,237 @@
 @extends('layouts.admin')
 
+@section('page-title', 'Banners')
+@section('breadcrumb', 'Admin / Banners')
+
 @section('content')
 
-<div class="container">
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 22px;
+    }
 
-    <a href="{{ route('banner.create') }}"
-       class="btn btn-primary mb-3">
-       Add Banner
+    .page-header h3 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #111;
+    }
+
+    .btn-add {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #FFC700;
+        color: #111;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: background .2s, transform .15s;
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn-add:hover {
+        background: #E6B200;
+        color: #111;
+        transform: translateY(-1px);
+    }
+
+    .table-card {
+        background: #fff;
+        border-radius: 14px;
+        border: 1px solid #E8E6DF;
+        overflow: hidden;
+    }
+
+    .table-card table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table-card thead tr {
+        background: #FAFAF8;
+        border-bottom: 1px solid #F0EEE8;
+    }
+
+    .table-card thead th {
+        padding: 13px 18px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .8px;
+        color: #888;
+        text-align: left;
+    }
+
+    .table-card tbody tr {
+        border-bottom: 1px solid #F7F6F1;
+        transition: background .15s;
+    }
+
+    .table-card tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    .table-card tbody tr:hover {
+        background: #FAFAF8;
+    }
+
+    .table-card tbody td {
+        padding: 14px 18px;
+        font-size: 14px;
+        color: #111;
+        vertical-align: middle;
+    }
+
+    .thumb-img {
+        width: 80px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #E8E6DF;
+    }
+
+    .badge-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .badge-active   { background: #EDFAF0; color: #1a7a3a; }
+    .badge-inactive { background: #F5F5F5; color: #888; }
+
+    .action-group {
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-edit {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        background: #FFF3B0;
+        color: #B38A00;
+        border: none;
+        cursor: pointer;
+        font-family: 'DM Sans', sans-serif;
+        transition: background .2s;
+    }
+
+    .btn-edit:hover { background: #FFC700; color: #111; }
+
+    .btn-del {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        background: #FEF0F0;
+        color: #c0392b;
+        border: none;
+        cursor: pointer;
+        font-family: 'DM Sans', sans-serif;
+        transition: background .2s;
+    }
+
+    .btn-del:hover { background: #c0392b; color: #fff; }
+
+    .id-badge {
+        display: inline-block;
+        background: #F7F6F1;
+        color: #888;
+        border-radius: 6px;
+        padding: 3px 9px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .empty-row td {
+        text-align: center;
+        padding: 60px 0;
+        color: #bbb;
+        font-size: 14px;
+    }
+</style>
+
+<div class="page-header">
+    <h3><i class="fa-solid fa-image me-2" style="color:#FFC700"></i>Banners</h3>
+    <a href="{{ route('banner.create') }}" class="btn-add">
+        <i class="fa-solid fa-plus"></i> Add Banner
     </a>
+</div>
 
-    <table class="table table-bordered">
-
-        <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Image</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-
-        @foreach($banners as $banner)
-
-        <tr>
-            <td>{{ $banner->id }}</td>
-
-            <td>{{ $banner->title }}</td>
-
-            <td>
-                <img
-                src="{{ asset('uploads/banner/'.$banner->image) }}"
-                width="100">
-            </td>
-
-            <td>{{ $banner->status }}</td>
-
-            <td>
-
-                <a href="{{ route('banner.edit',$banner->id) }}"
-                class="btn btn-warning">
-                Edit
-                </a>
-
-                <form
-                action="{{ route('banner.destroy',$banner->id) }}"
-                method="POST"
-                style="display:inline">
-
-                    @csrf
-                    @method('DELETE')
-
-                    <button class="btn btn-danger">
-                        Delete
-                    </button>
-
-                </form>
-
-            </td>
-        </tr>
-
-        @endforeach
-
+<div class="table-card">
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Image</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($banners as $banner)
+            <tr>
+                <td><span class="id-badge">{{ $banner->id }}</span></td>
+                <td>
+                    <img src="{{ asset('uploads/banner/'.$banner->image) }}" class="thumb-img" alt="{{ $banner->title }}">
+                </td>
+                <td><strong>{{ $banner->title }}</strong></td>
+                <td>
+                    @if($banner->status == 'active')
+                        <span class="badge-status badge-active">
+                            <i class="fa-solid fa-circle" style="font-size:7px"></i> Active
+                        </span>
+                    @else
+                        <span class="badge-status badge-inactive">
+                            <i class="fa-regular fa-circle" style="font-size:7px"></i> Inactive
+                        </span>
+                    @endif
+                </td>
+                <td>
+                    <div class="action-group">
+                        <a href="{{ route('banner.edit', $banner->id) }}" class="btn-edit">
+                            <i class="fa-solid fa-pen"></i> Edit
+                        </a>
+                        <form action="{{ route('banner.destroy', $banner->id) }}" method="POST" style="display:inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-del" onclick="return confirm('Delete this banner?')">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            @empty
+            <tr class="empty-row">
+                <td colspan="5">
+                    <i class="fa-regular fa-image" style="font-size:36px;display:block;margin-bottom:10px"></i>
+                    No banners found. <a href="{{ route('banner.create') }}" style="color:#FFC700;font-weight:600">Add one?</a>
+                </td>
+            </tr>
+            @endforelse
+        </tbody>
     </table>
-
 </div>
 
 @endsection

@@ -22,7 +22,12 @@ Route::get(
     '/categories',
     [FrontCategoryController::class,'index']
 );
-
+Route::get('/about', function () {
+    return view('front.about');
+});
+Route::get('/terms', function () {
+    return view('front.terms');
+});
 Route::get(
     '/category/{id}',
     [FrontCategoryController::class,'show']

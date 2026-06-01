@@ -52,39 +52,34 @@ class BookingController extends Controller
             );
     }
     public function increaseQty($id)
-{
-    $cart = session()->get('cart', []);
-
-    if(isset($cart[$id]))
     {
-        $cart[$id]['qty']++;
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$id])) {
+            $cart[$id]['qty']++;
+        }
+
+        session()->put('cart', $cart);
+
+        return back();
     }
 
-    session()->put('cart', $cart);
-
-    return back();
-}
-
-public function decreaseQty($id)
-{
-    $cart = session()->get('cart', []);
-
-    if(isset($cart[$id]))
+    public function decreaseQty($id)
     {
-        if($cart[$id]['qty'] > 1)
-        {
-            $cart[$id]['qty']--;
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$id])) {
+            if ($cart[$id]['qty'] > 1) {
+                $cart[$id]['qty']--;
+            } else {
+                unset($cart[$id]);
+            }
         }
-        else
-        {
-            unset($cart[$id]);
-        }
+
+        session()->put('cart', $cart);
+
+        return back();
     }
-
-    session()->put('cart', $cart);
-
-    return back();
-}
 
     public function cart()
     {
@@ -211,97 +206,174 @@ public function decreaseQty($id)
             compact('booking')
         );
     }
+    // public function placeOrder(Request $request)
+    // {
+    //     $cart = session('cart', []);
+
+    //     if (empty($cart)) {
+    //         return redirect('/cart');
+    //     }
+
+    //     $days =
+    //         \Carbon\Carbon::parse(
+    //             $request->start_date
+    //         )->diffInDays(
+    //                 \Carbon\Carbon::parse(
+    //                     $request->end_date
+    //                 )
+    //             ) + 1;
+
+    //     $total = 0;
+
+    //     foreach ($cart as $row) {
+    //         $total +=
+    //             (
+    //                 $row['price']
+    //                 *
+    //                 $row['qty']
+    //                 *
+    //                 $days
+    //             );
+    //     }
+
+    //     $booking = Booking::create([
+
+    //         'booking_no' =>
+    //             'BK' . rand(10000, 99999),
+
+    //         'user_id' =>
+    //             auth()->id(),
+
+    //         'total_amount' =>
+    //             $total,
+
+    //         'start_date' =>
+    //             $request->start_date,
+
+    //         'end_date' =>
+    //             $request->end_date,
+
+    //         'total_days' =>
+    //             $days,
+
+    //         'status' =>
+    //             'pending'
+
+    //     ]);
+
+    //     foreach ($cart as $row) {
+    //         BookingItem::create([
+
+    //             'booking_id' =>
+    //                 $booking->id,
+
+    //             'item_id' =>
+    //                 $row['item_id'],
+
+    //             'qty' =>
+    //                 $row['qty'],
+
+    //             'price_per_day' =>
+    //                 $row['price'],
+
+    //             'total_days' =>
+    //                 $days,
+
+    //             'total_amount' =>
+    //                 (
+    //                     $row['price']
+    //                     *
+    //                     $row['qty']
+    //                     *
+    //                     $days
+    //                 )
+    //         ]);
+    //     }
+
+    //     session()->forget('cart');
+
+    //     return redirect('/my-bookings')
+    //         ->with(
+    //             'success',
+    //             'Booking Created Successfully'
+    //         );
+    // }
+
+
+
     public function placeOrder(Request $request)
     {
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal'
+        ]);
+
         $cart = session('cart', []);
 
         if (empty($cart)) {
-            return redirect('/cart');
+            return response()->json([
+                'status' => false,
+                'message' => 'Cart Empty'
+            ]);
         }
 
-        $days =
-            \Carbon\Carbon::parse(
-                $request->start_date
-            )->diffInDays(
-                    \Carbon\Carbon::parse(
-                        $request->end_date
-                    )
-                ) + 1;
+        $days = \Carbon\Carbon::parse($request->start_date)
+            ->diffInDays(
+                \Carbon\Carbon::parse($request->end_date)
+            ) + 1;
 
         $total = 0;
 
         foreach ($cart as $row) {
-            $total +=
-                (
-                    $row['price']
-                    *
-                    $row['qty']
-                    *
-                    $days
-                );
+            $total += (
+                $row['price']
+                * $row['qty']
+                * $days
+            );
         }
 
         $booking = Booking::create([
-
-            'booking_no' =>
-                'BK' . rand(10000, 99999),
-
-            'user_id' =>
-                auth()->id(),
-
-            'total_amount' =>
-                $total,
-
-            'start_date' =>
-                $request->start_date,
-
-            'end_date' =>
-                $request->end_date,
-
-            'total_days' =>
-                $days,
-
-            'status' =>
-                'pending'
-
+            'booking_no' => 'BK' . rand(10000, 99999),
+            'user_id' => auth()->id(),
+            'total_amount' => $total,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'total_days' => $days,
+            'status' => 'pending'
         ]);
+
+        $itemsData = [];
 
         foreach ($cart as $row) {
             BookingItem::create([
-
-                'booking_id' =>
-                    $booking->id,
-
-                'item_id' =>
-                    $row['item_id'],
-
-                'qty' =>
-                    $row['qty'],
-
-                'price_per_day' =>
-                    $row['price'],
-
-                'total_days' =>
-                    $days,
-
-                'total_amount' =>
-                    (
-                        $row['price']
-                        *
-                        $row['qty']
-                        *
-                        $days
-                    )
+                'booking_id' => $booking->id,
+                'item_id' => $row['item_id'],
+                'qty' => $row['qty'],
+                'price_per_day' => $row['price'],
+                'total_days' => $days,
+                'total_amount' => (
+                    $row['price']
+                    * $row['qty']
+                    * $days
+                )
             ]);
+
+            $itemsData[] = [
+                'title' => $row['title'],
+                'qty' => $row['qty'],
+                'price' => $row['price']
+            ];
         }
 
         session()->forget('cart');
 
-        return redirect('/my-bookings')
-            ->with(
-                'success',
-                'Booking Created Successfully'
-            );
+        return response()->json([
+            'status' => true,
+            'booking_no' => $booking->booking_no,
+            'total' => $booking->total_amount,
+            'items' => $itemsData
+        ]);
+
     }
 
     public function removeCart($id)

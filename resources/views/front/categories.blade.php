@@ -49,6 +49,55 @@
         .cat-card:hover .cat-arrow {
             background: var(--brand);
         }
+        .pagination {
+justify-content: center;
+gap: 8px;
+margin-top: 40px;
+}
+
+.pagination .page-item .page-link {
+border: none;
+min-width: 45px;
+height: 45px;
+border-radius: 12px;
+background: #fff;
+color: #111;
+font-weight: 700;
+display: flex;
+align-items: center;
+justify-content: center;
+box-shadow: 0 4px 12px rgba(0,0,0,.08);
+transition: all .3s ease;
+}
+
+.pagination .page-item .page-link:hover {
+background: #ffc700;
+color: #111;
+transform: translateY(-2px);
+}
+
+.pagination .page-item.active .page-link {
+background: #ffc700;
+color: #111;
+border-color: #ffc700;
+box-shadow: 0 8px 20px rgba(255,199,0,.35);
+}
+
+.pagination .page-item.disabled .page-link {
+opacity: .5;
+cursor: not-allowed;
+}
+
+@media(max-width:576px){
+
+.pagination .page-item .page-link{
+    min-width:40px;
+    height:40px;
+    font-size:14px;
+}
+
+}
+
 </style>
 
 
@@ -83,7 +132,10 @@
 
         <div class="mt-4">
 
-            {{ $categories->links() }}
+            <!-- {{ $categories->links() }} -->
+            <div class="d-flex justify-content-center mt-5">
+    {{ $categories->onEachSide(1)->links('pagination::bootstrap-5') }}
+</div>
 
         </div>
 

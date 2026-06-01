@@ -419,6 +419,101 @@
             background: var(--brand);
             padding: 4rem 0;
         }
+
+        .marquee-wrapper {
+            width: 100%;
+            background: var(--dark);
+            overflow: hidden;
+            padding: 12px 0;
+            /* border-top: 2px solid #000; */
+            /* border-bottom: 2px solid #000; */
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: scroll 20s linear infinite;
+        }
+
+        .marquee-text {
+            color:var(--brand);
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            white-space: nowrap;
+            padding-right: 80px;
+        }
+
+        @keyframes scroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        .hero-sectiontext{
+    background:var(--brand);
+    min-height:60vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:40px 20px;
+}
+
+.hero-sectiontext h1{
+    color:#000;
+    font-size:10rem;
+    font-weight:700;
+    text-transform:uppercase;
+    margin:0;
+    line-height:1;
+}
+
+.hero-sectiontext p{
+    color:#000;
+    font-size:40px;
+    font-weight:400;
+    max-width:1000px;
+    margin:25px auto;
+    line-height:1.4;
+}
+
+.whatsapp-btn{
+    background:#000;
+    color:var(--brand);
+    text-decoration:none;
+    padding:18px 40px;
+    border-radius:50px;
+    font-size:22px;
+    font-weight:700;
+    transition:.3s;
+}
+
+.whatsapp-btn:hover{
+    background:#222;
+    transform:translateY(-3px);
+}
+
+@media(max-width:768px){
+
+    .hero-section h1{
+        font-size:42px;
+    }
+
+    .hero-sectiontext p{
+        font-size:20px;
+    }
+
+    .whatsapp-btn{
+        font-size:18px;
+        padding:15px 30px;
+    }
+}
     </style>
 
     <!-- ── HERO CAROUSEL ── -->
@@ -446,9 +541,9 @@
                                 <a href="#items" class="btn-hero-primary">
                                     <i class="bi bi-search"></i> Browse Equipment
                                 </a>
-                                <a href="/register" class="btn-hero-secondary">
+                                <!-- <a href="/register" class="btn-hero-secondary">
                                     Get Started
-                                </a>
+                                </a> -->
                             </div>
                         </div>
                     </div>
@@ -463,6 +558,7 @@
             </button>
         </div>
     </section>
+    
 
     <!-- ── STATS STRIP ── -->
     <section class="stats-strip">
@@ -517,8 +613,8 @@
 
                             <div class="cat-card">
                                 <!-- <div style="overflow:hidden;">
-                                        <img src="{{ asset('uploads/category/' . $category->image) }}" alt="{{ $category->name }}">
-                                    </div> -->
+                                                        <img src="{{ asset('uploads/category/' . $category->image) }}" alt="{{ $category->name }}">
+                                                    </div> -->
                                 <div class="cat-card-body">
                                     <h6>{{ $category->name }}</h6>
                                     <div class="cat-arrow"><i class="bi bi-arrow-right"></i></div>

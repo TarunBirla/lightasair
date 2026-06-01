@@ -14,12 +14,10 @@
 
     /* ── NAVBAR ── */
     .site-navbar {
-        background: var(--dark);
-        padding: .75rem 0;
+        background: var(--brand);
         position: sticky;
         top: 0;
         z-index: 1030;
-        box-shadow: 0 2px 16px rgba(0,0,0,.25);
     }
 
     .site-navbar .navbar-brand {
@@ -49,7 +47,8 @@
 
     /* nav links */
     .site-navbar .nav-link {
-        color: rgba(255,255,255,.75) !important;
+        /* color: rgba(255,255,255,.75) !important; */
+        border: 1px solid black;
         font-size: .88rem;
         font-weight: 500;
         padding: .4rem .75rem !important;
@@ -61,8 +60,8 @@
     }
     .site-navbar .nav-link:hover,
     .site-navbar .nav-link.active {
-        color: var(--dark) !important;
-        background: var(--brand);
+        color: var(--brand) !important;
+        background: black;
     }
 
     /* cart badge */
@@ -88,8 +87,8 @@
 
     /* auth buttons */
     .btn-nav-login {
-        border: 1.5px solid rgba(255,255,255,.3);
-        color: var(--white) !important;
+        border: 1.5px solid black;
+        color: black !important;
         font-size: .85rem;
         font-weight: 600;
         padding: .4rem 1rem !important;
@@ -131,23 +130,12 @@
         background: rgba(255,255,255,.18);
         margin: 0 .3rem;
     }
+    .logoData{
+        max-height: 100px;
+    }
 </style>
 
-<!-- Top Bar -->
-<div class="topbar d-none d-md-block">
-    <div class="container d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center gap-3">
-            <span><i class="bi bi-telephone-fill me-1"></i>+44 1234 567890</span>
-            <span><i class="bi bi-envelope-fill me-1"></i>hello@lightasair.co.uk</span>
-        </div>
-        <div class="d-flex align-items-center gap-3">
-            <span><i class="bi bi-clock-fill me-1"></i>Mon – Sat: 8am – 7pm</span>
-            <a href="#"><i class="bi bi-facebook"></i></a>
-            <a href="#"><i class="bi bi-instagram"></i></a>
-            <a href="#"><i class="bi bi-twitter-x"></i></a>
-        </div>
-    </div>
-</div>
+
 
 <!-- Main Navbar -->
 <nav class="navbar navbar-expand-lg site-navbar">
@@ -155,8 +143,9 @@
 
         <!-- Brand -->
         <a class="navbar-brand" href="/">
-            <div class="brand-icon"><i class="bi bi-box-seam-fill"></i></div>
-            Light as<span>AIR</span>
+            <img src="/Logo-3.webp" class="logoData">
+            <!-- <div class="brand-icon"><i class="bi bi-box-seam-fill"></i></div>
+            Light as<span>AIR</span> -->
         </a>
 
         <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">

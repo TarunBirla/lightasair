@@ -6,6 +6,7 @@
     <title>Light as AIR – Premium Equipment Rental</title>
 
     <!-- Bootstrap 5 -->
+     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Poppins Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -28,6 +29,7 @@
             --radius:   12px;
             --shadow:   0 4px 24px rgba(0,0,0,.08);
             --shadow-lg:0 8px 40px rgba(0,0,0,.13);
+            --heading-1-size-value: 5;
         }
 
         *, *::before, *::after { box-sizing: border-box; }
@@ -35,7 +37,7 @@
         html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: "pragmatica-extended", sans-serif;
             color: var(--dark);
             background: var(--white);
             margin: 0;
@@ -100,6 +102,66 @@
             color: var(--dark);
             margin-bottom: 2rem;
         }
+        .whatsapp-float{
+    position: fixed;
+    right: 20px;
+    bottom: 25px;
+    width: 65px;
+    height: 65px;
+    background: #25D366;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 34px;
+    z-index: 9999;
+    box-shadow: 0 8px 25px rgba(37,211,102,.45);
+    transition: all .3s ease;
+}
+
+.whatsapp-float:hover{
+    color: #fff;
+    transform: scale(1.1);
+    box-shadow: 0 10px 30px rgba(37,211,102,.6);
+}
+
+.whatsapp-float::before{
+    content:'';
+    position:absolute;
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    background:#25D366;
+    animation: whatsapp-pulse 2s infinite;
+    z-index:-1;
+}
+
+@keyframes whatsapp-pulse{
+    0%{
+        transform:scale(1);
+        opacity:.7;
+    }
+    70%{
+        transform:scale(1.5);
+        opacity:0;
+    }
+    100%{
+        transform:scale(1.5);
+        opacity:0;
+    }
+}
+
+@media(max-width:768px){
+    .whatsapp-float{
+        width:55px;
+        height:55px;
+        font-size:28px;
+        right:15px;
+        bottom:20px;
+    }
+}
     </style>
 </head>
 <body>
@@ -114,5 +176,12 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<a href="https://wa.me/447825706997"
+   target="_blank"
+   class="whatsapp-float">
+
+    <i class="bi bi-whatsapp"></i>
+
+</a>
 </body>
 </html>
