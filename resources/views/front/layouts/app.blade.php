@@ -213,6 +213,20 @@
     align-items:center;
     justify-content:center;
 }
+.btn-hero-primary {
+            background: var(--brand);
+            color: var(--dark);
+            font-weight: 700;
+            font-size: 2rem;
+            padding: .75rem 2rem;
+            border-radius: 10px;
+            border: none;
+            text-decoration: none;
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
     </style>
 </head>
 <body>

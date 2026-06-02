@@ -95,6 +95,27 @@ cursor: not-allowed;
     height:40px;
     font-size:14px;
 }
+.btn-hero-primary {
+            background: var(--brand);
+            color: var(--dark);
+            font-weight: 700;
+            font-size: 1rem;
+            padding: .75rem 2rem;
+            border-radius: 10px;
+            border: none;
+            text-decoration: none;
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        .btn-hero-primary:hover {
+            background: var(--brand-dk);
+            color: var(--dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 199, 0, .4);
+        }
 
 }
 

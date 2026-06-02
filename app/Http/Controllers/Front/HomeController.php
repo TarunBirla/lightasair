@@ -25,11 +25,12 @@ public function guestRequest(Request $request)
         'phone' => 'required'
     ]);
 
+    $items = [];
     $itemsText = '';
 
     foreach ($request->items as $item)
     {
-        $lead = RequestLead::create([
+        RequestLead::create([
             'item_id'   => $item['id'],
             'item_name' => $item['title'],
             'name'      => $request->name,
@@ -38,24 +39,33 @@ public function guestRequest(Request $request)
             'message'   => $request->message
         ]);
 
+        $items[] = $item['title'];
+
         $itemsText .= "• ".$item['title']."\n";
     }
 
-   try {
-    Mail::to('tbirla120@gmail.com')
-        ->send(new RequestLeadMail($lead));
+    $mailData = [
+        'items'   => $items,
+        'name'    => $request->name,
+        'email'   => $request->email,
+        'phone'   => $request->phone,
+        'message' => $request->message,
+    ];
 
-    // dd('Mail Sent');
-} catch (\Exception $e) {
-    // dd($e->getMessage());
-}
+    try {
+        Mail::to('tbirla120@gmail.com')
+            ->send(new RequestLeadMail($mailData));
+    } catch (\Exception $e) {
+        \Log::error($e->getMessage());
+    }
 
     return response()->json([
         'status' => true,
-        'items'  => $itemsText,
+        'items'  => $itemsText, // WhatsApp message ke liye
         'name'   => $request->name,
         'email'  => $request->email,
-        'phone'  => $request->phone
+        'phone'  => $request->phone,
+        'message'=> $request->message
     ]);
 }
    public function index()
