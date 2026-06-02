@@ -181,6 +181,61 @@
             color: #bbb;
             font-size: 14px;
         }
+        .custom-pagination {
+    display: flex;
+    justify-content: center;
+    margin: 25px 0;
+}
+
+.custom-pagination nav {
+    display: flex;
+}
+
+.custom-pagination .pagination {
+    display: flex;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.custom-pagination .page-item .page-link {
+    min-width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    border: 1px solid #E8E6DF;
+    background: #fff;
+    color: #111;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all .2s ease;
+}
+
+.custom-pagination .page-item .page-link:hover {
+    background: #FFC700;
+    border-color: #FFC700;
+    color: #111;
+}
+
+.custom-pagination .page-item.active .page-link {
+    background: #FFC700;
+    border-color: #FFC700;
+    color: #111;
+}
+
+.custom-pagination .page-item.disabled .page-link {
+    background: #f5f5f5;
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+.custom-pagination svg {
+    width: 16px;
+    height: 16px;
+}
     </style>
 
 
@@ -241,8 +296,8 @@
                 @endforelse
             </tbody>
         </table>
-        <div class="mt-3">
-    {{ $requests->links() }}
+      <div class="custom-pagination">
+    {{ $requests->onEachSide(1)->links() }}
 </div>
     </div>
 
