@@ -7,6 +7,7 @@ use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\User;
+use App\Models\RequestLead;
 
 class DashboardController extends Controller
 {
@@ -17,6 +18,8 @@ class DashboardController extends Controller
         $categoryCount = Category::count();
 
         $itemCount = Item::count();
+
+        $requestCount = RequestLead::count();
 
         $userCount = User::where(
             'role',
@@ -29,7 +32,8 @@ class DashboardController extends Controller
                 'bannerCount',
                 'categoryCount',
                 'itemCount',
-                'userCount'
+                'userCount',
+                'requestCount'
             )
         );
     }

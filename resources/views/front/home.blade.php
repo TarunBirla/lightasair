@@ -436,7 +436,7 @@
         }
 
         .marquee-text {
-            color:var(--brand);
+            color: var(--brand);
             font-size: 20px;
             font-weight: 700;
             text-transform: uppercase;
@@ -454,71 +454,72 @@
             }
         }
 
-        .hero-sectiontext{
-    background:var(--brand);
-    min-height:60vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    padding:40px 20px;
-}
+        .hero-sectiontext {
+            background: var(--brand);
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
 
-.hero-sectiontext h1{
-    color:#000;
-    font-size:10rem;
-    font-weight:700;
-    text-transform:uppercase;
-    margin:0;
-    line-height:1;
-}
+        .hero-sectiontext h1 {
+            color: #000;
+            font-size: 10rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin: 0;
+            line-height: 1;
+        }
 
-.hero-sectiontext p{
-    color:#000;
-    font-size:40px;
-    font-weight:400;
-    max-width:1000px;
-    margin:25px auto;
-    line-height:1.4;
-}
+        .hero-sectiontext p {
+            color: #000;
+            font-size: 40px;
+            font-weight: 400;
+            max-width: 1000px;
+            margin: 25px auto;
+            line-height: 1.4;
+        }
 
-.whatsapp-btn{
-    background:#000;
-    color:var(--brand);
-    text-decoration:none;
-    padding:18px 40px;
-    border-radius:50px;
-    font-size:22px;
-    font-weight:700;
-    transition:.3s;
-}
+        .whatsapp-btn {
+            background: #000;
+            color: var(--brand);
+            text-decoration: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 22px;
+            font-weight: 700;
+            transition: .3s;
+        }
 
-.whatsapp-btn:hover{
-    background:#222;
-    transform:translateY(-3px);
-}
+        .whatsapp-btn:hover {
+            background: #222;
+            transform: translateY(-3px);
+        }
 
-@media(max-width:768px){
+        @media(max-width:768px) {
 
-    .hero-section h1{
-        font-size:42px;
-    }
+            .hero-section h1 {
+                font-size: 42px;
+            }
 
-    .hero-sectiontext p{
-        font-size:20px;
-    }
+            .hero-sectiontext p {
+                font-size: 20px;
+            }
 
-    .whatsapp-btn{
-        font-size:18px;
-        padding:15px 30px;
-    }
-}
+            .whatsapp-btn {
+                font-size: 18px;
+                padding: 15px 30px;
+            }
+        }
     </style>
 
     <!-- ── HERO CAROUSEL ── -->
     <section class="hero-section">
-        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4500">
+        <!-- <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4500"> -->
+        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" data-bs-pause="false">
 
             <div class="carousel-indicators">
                 @foreach($banners as $key => $banner)
@@ -542,23 +543,23 @@
                                     <i class="bi bi-search"></i> Browse Equipment
                                 </a>
                                 <!-- <a href="/register" class="btn-hero-secondary">
-                                    Get Started
-                                </a> -->
+                                            Get Started
+                                        </a> -->
                             </div>
                         </div>
                     </div>
                 @endforeach
             </div>
 
-            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <!-- <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
                 <i class="bi bi-chevron-left" style="font-size:1.1rem;color:#fff;"></i>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
                 <i class="bi bi-chevron-right" style="font-size:1.1rem;color:#fff;"></i>
-            </button>
+            </button> -->
         </div>
     </section>
-    
+
 
     <!-- ── STATS STRIP ── -->
     <section class="stats-strip">
@@ -613,8 +614,8 @@
 
                             <div class="cat-card">
                                 <!-- <div style="overflow:hidden;">
-                                                        <img src="{{ asset('uploads/category/' . $category->image) }}" alt="{{ $category->name }}">
-                                                    </div> -->
+                                                                <img src="{{ asset('uploads/category/' . $category->image) }}" alt="{{ $category->name }}">
+                                                            </div> -->
                                 <div class="cat-card-body">
                                     <h6>{{ $category->name }}</h6>
                                     <div class="cat-arrow"><i class="bi bi-arrow-right"></i></div>
@@ -656,10 +657,10 @@
                                     <small>/ day</small>
                                 </div>
                                 <!-- <div class="mt-2">
-                                    <span class="qty-badge">
-                                        <i class="bi bi-boxes"></i> {{ $item->available_qty }} in stock
-                                    </span>
-                                </div> -->
+                                            <span class="qty-badge">
+                                                <i class="bi bi-boxes"></i> {{ $item->available_qty }} in stock
+                                            </span>
+                                        </div> -->
                             </div>
                             <div class="item-card-footer">
                                 <a href="{{ url('item/' . $item->id) }}" class="btn-view">
@@ -676,13 +677,13 @@
                                     </form>
                                 @else
 
-                                    <a href="{{ url('/login') }}">
-
-                                        <button type="submit" class="btn-cart w-100">
-                                            <i class="bi bi-cart-plus-fill"></i> Request
-                                        </button>
-
-                                    </a>
+                                                            <button class="btn-cart w-100" onclick="openRequestModal(
+                                    '{{ $item->id }}',
+                                    '{{ $item->title }}'
+                                    )">
+                                                                <i class="bi bi-cart-plus-fill"></i>
+                                                                Request
+                                                            </button>
                                 @endif
                             </div>
                         </div>
@@ -732,17 +733,238 @@
         </div>
     </section>
 
-    <!-- ── CTA BANNER ── -->
-    <section class="cta-section">
-        <div class="container text-center">
-            <h2 style="font-size:2.2rem;font-weight:900;color:var(--dark);">Ready to Get Started?</h2>
-            <p style="color:rgba(0,0,0,.6);font-size:1.05rem;margin-bottom:2rem;">Join thousands of happy customers. Sign up
-                free and get your first booking today.</p>
-            <a href="/register"
-                style="background:var(--dark);color:var(--white);font-weight:700;padding:.85rem 2.5rem;border-radius:10px;text-decoration:none;font-size:1rem;display:inline-flex;align-items:center;gap:.6rem;transition:all .2s;">
-                <i class="bi bi-person-plus-fill"></i> Create Free Account
-            </a>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            new bootstrap.Carousel(
+                document.getElementById('heroCarousel'),
+                {
+                    interval: 3000,
+                    pause: false,
+                    wrap: true
+                }
+            );
+
+        });
+    </script>
+
+    <div class="modal fade" id="requestModal">
+<div class="modal-dialog">
+<div class="modal-content">
+
+<div class="modal-header">
+<h5>Request Item</h5>
+<button class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+
+<input type="hidden" id="item_id">
+
+<div class="mb-3">
+    <label>Name *</label>
+    <input type="text" id="name" class="form-control">
+    <small class="text-danger" id="name_error"></small>
+</div>
+
+<div class="mb-3">
+    <label>Email *</label>
+    <input type="email" id="email" class="form-control">
+    <small class="text-danger" id="email_error"></small>
+</div>
+
+<div class="mb-3">
+    <label>Phone *</label>
+    <input type="text" id="phone" class="form-control">
+    <small class="text-danger" id="phone_error"></small>
+</div>
+
+<div class="mb-3">
+    <label>Message</label>
+    <textarea id="message" class="form-control"></textarea>
+</div>
+
+<button
+class="btn btn-warning w-100"
+onclick="submitRequest()">
+Send Request
+</button>
+
+</div>
+
+</div>
+</div>
+</div>
+<script>
+
+function openRequestModal(id,title)
+{
+    document.getElementById('item_id').value=id;
+
+    new bootstrap.Modal(
+        document.getElementById('requestModal')
+    ).show();
+}
+
+
+</script>
+<div class="position-fixed top-0 end-0 p-3" style="z-index:99999">
+
+    <div id="liveToast"
+         class="toast border-0 shadow">
+
+        <div class="toast-header bg-success text-white">
+            <strong class="me-auto">Light As AIR</strong>
+            <button type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="toast"></button>
         </div>
-    </section>
+
+        <div class="toast-body" id="toastMessage">
+        </div>
+
+    </div>
+
+</div>
+<script>
+    async function submitRequest()
+{
+    document.getElementById('name_error').innerHTML = '';
+    document.getElementById('email_error').innerHTML = '';
+    document.getElementById('phone_error').innerHTML = '';
+
+    let name =
+        document.getElementById('name').value.trim();
+
+    let email =
+        document.getElementById('email').value.trim();
+
+    let phone =
+        document.getElementById('phone').value.trim();
+
+    let valid = true;
+
+    if(!name)
+    {
+        document.getElementById('name_error')
+        .innerHTML = 'Name is required';
+
+        valid = false;
+    }
+
+    if(!email)
+    {
+        document.getElementById('email_error')
+        .innerHTML = 'Email is required';
+
+        valid = false;
+    }
+    else
+    {
+        let emailRegex =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if(!emailRegex.test(email))
+        {
+            document.getElementById('email_error')
+            .innerHTML = 'Enter valid email';
+
+            valid = false;
+        }
+    }
+
+    if(!phone)
+    {
+        document.getElementById('phone_error')
+        .innerHTML = 'Phone number is required';
+
+        valid = false;
+    }
+
+    if(!valid)
+    {
+        return;
+    }
+
+    try{
+
+        const response =
+        await fetch('/guest-request',{
+
+            method:'POST',
+
+            headers:{
+                'Content-Type':'application/json',
+                'Accept':'application/json',
+                'X-CSRF-TOKEN':document
+                .querySelector('meta[name="csrf-token"]')
+                .content
+            },
+
+            body:JSON.stringify({
+
+                item_id:
+                document.getElementById('item_id').value,
+
+                name:name,
+                email:email,
+                phone:phone,
+
+                message:
+                document.getElementById('message').value
+            })
+        });
+
+        const data = await response.json();
+
+        if(!data.status)
+        {
+            showToast('Request failed.');
+            return;
+        }
+
+        let msg =
+
+`🔥 NEW LIGHT AS AIR REQUEST
+
+Item: ${data.item_name}
+
+Name: ${data.name}
+
+Email: ${data.email}
+
+Phone: ${data.phone}`;
+
+        window.open(
+            `https://wa.me/919111758467?text=${encodeURIComponent(msg)}`,
+            '_blank'
+        );
+
+        bootstrap.Modal
+        .getInstance(
+            document.getElementById('requestModal')
+        ).hide();
+
+        document.getElementById('name').value='';
+        document.getElementById('email').value='';
+        document.getElementById('phone').value='';
+        document.getElementById('message').value='';
+
+        showToast(
+            '✅ Request submitted successfully. WhatsApp opened.'
+        );
+
+    }
+    catch(error)
+    {
+        console.log(error);
+
+        showToast(
+            '❌ Something went wrong. Please try again.'
+        );
+    }
+}
+</script>
+
 
 @endsection

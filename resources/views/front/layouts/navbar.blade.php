@@ -190,12 +190,12 @@
 
                 @else
 
-                    <!-- <li class="nav-item">
-                        <a class="nav-link btn-nav-login" href="/login">
-                            <i class="bi bi-person"></i> Login
-                        </a>
+                   <li class="nav-item">
+                        <a href="#items" class="btn-hero-primary">
+                                    <i class="bi bi-search"></i>Request
+                                </a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link btn-nav-register" href="/register">
                             <i class="bi bi-person-plus-fill"></i> Register
                         </a>

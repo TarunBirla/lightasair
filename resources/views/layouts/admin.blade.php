@@ -308,18 +308,24 @@
 
     <nav>
         <ul>
-            <li>
+            <!-- <li>
                 <a href="/admin/bookings" class="{{ request()->is('admin/bookings*') ? 'active' : '' }}">
                     <i class="fa-solid fa-calendar-check"></i>
                     Request To Product
                 </a>
-            </li>
+            </li> -->
             <li>
+                <a href="/admin/requests" class="{{ request()->is('admin/requests*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    Request To Product
+                </a>
+            </li>
+            <!-- <li>
                 <a href="/admin/users" class="{{ request()->is('admin/users*') ? 'active' : '' }}">
                     <i class="fa-solid fa-users"></i>
                     Users
                 </a>
-            </li>
+            </li> -->
         </ul>
     </nav>
 

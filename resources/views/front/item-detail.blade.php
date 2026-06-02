@@ -178,6 +178,27 @@
     align-items: center;
     gap: .35rem;
 }
+ .btn-hero-primary {
+            background: var(--brand);
+            color: var(--dark);
+            font-weight: 700;
+            font-size: 1rem;
+            padding: .75rem 2rem;
+            border-radius: 10px;
+            border: none;
+            text-decoration: none;
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        .btn-hero-primary:hover {
+            background: var(--brand-dk);
+            color: var(--dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 199, 0, .4);
+        }
 </style>
 
 <!-- Page Header -->
@@ -237,7 +258,7 @@
                         <i class="bi bi-check-circle-fill me-1"></i>{{ $item->available_qty }} in stock
                     </span>
                 </div> -->
-
+@if(Auth::check())
                 <form action="/add-to-cart" method="POST">
                     @csrf
                     <input type="hidden" name="item_id" value="{{ $item->id }}">
@@ -257,6 +278,17 @@
                         <i class="bi bi-cart-plus-fill"></i> Request to Product
                     </button>
                 </form>
+               
+                 @else
+
+                                                            <button class="btn-add-cart" onclick="openRequestModal(
+                                    '{{ $item->id }}',
+                                    '{{ $item->title }}'
+                                    )">
+                                                                <i class="bi bi-cart-plus-fill"></i>
+                                                                Request
+                                                            </button>
+                                @endif
             </div>
         </div>
 
@@ -271,6 +303,224 @@ function changeQty(delta) {
     if (val < 1) val = 1;
     if (val > max) val = max;
     input.value = val;
+}
+</script>
+
+  <div class="modal fade" id="requestModal">
+<div class="modal-dialog">
+<div class="modal-content">
+
+<div class="modal-header">
+<h5>Request Item</h5>
+<button class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+
+<input type="hidden" id="item_id">
+
+<div class="mb-3">
+    <label>Name *</label>
+    <input type="text" id="name" class="form-control">
+    <small class="text-danger" id="name_error"></small>
+</div>
+
+<div class="mb-3">
+    <label>Email *</label>
+    <input type="email" id="email" class="form-control">
+    <small class="text-danger" id="email_error"></small>
+</div>
+
+<div class="mb-3">
+    <label>Phone *</label>
+    <input type="text" id="phone" class="form-control">
+    <small class="text-danger" id="phone_error"></small>
+</div>
+
+<div class="mb-3">
+    <label>Message</label>
+    <textarea id="message" class="form-control"></textarea>
+</div>
+
+<button
+class="btn btn-warning w-100"
+onclick="submitRequest()">
+Send Request
+</button>
+
+</div>
+
+</div>
+</div>
+</div>
+<script>
+
+function openRequestModal(id,title)
+{
+    document.getElementById('item_id').value=id;
+
+    new bootstrap.Modal(
+        document.getElementById('requestModal')
+    ).show();
+}
+
+
+</script>
+<div class="position-fixed top-0 end-0 p-3" style="z-index:99999">
+
+    <div id="liveToast"
+         class="toast border-0 shadow">
+
+        <div class="toast-header bg-success text-white">
+            <strong class="me-auto">Light As AIR</strong>
+            <button type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="toast"></button>
+        </div>
+
+        <div class="toast-body" id="toastMessage">
+        </div>
+
+    </div>
+
+</div>
+<script>
+    async function submitRequest()
+{
+    document.getElementById('name_error').innerHTML = '';
+    document.getElementById('email_error').innerHTML = '';
+    document.getElementById('phone_error').innerHTML = '';
+
+    let name =
+        document.getElementById('name').value.trim();
+
+    let email =
+        document.getElementById('email').value.trim();
+
+    let phone =
+        document.getElementById('phone').value.trim();
+
+    let valid = true;
+
+    if(!name)
+    {
+        document.getElementById('name_error')
+        .innerHTML = 'Name is required';
+
+        valid = false;
+    }
+
+    if(!email)
+    {
+        document.getElementById('email_error')
+        .innerHTML = 'Email is required';
+
+        valid = false;
+    }
+    else
+    {
+        let emailRegex =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if(!emailRegex.test(email))
+        {
+            document.getElementById('email_error')
+            .innerHTML = 'Enter valid email';
+
+            valid = false;
+        }
+    }
+
+    if(!phone)
+    {
+        document.getElementById('phone_error')
+        .innerHTML = 'Phone number is required';
+
+        valid = false;
+    }
+
+    if(!valid)
+    {
+        return;
+    }
+
+    try{
+
+        const response =
+        await fetch('/guest-request',{
+
+            method:'POST',
+
+            headers:{
+                'Content-Type':'application/json',
+                'Accept':'application/json',
+                'X-CSRF-TOKEN':document
+                .querySelector('meta[name="csrf-token"]')
+                .content
+            },
+
+            body:JSON.stringify({
+
+                item_id:
+                document.getElementById('item_id').value,
+
+                name:name,
+                email:email,
+                phone:phone,
+
+                message:
+                document.getElementById('message').value
+            })
+        });
+
+        const data = await response.json();
+
+        if(!data.status)
+        {
+            showToast('Request failed.');
+            return;
+        }
+
+        let msg =
+
+`🔥 NEW LIGHT AS AIR REQUEST
+
+Item: ${data.item_name}
+
+Name: ${data.name}
+
+Email: ${data.email}
+
+Phone: ${data.phone}`;
+
+        window.open(
+            `https://wa.me/919111758467?text=${encodeURIComponent(msg)}`,
+            '_blank'
+        );
+
+        bootstrap.Modal
+        .getInstance(
+            document.getElementById('requestModal')
+        ).hide();
+
+        document.getElementById('name').value='';
+        document.getElementById('email').value='';
+        document.getElementById('phone').value='';
+        document.getElementById('message').value='';
+
+        showToast(
+            '✅ Request submitted successfully. WhatsApp opened.'
+        );
+
+    }
+    catch(error)
+    {
+        console.log(error);
+
+        showToast(
+            '❌ Something went wrong. Please try again.'
+        );
+    }
 }
 </script>
 

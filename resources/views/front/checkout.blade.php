@@ -459,7 +459,7 @@
                 });
 
                 window.open(
-                    `https://wa.me/91911178467?text=${encodeURIComponent(msg)}`,
+                    `https://wa.me/919111758467?text=${encodeURIComponent(msg)}`,
                     '_blank'
                 );
 

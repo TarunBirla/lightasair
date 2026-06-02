@@ -18,6 +18,11 @@ use App\Http\Controllers\Front\AuthController as FrontAuthController;
 use App\Http\Controllers\Front\CategoryController as FrontCategoryController;
 use App\Http\Controllers\Front\ItemController as FrontItemController;
 
+Route::post(
+    '/guest-request',
+    [HomeController::class,'guestRequest']
+);
+
 Route::get(
     '/categories',
     [FrontCategoryController::class,'index']
@@ -153,6 +158,15 @@ Route::get(
             'banner',
             BannerController::class
         );
+
+      Route::get(
+    '/requests',
+    [BookingController::class,'requests']
+)->name('admin.requests');
+Route::delete(
+    '/requests/{id}',
+    [BookingController::class,'deleteRequest']
+)->name('admin.requests.delete');
 
         Route::resource(
             'category',

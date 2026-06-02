@@ -204,18 +204,18 @@
             <div class="stat-icon red">
                 <i class="fa-solid fa-users"></i>
             </div>
-            <span class="stat-badge">Registered</span>
+            <span class="stat-badge">Request</span>
         </div>
         <div class="stat-card-bottom">
-            <div class="stat-num">{{ $userCount }}</div>
-            <div class="stat-label">Total Users</div>
+            <div class="stat-num">{{ $requestCount }}</div>
+            <div class="stat-label">Total Requests</div>
         </div>
     </div>
 
 </div>
 
 <!-- Quick Actions -->
-<div class="section-title">Quick Actions</div>
+<!-- <div class="section-title">Quick Actions</div>
 <div class="quick-actions">
     <a href="{{ route('banner.create') }}" class="qa-card">
         <i class="fa-solid fa-plus-circle"></i> Add Banner
@@ -229,10 +229,10 @@
     <a href="/admin/bookings" class="qa-card">
         <i class="fa-solid fa-calendar-check"></i> View Bookings
     </a>
-</div>
+</div> -->
 
 <!-- Panel -->
-<div class="panel">
+<!-- <div class="panel">
     <div class="panel-header">
         <h5><i class="fa-solid fa-clock-rotate-left me-2" style="color:#FFC700"></i>Recent Activity</h5>
         <a href="/admin/bookings" style="font-size:13px;color:#888;text-decoration:none;font-weight:600;">View All</a>
@@ -243,6 +243,6 @@
             No recent activity yet
         </div>
     </div>
-</div>
+</div> -->
 
 @endsection

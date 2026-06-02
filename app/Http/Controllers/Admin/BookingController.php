@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\User;
+use App\Models\RequestLead;
 
 class BookingController extends Controller
 {
@@ -36,6 +37,31 @@ class BookingController extends Controller
             compact('users')
         );
     }
+
+    public function requests()
+{
+    $requests =
+    RequestLead::latest()->paginate(20);
+
+    return view(
+        'admin.requests.index',
+        compact('requests')
+    );
+}
+
+public function deleteRequest($id)
+{
+    $request = RequestLead::findOrFail($id);
+
+    $request->delete();
+
+    return redirect()
+        ->back()
+        ->with(
+            'success',
+            'Request deleted successfully.'
+        );
+}
     public function show($id)
     {
         $booking = Booking::with([
