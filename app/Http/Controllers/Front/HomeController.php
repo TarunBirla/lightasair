@@ -45,9 +45,9 @@ public function guestRequest(Request $request)
     Mail::to('tbirla120@gmail.com')
         ->send(new RequestLeadMail($lead));
 
-    dd('Mail Sent');
+    // dd('Mail Sent');
 } catch (\Exception $e) {
-    dd($e->getMessage());
+    // dd($e->getMessage());
 }
 
     return response()->json([
