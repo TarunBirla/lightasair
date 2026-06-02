@@ -83,6 +83,21 @@
             background: var(--brand);
             color: var(--dark);
             font-weight: 700;
+            font-size: 2rem;
+            padding: .75rem 2rem;
+            border-radius: 10px;
+            border: none;
+            text-decoration: none;
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        .btn-hero-primary1 {
+            background: var(--brand);
+            color: var(--dark);
+            font-weight: 700;
             font-size: 1rem;
             padding: .75rem 2rem;
             border-radius: 10px;
@@ -177,64 +192,108 @@
             letter-spacing: .08em;
         }
 
-        /* ── CATEGORIES ── */
-        .cat-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: transform .25s, box-shadow .25s;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
+        /* Category Background Section */
+.category-wrapper {
+    position: relative;
+    padding: 40px;
+    border-radius: 25px;
+    overflow: hidden;
+    background: url('/images.jpg') center center/cover no-repeat;
+}
 
-        .cat-card:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--brand);
-        }
+/* Dark Overlay */
+.category-wrapper::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(3px);
+}
 
-        .cat-card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            transition: transform .35s;
-        }
+.category-wrapper .row {
+    position: relative;
+    z-index: 2;
+}
 
-        .cat-card:hover img {
-            transform: scale(1.05);
-        }
+/* Category Card */
+.cat-card {
+    /* background: rgba(255,255,255,0.95); */
+    backdrop-filter: blur(10px);
+    border-radius: 18px;
+    overflow: hidden;
+    /* min-height: 110px; */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    transition: all .3s ease;
+    /* border: 1px solid rgba(255,255,255,0.3); */
+}
 
-        .cat-card-body {
-            padding: 1rem 1.1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+.cat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,.18);
+}
 
-        .cat-card-body h6 {
-            font-weight: 700;
-            font-size: .93rem;
-            color: var(--dark);
-            margin: 0;
-        }
+.cat-card-body {
+    padding: 24px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
-        .cat-arrow {
-            width: 30px;
-            height: 30px;
-            background: var(--brand-lt);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--dark);
-            font-size: .75rem;
-            transition: background .2s;
-        }
+.cat-card-body h6 {
+    font-size: 1.5rem;
+    /* font-weight: 700; */
+    margin: 0;
+    color: #fff;
+}
 
-        .cat-card:hover .cat-arrow {
-            background: var(--brand);
-        }
+.cat-arrow {
+    width: 42px;
+    height: 42px;
+    background: var(--brand);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .3s;
+}
+
+.cat-card:hover .cat-arrow {
+    transform: rotate(-45deg);
+}
+/* Mobile */
+@media (max-width: 767px) {
+
+    .category-wrapper {
+        padding: 15px;
+        border-radius: 15px;
+    }
+
+    .cat-card {
+        min-height: 75px;
+    }
+
+    .cat-card-body {
+        padding: 12px;
+    }
+
+    .cat-card-body h6 {
+        font-size: 13px;
+        line-height: 1.3;
+    }
+
+    .cat-arrow {
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+        font-size: 12px;
+    }
+
+    .row.g-4 {
+        --bs-gutter-x: .75rem;
+        --bs-gutter-y: .75rem;
+    }
+}
 
         /* ── ITEM CARDS ── */
         .item-card {
@@ -539,7 +598,7 @@
                             <p class="hero-sub">Professional equipment rental with flexible terms. Book online in minutes,
                                 delivered to your door.</p>
                             <div class="hero-actions">
-                                <a href="#items" class="btn-hero-primary">
+                                <a href="#items" class="btn-hero-primary1">
                                     <i class="bi bi-search"></i> Browse Equipment
                                 </a>
                                 <!-- <a href="/register" class="btn-hero-secondary">
@@ -607,24 +666,24 @@
                     View All <i class="bi bi-arrow-right"></i>
                 </a>
             </div>
-            <div class="row g-3">
-                @foreach($categories as $category)
-                    <div class="col-6 col-md-3">
-                        <a href="{{ url('/category/' . $category->id) }}" class="text-decoration-none text-dark">
-
-                            <div class="cat-card">
-                                <!-- <div style="overflow:hidden;">
-                                                                <img src="{{ asset('uploads/category/' . $category->image) }}" alt="{{ $category->name }}">
-                                                            </div> -->
-                                <div class="cat-card-body">
-                                    <h6>{{ $category->name }}</h6>
-                                    <div class="cat-arrow"><i class="bi bi-arrow-right"></i></div>
-                                </div>
+           <div class="category-wrapper">
+    <div class="row g-4">
+        @foreach($categories as $category)
+            <div class="col-6 col-md-3">
+                <a href="{{ url('/category/' . $category->id) }}" class="text-decoration-none">
+                    <div class="cat-card">
+                        <div class="cat-card-body">
+                            <h6>{{ $category->name }}</h6>
+                            <div class="cat-arrow">
+                                <i class="bi bi-arrow-right"></i>
                             </div>
-                        </a>
+                        </div>
                     </div>
-                @endforeach
+                </a>
             </div>
+        @endforeach
+    </div>
+</div>
 
         </div>
     </section>
@@ -652,10 +711,10 @@
                             </div>
                             <div class="item-card-body">
                                 <div class="item-title">{{ $item->title }}</div>
-                                <div class="item-price mt-1">
+                                <!-- <div class="item-price mt-1">
                                     £{{ number_format($item->price_per_day, 2) }}
                                     <small>/ day</small>
-                                </div>
+                                </div> -->
                                 <!-- <div class="mt-2">
                                             <span class="qty-badge">
                                                 <i class="bi bi-boxes"></i> {{ $item->available_qty }} in stock

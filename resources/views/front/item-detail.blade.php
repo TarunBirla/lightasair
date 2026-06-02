@@ -182,7 +182,7 @@
             background: var(--brand);
             color: var(--dark);
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 2rem;
             padding: .75rem 2rem;
             border-radius: 10px;
             border: none;
@@ -246,10 +246,10 @@
 
                 <p class="item-desc">{{ $item->description }}</p>
 
-                <div class="price-block">
+                <!-- <div class="price-block">
                     <span class="price-amount">£{{ number_format($item->price_per_day, 2) }}</span>
                     <span class="price-label">per day</span>
-                </div>
+                </div> -->
 
                 <!-- <div class="avail-row">
                     <i class="bi bi-boxes fs-5"></i>

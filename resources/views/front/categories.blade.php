@@ -28,7 +28,7 @@
 
         .cat-card-body h6 {
             font-weight: 700;
-            font-size: .93rem;
+            font-size: 1.2rem;
             color: var(--dark);
             margin: 0;
         }

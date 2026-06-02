@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Models\Item;
 use App\Models\RequestLead;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RequestLeadMail;
 
 
 class HomeController extends Controller
@@ -33,6 +35,13 @@ public function guestRequest(Request $request)
         'phone'     => $request->phone,
         'message'   => $request->message
     ]);
+    // Admin Email
+// try {
+//     Mail::to('tbirla120@gmail.com')
+//         ->send(new RequestLeadMail($lead));
+// } catch (\Exception $e) {
+//     \Log::error($e->getMessage());
+// }
 
     return response()->json([
         'status' => true,

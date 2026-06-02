@@ -441,10 +441,10 @@
                         </div>
                         <div class="item-card-body">
                             <div class="item-title">{{ $item->title }}</div>
-                            <div class="item-price mt-1">
+                            <!-- <div class="item-price mt-1">
                                 £{{ number_format($item->price_per_day, 2) }}
                                 <small>/ day</small>
-                            </div>
+                            </div> -->
                             <!-- <div class="mt-2">
                                         <span class="qty-badge">
                                             <i class="bi bi-boxes"></i> {{ $item->available_qty }} in stock

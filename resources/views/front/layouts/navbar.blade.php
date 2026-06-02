@@ -133,6 +133,7 @@
     .logoData{
         max-height: 100px;
     }
+   
 </style>
 
 
@@ -148,9 +149,9 @@
             Light as<span>AIR</span> -->
         </a>
 
-        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <!-- <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
             <span class="navbar-toggler-icon"></span>
-        </button>
+        </button> -->
 
         <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
@@ -190,11 +191,11 @@
 
                 @else
 
-                   <li class="nav-item">
+                   <!-- <li class="nav-item">
                         <a href="#items" class="btn-hero-primary">
-                                    <i class="bi bi-search"></i>Request
+                                    LIGHT AS AIR
                                 </a>
-                    </li>
+                    </li> -->
                     <!-- <li class="nav-item">
                         <a class="nav-link btn-nav-register" href="/register">
                             <i class="bi bi-person-plus-fill"></i> Register
@@ -205,6 +206,11 @@
 
             </ul>
         </div>
+         <!-- <li class="nav-item"> -->
+                        <a href="#items" class="btn-hero-primary">
+                                    LIGHT AS AIR
+                                </a>
+                    <!-- </li> -->
 
     </div>
 </nav>
