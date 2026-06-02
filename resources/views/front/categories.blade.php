@@ -99,7 +99,7 @@ cursor: not-allowed;
             background: var(--brand);
             color: var(--dark);
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 2rem;
             padding: .75rem 2rem;
             border-radius: 10px;
             border: none;
