@@ -281,13 +281,13 @@
                
                  @else
 
-                                                            <button class="btn-add-cart" onclick="openRequestModal(
+                                                            <!-- <button class="btn-add-cart" onclick="openRequestModal(
                                     '{{ $item->id }}',
                                     '{{ $item->title }}'
                                     )">
                                                                 <i class="bi bi-cart-plus-fill"></i>
                                                                 Request
-                                                            </button>
+                                                            </button> -->
                                 @endif
             </div>
         </div>

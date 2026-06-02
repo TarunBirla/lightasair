@@ -735,14 +735,24 @@
                                         </button>
                                     </form>
                                 @else
-
+<!-- 
                                                             <button class="btn-cart w-100" onclick="openRequestModal(
                                     '{{ $item->id }}',
                                     '{{ $item->title }}'
                                     )">
                                                                 <i class="bi bi-cart-plus-fill"></i>
                                                                 Request
-                                                            </button>
+                                                            </button> -->
+
+                                                            <button
+class="btn-cart w-100"
+onclick="addToRequest(
+'{{ $item->id }}',
+'{{ $item->title }}'
+)">
+    <i class="bi bi-plus-circle"></i>
+    Request
+</button>
                                 @endif
                             </div>
                         </div>
@@ -792,6 +802,7 @@
         </div>
     </section>
 
+    
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
@@ -806,6 +817,7 @@
 
         });
     </script>
+    
 
     <div class="modal fade" id="requestModal">
 <div class="modal-dialog">
@@ -855,15 +867,22 @@ Send Request
 </div>
 </div>
 <script>
-
-function openRequestModal(id,title)
+    function showToast(message)
 {
-    document.getElementById('item_id').value=id;
+    document.getElementById('toastMessage').innerHTML = message;
 
-    new bootstrap.Modal(
-        document.getElementById('requestModal')
-    ).show();
+    let toastEl =
+    document.getElementById('liveToast');
+
+    let toast =
+    new bootstrap.Toast(toastEl,{
+        delay:3000
+    });
+
+    toast.show();
 }
+
+
 
 
 </script>
@@ -962,8 +981,11 @@ function openRequestModal(id,title)
 
             body:JSON.stringify({
 
-                item_id:
-                document.getElementById('item_id').value,
+                // item_id:
+                // document.getElementById('item_id').value,
+                items: JSON.parse(
+        localStorage.getItem('requests')
+    ),
 
                 name:name,
                 email:email,
@@ -974,7 +996,10 @@ function openRequestModal(id,title)
             })
         });
 
+        // const data = await response.json();
         const data = await response.json();
+
+console.log(data);
 
         if(!data.status)
         {
@@ -986,7 +1011,8 @@ function openRequestModal(id,title)
 
 `🔥 NEW LIGHT AS AIR REQUEST
 
-Item: ${data.item_name}
+Items:
+${data.items}
 
 Name: ${data.name}
 
@@ -1000,18 +1026,26 @@ Phone: ${data.phone}`;
         );
 
         bootstrap.Modal
-        .getInstance(
-            document.getElementById('requestModal')
-        ).hide();
+.getInstance(
+    document.getElementById('requestModal')
+).hide();
 
-        document.getElementById('name').value='';
-        document.getElementById('email').value='';
-        document.getElementById('phone').value='';
-        document.getElementById('message').value='';
+console.log(msg);
 
-        showToast(
-            '✅ Request submitted successfully. WhatsApp opened.'
-        );
+document.getElementById('name').value='';
+document.getElementById('email').value='';
+document.getElementById('phone').value='';
+document.getElementById('message').value='';
+
+// Request list clear
+localStorage.removeItem('requests');
+
+// Count update
+updateRequestCount();
+
+showToast(
+    '✅ Request submitted successfully.'
+);
 
     }
     catch(error)

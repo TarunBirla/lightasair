@@ -417,67 +417,68 @@
             background: var(--brand);
             padding: 4rem 0;
         }
-        .category-scroll{
-    display:flex;
-    gap:10px;
-    overflow-x:auto;
-    padding-bottom:8px;
-    scrollbar-width:none;
-}
 
-.category-scroll::-webkit-scrollbar{
-    display:none;
-}
+        .category-scroll {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+        }
 
-.category-pill{
-    white-space:nowrap;
-    padding:10px 18px;
-    border-radius:30px;
-    background:#fff;
-    border:1px solid #ddd;
-    text-decoration:none;
-    color:#222;
-    font-weight:600;
-    transition:.3s;
-}
+        .category-scroll::-webkit-scrollbar {
+            display: none;
+        }
 
-.category-pill:hover{
-    background:#ffc107;
-    color:#000;
-    border-color:#ffc107;
-}
+        .category-pill {
+            white-space: nowrap;
+            padding: 10px 18px;
+            border-radius: 30px;
+            background: #fff;
+            border: 1px solid #ddd;
+            text-decoration: none;
+            color: #222;
+            font-weight: 600;
+            transition: .3s;
+        }
 
-.category-pill.active{
-    background:#ffc107;
-    color:#000;
-    border-color:#ffc107;
-}
+        .category-pill:hover {
+            background: #ffc107;
+            color: #000;
+            border-color: #ffc107;
+        }
+
+        .category-pill.active {
+            background: #ffc107;
+            color: #000;
+            border-color: #ffc107;
+        }
     </style>
 
     <div class="container py-5">
 
         <div class="mb-4">
 
-    <h5 class="fw-bold mb-3">
-        Browse Categories
-    </h5>
+            <h5 class="fw-bold mb-3">
+                Browse Categories
+            </h5>
 
-    <div class="category-scroll">
+            <div class="category-scroll">
 
-        @foreach($categories as $cat)
+                @foreach($categories as $cat)
 
-            <a href="{{ url('/category/'.$cat->id) }}"
-                class="category-pill {{ $cat->id == $category->id ? 'active' : '' }}">
+                    <a href="{{ url('/category/' . $cat->id) }}"
+                        class="category-pill {{ $cat->id == $category->id ? 'active' : '' }}">
 
-                {{ $cat->name }}
+                        {{ $cat->name }}
 
-            </a>
+                    </a>
 
-        @endforeach
+                @endforeach
 
-    </div>
+            </div>
 
-</div>
+        </div>
 
         <div class="row g-4">
 
@@ -492,14 +493,14 @@
                         <div class="item-card-body">
                             <div class="item-title">{{ $item->title }}</div>
                             <!-- <div class="item-price mt-1">
-                                £{{ number_format($item->price_per_day, 2) }}
-                                <small>/ day</small>
-                            </div> -->
-                            <!-- <div class="mt-2">
-                                        <span class="qty-badge">
-                                            <i class="bi bi-boxes"></i> {{ $item->available_qty }} in stock
-                                        </span>
+                                        £{{ number_format($item->price_per_day, 2) }}
+                                        <small>/ day</small>
                                     </div> -->
+                            <!-- <div class="mt-2">
+                                                <span class="qty-badge">
+                                                    <i class="bi bi-boxes"></i> {{ $item->available_qty }} in stock
+                                                </span>
+                                            </div> -->
                         </div>
                         <div class="item-card-footer">
                             <a href="{{ url('item/' . $item->id) }}" class="btn-view">
@@ -516,13 +517,13 @@
                                 </form>
                             @else
 
-                                <button class="btn-cart w-100" onclick="openRequestModal(
-                                                '{{ $item->id }}',
-                                                '{{ $item->title }}'
-                                                )">
-                                    <i class="bi bi-cart-plus-fill"></i>
-                                    Request
-                                </button>
+                                                    <button class="btn-cart w-100" onclick="addToRequest(
+                                '{{ $item->id }}',
+                                '{{ $item->title }}'
+                                )">
+                                                        <i class="bi bi-plus-circle"></i>
+                                                        Request
+                                                    </button>
                             @endif
                         </div>
                     </div>
@@ -587,14 +588,21 @@
         </div>
     </div>
     <script>
+        function showToast(message) {
+            document.getElementById('toastMessage').innerHTML = message;
 
-        function openRequestModal(id, title) {
-            document.getElementById('item_id').value = id;
+            let toastEl =
+                document.getElementById('liveToast');
 
-            new bootstrap.Modal(
-                document.getElementById('requestModal')
-            ).show();
+            let toast =
+                new bootstrap.Toast(toastEl, {
+                    delay: 3000
+                });
+
+            toast.show();
         }
+
+
 
 
     </script>
@@ -683,8 +691,11 @@
 
                         body: JSON.stringify({
 
-                            item_id:
-                                document.getElementById('item_id').value,
+                            // item_id:
+                            // document.getElementById('item_id').value,
+                            items: JSON.parse(
+                                localStorage.getItem('requests')
+                            ),
 
                             name: name,
                             email: email,
@@ -706,7 +717,8 @@
 
                     `🔥 NEW LIGHT AS AIR REQUEST
 
-    Item: ${data.item_name}
+    Items:
+    ${data.items}
 
     Name: ${data.name}
 
@@ -729,8 +741,14 @@
                 document.getElementById('phone').value = '';
                 document.getElementById('message').value = '';
 
+                // Request list clear
+                localStorage.removeItem('requests');
+
+                // Count update
+                updateRequestCount();
+
                 showToast(
-                    '✅ Request submitted successfully. WhatsApp opened.'
+                    '✅ Request submitted successfully.'
                 );
 
             }

@@ -19,36 +19,43 @@ class HomeController extends Controller
 public function guestRequest(Request $request)
 {
     $request->validate([
-        'item_id' => 'required',
-        'name'    => 'required',
-        'email'   => 'required|email',
-        'phone'   => 'required'
+        'items' => 'required|array|min:1',
+        'name'  => 'required',
+        'email' => 'required|email',
+        'phone' => 'required'
     ]);
 
-    $item = Item::findOrFail($request->item_id);
+    $itemsText = '';
 
-    $lead = RequestLead::create([
-        'item_id'   => $item->id,
-        'item_name' => $item->title,
-        'name'      => $request->name,
-        'email'     => $request->email,
-        'phone'     => $request->phone,
-        'message'   => $request->message
-    ]);
-    // Admin Email
-// try {
-//     Mail::to('tbirla120@gmail.com')
-//         ->send(new RequestLeadMail($lead));
-// } catch (\Exception $e) {
-//     \Log::error($e->getMessage());
-// }
+    foreach ($request->items as $item)
+    {
+        $lead = RequestLead::create([
+            'item_id'   => $item['id'],
+            'item_name' => $item['title'],
+            'name'      => $request->name,
+            'email'     => $request->email,
+            'phone'     => $request->phone,
+            'message'   => $request->message
+        ]);
+
+        $itemsText .= "• ".$item['title']."\n";
+    }
+
+   try {
+    Mail::to('tbirla120@gmail.com')
+        ->send(new RequestLeadMail($lead));
+
+    dd('Mail Sent');
+} catch (\Exception $e) {
+    dd($e->getMessage());
+}
 
     return response()->json([
         'status' => true,
-        'item_name' => $item->title,
-        'name' => $lead->name,
-        'email' => $lead->email,
-        'phone' => $lead->phone
+        'items'  => $itemsText,
+        'name'   => $request->name,
+        'email'  => $request->email,
+        'phone'  => $request->phone
     ]);
 }
    public function index()

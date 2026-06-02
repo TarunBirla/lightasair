@@ -138,6 +138,42 @@
     z-index:-1;
 }
 
+.whatsapp-float1{
+    position: fixed;
+    right: 20px;
+    bottom: 100px;
+    width: 65px;
+    height: 65px;
+    background: var(--brand);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 34px;
+    z-index: 9999;
+    box-shadow: 0 8px 25px var(--brand);
+    transition: all .3s ease;
+}
+
+.whatsapp-float1:hover{
+    color: #fff;
+    transform: scale(1.1);
+    box-shadow: 0 10px 30px var(--brand);
+}
+
+.whatsapp-float1::before{
+    content:'';
+    position:absolute;
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    background:#var(--brand);
+    animation: whatsapp-pulse 2s infinite;
+    z-index:-1;
+}
+
 @keyframes whatsapp-pulse{
     0%{
         transform:scale(1);
@@ -162,6 +198,21 @@
         bottom:20px;
     }
 }
+.request-count{
+    position:absolute;
+    top:-5px;
+    right:-5px;
+    background:red;
+    color:#fff;
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    font-size:12px;
+    font-weight:bold;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
     </style>
 </head>
 <body>
@@ -176,6 +227,21 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<a href="javascript:void(0)"
+   onclick="openRequestModal()"
+   class="whatsapp-float1">
+
+    <div class="d-flex flex-column align-items-center">
+        <!-- <i class="bi bi-whatsapp"></i> -->
+        <small style="font-size:16px;">Request</small>
+    </div>
+
+    <span id="requestCount" class="request-count">
+        0
+    </span>
+</a>
+
 <a href="https://wa.me/447825706997"
    target="_blank"
    class="whatsapp-float">
@@ -183,5 +249,73 @@
     <i class="bi bi-whatsapp"></i>
 
 </a>
+<script>
+    function openRequestModal()
+{
+    let requests =
+    JSON.parse(localStorage.getItem('requests')) || [];
+
+    if(requests.length === 0)
+    {
+        showToast('Please select item first');
+        return;
+    }
+
+    new bootstrap.Modal(
+        document.getElementById('requestModal')
+    ).show();
+}
+</script>
+
+<script>
+function addToRequest(id,title)
+{
+    let requests =
+    JSON.parse(localStorage.getItem('requests')) || [];
+
+    let exists =
+    requests.find(x => x.id == id);
+
+    if(exists)
+    {
+        showToast('Already added');
+        return;
+    }
+
+    requests.push({
+        id:id,
+        title:title
+    });
+
+    localStorage.setItem(
+        'requests',
+        JSON.stringify(requests)
+    );
+
+    updateRequestCount();
+
+    showToast(title + ' added successfully');
+}
+
+function updateRequestCount()
+{
+    let requests =
+    JSON.parse(localStorage.getItem('requests')) || [];
+
+    let countElement =
+    document.getElementById('requestCount');
+
+    if(countElement)
+    {
+        countElement.innerHTML = requests.length;
+    }
+}
+
+document.addEventListener(
+'DOMContentLoaded',
+function(){
+    updateRequestCount();
+});
+</script>
 </body>
 </html>
