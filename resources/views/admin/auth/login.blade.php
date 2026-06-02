@@ -6,7 +6,7 @@
     <title>Light As AIR — Admin Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Akshar:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --brand: #FFC700;
@@ -16,7 +16,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'DM Sans', sans-serif;
+             font-family: 'Akshar', sans-serif;
             background: #F7F6F1;
             min-height: 100vh;
             display: flex;
@@ -82,7 +82,7 @@
         }
 
         .brand-name {
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: 'Akshar', sans-serif;
             font-size: 38px;
             color: #fff;
             line-height: 1;
@@ -110,7 +110,7 @@
         }
 
         .brand-stat-num {
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: 'Akshar', sans-serif;
             font-size: 42px;
             color: var(--brand);
             line-height: 1;
@@ -174,7 +174,7 @@
             border: 1.5px solid #E8E6DF;
             border-radius: 10px;
             font-size: 14px;
-            font-family: 'DM Sans', sans-serif;
+             font-family: 'Akshar', sans-serif;
             color: #111;
             background: #FAFAF8;
             outline: none;
@@ -192,7 +192,7 @@
             background: var(--brand);
             border: none;
             border-radius: 10px;
-            font-family: 'DM Sans', sans-serif;
+             font-family: 'Akshar', sans-serif;
             font-size: 15px;
             font-weight: 600;
             color: #111;

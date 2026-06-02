@@ -33,7 +33,7 @@
         border: none;
         cursor: pointer;
         transition: background .2s, transform .15s;
-        font-family: 'DM Sans', sans-serif;
+         font-family: 'Akshar', sans-serif;
     }
 
     .btn-add:hover {
@@ -167,7 +167,7 @@
         color: #B38A00;
         border: none;
         cursor: pointer;
-        font-family: 'DM Sans', sans-serif;
+         font-family: 'Akshar', sans-serif;
         transition: background .2s;
     }
 
@@ -185,7 +185,7 @@
         color: #c0392b;
         border: none;
         cursor: pointer;
-        font-family: 'DM Sans', sans-serif;
+         font-family: 'Akshar', sans-serif;
         transition: background .2s;
     }
 

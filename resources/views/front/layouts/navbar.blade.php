@@ -190,7 +190,7 @@
 
                 @else
 
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link btn-nav-login" href="/login">
                             <i class="bi bi-person"></i> Login
                         </a>
@@ -199,7 +199,7 @@
                         <a class="nav-link btn-nav-register" href="/register">
                             <i class="bi bi-person-plus-fill"></i> Register
                         </a>
-                    </li>
+                    </li> -->
 
                 @endif
 

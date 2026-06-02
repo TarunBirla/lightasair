@@ -394,16 +394,19 @@
         document.getElementById('end_date').addEventListener('change', calculateTotal);
 
         async function placeOrder() {
+
             try {
 
-                let start_date =
-                    document.getElementById('start_date').value;
-
-                let end_date =
-                    document.getElementById('end_date').value;
+                let start_date = document.getElementById('start_date').value;
+                let end_date = document.getElementById('end_date').value;
 
                 if (!start_date || !end_date) {
-                    alert('Please select dates');
+                    alert('Please select Start Date and End Date');
+                    return;
+                }
+
+                if (new Date(end_date) < new Date(start_date)) {
+                    alert('End Date must be greater than or equal to Start Date');
                     return;
                 }
 
@@ -425,13 +428,10 @@
                     })
 
                 });
-                console.log('Status:', response.status);
-
-                let text = await response.text();
-
-                console.log('Response:', text);
 
                 const data = await response.json();
+
+                console.log(data);
 
                 if (!data.status) {
                     alert(data.message);
@@ -439,24 +439,22 @@
                 }
 
                 let msg =
-
                     `🛒 NEW RENTAL BOOKING
 
-            Booking No: ${data.booking_no}
+    Booking No: ${data.booking_no}
 
-            Total Amount: £${data.total}
+    Total Amount: £${data.total}
 
-            `;
+    `;
 
                 data.items.forEach(item => {
 
                     msg +=
-
                         `${item.title}
-            Qty: ${item.qty}
-            Price: £${item.price}
+    Qty: ${item.qty}
+    Price: £${item.price}
 
-            `;
+    `;
 
                 });
 
@@ -466,19 +464,18 @@
                 );
 
                 setTimeout(() => {
-
                     window.location.href = '/my-bookings';
-
                 }, 1000);
 
             }
             catch (error) {
+
                 console.log(error);
+
                 alert('Something went wrong');
+
             }
-
         }
-
     </script>
 
 @endsection

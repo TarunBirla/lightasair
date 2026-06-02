@@ -1,327 +1,325 @@
 @extends('layouts.admin')
 
 @section('content')
+<style>
+    .headerdetails{
+        background-color: #FFC700;
+        color:black;
+    }
+</style>
 
-<div class="container-fluid">
+    <div class="container-fluid">
 
-<div class="card shadow">
+        <div class="card shadow">
 
-<div class="card-header bg-primary text-white">
+            <div class="card-header headerdetails">
 
-<h4>
+                <h4>
 
-Booking Detail
+                    Request Detail
 
-</h4>
+                </h4>
 
-</div>
+            </div>
 
-<div class="card-body">
+            <div class="card-body">
 
-<div class="row">
+                <div class="row">
 
-<div class="col-md-6">
+                    <div class="col-md-6">
 
-<table class="table table-bordered">
+                        <table class="table table-bordered">
 
-<tr>
+                            <tr>
 
-<th>
-Booking No
-</th>
+                                <th>
+                                    Request No
+                                </th>
 
-<td>
+                                <td>
 
-{{ $booking->booking_no }}
+                                    {{ $booking->booking_no }}
 
-</td>
+                                </td>
 
-</tr>
+                            </tr>
 
-<tr>
+                            <tr>
 
-<th>
-Customer Name
-</th>
+                                <th>
+                                    Customer Name
+                                </th>
 
-<td>
+                                <td>
 
-{{ $booking->user->name }}
+                                    {{ $booking->user->name }}
 
-</td>
+                                </td>
 
-</tr>
+                            </tr>
 
-<tr>
+                            <tr>
 
-<th>
-Email
-</th>
+                                <th>
+                                    Email
+                                </th>
 
-<td>
+                                <td>
 
-{{ $booking->user->email }}
+                                    {{ $booking->user->email }}
 
-</td>
+                                </td>
 
-</tr>
+                            </tr>
 
-<tr>
+                            <tr>
 
-<th>
-Mobile
-</th>
+                                <th>
+                                    Mobile
+                                </th>
 
-<td>
+                                <td>
 
-{{ $booking->user->mobile }}
+                                    {{ $booking->user->mobile }}
 
-</td>
+                                </td>
 
-</tr>
+                            </tr>
 
-</table>
+                        </table>
 
-</div>
+                    </div>
 
-<div class="col-md-6">
+                    <div class="col-md-6">
 
-<table class="table table-bordered">
+                        <table class="table table-bordered">
 
-<tr>
+                            <tr>
 
-<th>
-Start Date
-</th>
+                                <th>
+                                    Start Date
+                                </th>
 
-<td>
+                                <td>
 
-{{ $booking->start_date }}
+                                    {{ $booking->start_date }}
 
-</td>
+                                </td>
 
-</tr>
+                            </tr>
 
-<tr>
+                            <tr>
 
-<th>
-End Date
-</th>
+                                <th>
+                                    End Date
+                                </th>
 
-<td>
+                                <td>
 
-{{ $booking->end_date }}
+                                    {{ $booking->end_date }}
 
-</td>
+                                </td>
 
-</tr>
+                            </tr>
 
-<tr>
+                            <tr>
 
-<th>
-Total Days
-</th>
+                                <th>
+                                    Total Days
+                                </th>
 
-<td>
+                                <td>
 
-{{ $booking->total_days }}
+                                    {{ $booking->total_days }}
 
-</td>
+                                </td>
 
-</tr>
+                            </tr>
 
-<tr>
+                            <tr>
 
-<th>
-Status
-</th>
+                                <th>
+                                    Status
+                                </th>
 
-<td>
+                                <td>
 
-@if($booking->status=='pending')
+                                    @if($booking->status == 'pending')
 
-<span class="badge bg-warning">
+                                        <span class="badge bg-warning">
 
-Pending
+                                            Pending
 
-</span>
+                                        </span>
 
-@elseif($booking->status=='approved')
+                                    @elseif($booking->status == 'approved')
 
-<span class="badge bg-success">
+                                        <span class="badge bg-success">
 
-Approved
+                                            Approved
 
-</span>
+                                        </span>
 
-@elseif($booking->status=='completed')
+                                    @elseif($booking->status == 'completed')
 
-<span class="badge bg-primary">
+                                        <span class="badge bg-primary">
 
-Completed
+                                            Completed
 
-</span>
+                                        </span>
 
-@else
+                                    @else
 
-<span class="badge bg-danger">
+                                        <span class="badge bg-danger">
 
-Rejected
+                                            Rejected
 
-</span>
+                                        </span>
 
-@endif
+                                    @endif
 
-</td>
+                                </td>
 
-</tr>
+                            </tr>
 
-</table>
+                        </table>
 
-</div>
+                    </div>
 
-</div>
+                </div>
 
-<hr>
+                <hr>
 
-<h4>
+                <h4>
 
-Booked Items
+                    Request Items
 
-</h4>
+                </h4>
 
-<table class="table table-bordered">
+                <table class="table table-bordered">
 
-<thead>
+                    <thead>
 
-<tr>
+                        <tr>
 
-<th>
-Image
-</th>
+                            <th>
+                                Image
+                            </th>
 
-<th>
-Item
-</th>
+                            <th>
+                                Item
+                            </th>
 
-<th>
-Qty
-</th>
+                            <th>
+                                Qty
+                            </th>
 
-<th>
-Price Per Day
-</th>
+                            <th>
+                                Price Per Day
+                            </th>
 
-<th>
-Days
-</th>
+                            <th>
+                                Days
+                            </th>
 
-<th>
-Total
-</th>
+                            <th>
+                                Total
+                            </th>
 
-</tr>
+                        </tr>
 
-</thead>
+                    </thead>
 
-<tbody>
+                    <tbody>
 
-@foreach($booking->items as $row)
+                        @foreach($booking->items as $row)
 
-<tr>
+                            <tr>
 
-<td>
+                                <td>
 
-<img
-src="{{ asset('uploads/items/'.$row->item->image) }}"
-width="80">
+                                    <img src="{{ asset('uploads/items/' . $row->item->image) }}" width="80">
 
-</td>
+                                </td>
 
-<td>
+                                <td>
 
-{{ $row->item->title }}
+                                    {{ $row->item->title }}
 
-</td>
+                                </td>
 
-<td>
+                                <td>
 
-{{ $row->qty }}
+                                    {{ $row->qty }}
 
-</td>
+                                </td>
 
-<td>
+                                <td>
 
-£{{ number_format($row->price_per_day,2) }}
+                                    £{{ number_format($row->price_per_day, 2) }}
 
-</td>
+                                </td>
 
-<td>
+                                <td>
 
-{{ $row->total_days }}
+                                    {{ $row->total_days }}
 
-</td>
+                                </td>
 
-<td>
+                                <td>
 
-£{{ number_format($row->total_amount,2) }}
+                                    £{{ number_format($row->total_amount, 2) }}
 
-</td>
+                                </td>
 
-</tr>
+                            </tr>
 
-@endforeach
+                        @endforeach
 
-</tbody>
+                    </tbody>
 
-</table>
+                </table>
 
-<div class="text-end">
+                <div class="text-end">
 
-<h4>
+                    <h4>
 
-Grand Total :
+                        Grand Total :
 
-£{{ number_format($booking->total_amount,2) }}
+                        £{{ number_format($booking->total_amount, 2) }}
 
-</h4>
+                    </h4>
 
-</div>
+                </div>
 
-<hr>
+                <hr>
 
-<div class="d-flex gap-2">
+                <div class="d-flex gap-2">
 
-<a
-href="{{ route('admin.booking.approve',$booking->id) }}"
-class="btn btn-success">
+                    <a href="{{ route('admin.booking.approve', $booking->id) }}" class="btn btn-success">
 
-Approve
+                        Approve
 
-</a>
+                    </a>
 
-<a
-href="{{ route('admin.booking.reject',$booking->id) }}"
-class="btn btn-danger">
+                    <a href="{{ route('admin.booking.reject', $booking->id) }}" class="btn btn-danger">
 
-Reject
+                        Reject
 
-</a>
+                    </a>
 
-<a
-href="{{ route('admin.booking.complete',$booking->id) }}"
-class="btn btn-primary">
+                    <a href="{{ route('admin.booking.complete', $booking->id) }}" class="btn btn-primary">
 
-Complete
+                        Complete
 
-</a>
+                    </a>
 
-</div>
+                </div>
 
-</div>
+            </div>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
 @endsection

@@ -230,13 +230,13 @@
                     <span class="price-label">per day</span>
                 </div>
 
-                <div class="avail-row">
+                <!-- <div class="avail-row">
                     <i class="bi bi-boxes fs-5"></i>
                     Available Quantity:
                     <span class="avail-badge">
                         <i class="bi bi-check-circle-fill me-1"></i>{{ $item->available_qty }} in stock
                     </span>
-                </div>
+                </div> -->
 
                 <form action="/add-to-cart" method="POST">
                     @csrf
@@ -254,7 +254,7 @@
                     </div>
 
                     <button type="submit" class="btn-add-cart">
-                        <i class="bi bi-cart-plus-fill"></i> Add to Cart
+                        <i class="bi bi-cart-plus-fill"></i> Request to Product
                     </button>
                 </form>
             </div>

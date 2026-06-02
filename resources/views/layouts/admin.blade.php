@@ -6,7 +6,8 @@
     <title>Light As AIR — Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Akshar:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+   
     <style>
         :root {
             --brand: #FFC700;
@@ -27,7 +28,7 @@
 
         body {
             background: var(--bg);
-            font-family: 'DM Sans', sans-serif;
+             font-family: 'Akshar', sans-serif;
             color: var(--text-main);
         }
 
@@ -65,7 +66,7 @@
         }
 
         .logo-text {
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: 'Akshar', sans-serif;
             font-size: 22px;
             letter-spacing: 1px;
             color: #fff;
@@ -310,7 +311,7 @@
             <li>
                 <a href="/admin/bookings" class="{{ request()->is('admin/bookings*') ? 'active' : '' }}">
                     <i class="fa-solid fa-calendar-check"></i>
-                    Bookings
+                    Request To Product
                 </a>
             </li>
             <li>

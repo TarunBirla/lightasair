@@ -39,7 +39,7 @@
         border: 1.5px solid #E8E6DF;
         background: #fff;
         color: #888;
-        font-family: 'DM Sans', sans-serif;
+         font-family: 'Akshar', sans-serif;
         transition: all .2s;
     }
 
@@ -92,7 +92,7 @@
         border: 1px solid #E8E6DF;
         border-radius: 9px;
         font-size: 13px;
-        font-family: 'DM Sans', sans-serif;
+         font-family: 'Akshar', sans-serif;
         color: #111;
         background: #FAFAF8;
         outline: none;
@@ -158,7 +158,7 @@
     }
 
     .booking-no {
-        font-family: 'Courier New', monospace;
+        font-family: 'Akshar', monospace;
         font-weight: 700;
         font-size: 13px;
         color: #111;
@@ -261,7 +261,7 @@
         background: #FFF3B0;
         color: #B38A00;
         border: none;
-        font-family: 'DM Sans', sans-serif;
+         font-family: 'Akshar', sans-serif;
         transition: background .2s;
         white-space: nowrap;
     }
@@ -289,7 +289,7 @@
 <div class="page-header">
     <h3>
         <i class="fa-solid fa-calendar-check" style="color:#FFC700"></i>
-        Bookings
+        Request
     </h3>
     <div class="status-filter-group">
         <button class="filter-btn active" onclick="filterStatus('all', this)">All</button>
@@ -313,10 +313,10 @@
     <div class="table-toolbar">
         <div class="search-wrap">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" class="search-input" placeholder="Search bookings, users..." id="bookingSearch">
+            <input type="text" class="search-input" placeholder="Search Request no., users..." id="bookingSearch">
         </div>
         <div class="table-info-text">
-            {{ count($bookings) }} total bookings
+            {{ count($bookings) }} total Request
         </div>
     </div>
 
@@ -324,7 +324,7 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Booking No</th>
+                <th>Request No</th>
                 <th>User</th>
                 <th>Dates</th>
                 <th>Days</th>

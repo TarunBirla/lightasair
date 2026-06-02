@@ -210,7 +210,7 @@
         border: 1px solid #E8E6DF;
         border-radius: 9px;
         font-size: 13px;
-        font-family: 'DM Sans', sans-serif;
+         font-family: 'Akshar', sans-serif;
         color: #111;
         background: #FAFAF8;
         outline: none;

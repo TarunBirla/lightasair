@@ -63,7 +63,7 @@
         font-weight: 700;
         color: #111;
         line-height: 1;
-        font-family: 'Bebas Neue', sans-serif;
+        font-family: 'Akshar', sans-serif;
         letter-spacing: .5px;
     }
 

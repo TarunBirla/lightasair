@@ -437,7 +437,7 @@
                     <div class="item-card">
                         <div class="img-wrap">
                             <img src="{{ asset('uploads/items/' . $item->image) }}" alt="{{ $item->title }}">
-                            <span class="item-badge"><i class="bi bi-check-circle-fill me-1"></i>Available</span>
+                            <!-- <span class="item-badge"><i class="bi bi-check-circle-fill me-1"></i>Available</span> -->
                         </div>
                         <div class="item-card-body">
                             <div class="item-title">{{ $item->title }}</div>
@@ -445,11 +445,11 @@
                                 £{{ number_format($item->price_per_day, 2) }}
                                 <small>/ day</small>
                             </div>
-                            <div class="mt-2">
+                            <!-- <div class="mt-2">
                                 <span class="qty-badge">
                                     <i class="bi bi-boxes"></i> {{ $item->available_qty }} in stock
                                 </span>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="item-card-footer">
                             <a href="{{ url('item/' . $item->id) }}" class="btn-view">
@@ -461,7 +461,7 @@
                                     <input type="hidden" name="item_id" value="{{ $item->id }}">
                                     <input type="hidden" name="qty" value="1">
                                     <button type="submit" class="btn-cart w-100">
-                                        <i class="bi bi-cart-plus-fill"></i> Add
+                                        <i class="bi bi-cart-plus-fill"></i> Request
                                     </button>
                                 </form>
                             @else
@@ -469,7 +469,7 @@
                                 <a href="{{ url('/login') }}">
 
                                     <button type="submit" class="btn-cart w-100">
-                                        <i class="bi bi-cart-plus-fill"></i> Add
+                                        <i class="bi bi-cart-plus-fill"></i> Request
                                     </button>
 
                                 </a>

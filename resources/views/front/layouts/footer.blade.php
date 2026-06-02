@@ -109,7 +109,7 @@
         border-radius: 8px 0 0 8px;
         padding: .55rem .9rem;
         font-size: .85rem;
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Akshar', sans-serif;
         outline: none;
         flex: 1;
     }

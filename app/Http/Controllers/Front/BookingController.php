@@ -301,80 +301,80 @@ class BookingController extends Controller
 
 
 
-    public function placeOrder(Request $request)
-    {
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal'
+   public function placeOrder(Request $request)
+{
+    $request->validate([
+        'start_date' => 'required|date',
+        'end_date'   => 'required|date|after_or_equal:start_date'
+    ]);
+
+    $cart = session('cart', []);
+
+    if (empty($cart)) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Cart Empty'
         ]);
+    }
 
-        $cart = session('cart', []);
+    $days = \Carbon\Carbon::parse($request->start_date)
+        ->diffInDays(
+            \Carbon\Carbon::parse($request->end_date)
+        ) + 1;
 
-        if (empty($cart)) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Cart Empty'
-            ]);
-        }
+    $total = 0;
 
-        $days = \Carbon\Carbon::parse($request->start_date)
-            ->diffInDays(
-                \Carbon\Carbon::parse($request->end_date)
-            ) + 1;
+    foreach ($cart as $row) {
+        $total += (
+            $row['price']
+            * $row['qty']
+            * $days
+        );
+    }
 
-        $total = 0;
+    $booking = Booking::create([
+        'booking_no'   => 'BK' . rand(10000, 99999),
+        'user_id'      => auth()->id(),
+        'total_amount' => $total,
+        'start_date'   => $request->start_date,
+        'end_date'     => $request->end_date,
+        'total_days'   => $days,
+        'status'       => 'pending'
+    ]);
 
-        foreach ($cart as $row) {
-            $total += (
+    $itemsData = [];
+
+    foreach ($cart as $row) {
+
+        BookingItem::create([
+            'booking_id'    => $booking->id,
+            'item_id'       => $row['item_id'],
+            'qty'           => $row['qty'],
+            'price_per_day' => $row['price'],
+            'total_days'    => $days,
+            'total_amount'  => (
                 $row['price']
                 * $row['qty']
                 * $days
-            );
-        }
-
-        $booking = Booking::create([
-            'booking_no' => 'BK' . rand(10000, 99999),
-            'user_id' => auth()->id(),
-            'total_amount' => $total,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'total_days' => $days,
-            'status' => 'pending'
+            )
         ]);
 
-        $itemsData = [];
-
-        foreach ($cart as $row) {
-            BookingItem::create([
-                'booking_id' => $booking->id,
-                'item_id' => $row['item_id'],
-                'qty' => $row['qty'],
-                'price_per_day' => $row['price'],
-                'total_days' => $days,
-                'total_amount' => (
-                    $row['price']
-                    * $row['qty']
-                    * $days
-                )
-            ]);
-
-            $itemsData[] = [
-                'title' => $row['title'],
-                'qty' => $row['qty'],
-                'price' => $row['price']
-            ];
-        }
-
-        session()->forget('cart');
-
-        return response()->json([
-            'status' => true,
-            'booking_no' => $booking->booking_no,
-            'total' => $booking->total_amount,
-            'items' => $itemsData
-        ]);
-
+        $itemsData[] = [
+            'title' => $row['title'],
+            'qty'   => $row['qty'],
+            'price' => $row['price']
+        ];
     }
+
+    session()->forget('cart');
+
+    return response()->json([
+        'status'     => true,
+        'booking_no' => $booking->booking_no,
+        'total'      => $booking->total_amount,
+        'items'      => $itemsData
+    ]);
+}
 
     public function removeCart($id)
     {
