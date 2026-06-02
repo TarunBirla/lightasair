@@ -23,26 +23,32 @@ class CategoryController extends Controller
         );
     }
 
-    public function show($id)
-    {
-        $category = Category::findOrFail($id);
+   public function show($id)
+{
+    $category = Category::findOrFail($id);
 
-        $items = Item::where(
-            'category_id',
-            $id
-        )
-        ->where(
-            'status',
-            'active'
-        )
-        ->paginate(12);
+    $categories = Category::where(
+        'status',
+        'active'
+    )->orderBy('name')->get();
 
-        return view(
-            'front.category-items',
-            compact(
-                'category',
-                'items'
-            )
-        );
-    }
+    $items = Item::where(
+        'category_id',
+        $id
+    )
+    ->where(
+        'status',
+        'active'
+    )
+    ->paginate(12);
+
+    return view(
+        'front.category-items',
+        compact(
+            'category',
+            'items',
+            'categories'
+        )
+    );
+}
 }
