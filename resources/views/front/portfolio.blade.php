@@ -360,7 +360,7 @@
                             <i class="bi bi-arrows-fullscreen"></i>
                         </div>
                     </div>
-                    <div class="portfolio-item-num">{{ $index + 1 }}</div>
+                    <!-- <div class="portfolio-item-num">{{ $index + 1 }}</div> -->
                 </div>
             @endforeach
         </div>
