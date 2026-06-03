@@ -9,6 +9,40 @@
     </div>
 
     <div class="card-body">
+        <div class="mb-3">
+
+    <label>Existing Images</label>
+
+    <div class="row">
+
+        @foreach($category->images as $img)
+
+        <div class="col-md-3 text-center">
+
+            <img
+                src="{{ asset('uploads/category/'.$img->image) }}"
+                class="img-fluid border p-1 mb-2">
+
+            <form action="{{ route('category.image.delete',$img->id) }}"
+                  method="POST">
+
+                @csrf
+                @method('DELETE')
+
+                <button type="submit"
+                        class="btn btn-danger btn-sm">
+                    Delete
+                </button>
+
+            </form>
+
+        </div>
+
+        @endforeach
+
+    </div>
+
+</div>
 
         <form
             action="{{ route('category.update',$category->id) }}"
@@ -30,47 +64,7 @@
 
             </div>
 
-            <div class="mb-3">
-
-                <label>Existing Images</label>
-
-                <div style="display:flex;gap:15px;flex-wrap:wrap;">
-
-                    @foreach($category->images as $img)
-
-                        <div style="text-align:center;">
-
-                            <img
-                                src="{{ asset('uploads/category/'.$img->image) }}"
-                                width="120"
-                                style="border:1px solid #ddd;padding:5px;border-radius:6px;">
-
-                            <form
-                                action="{{ route('category.image.delete',$img->id) }}"
-                                method="POST"
-                                style="margin-top:5px;">
-
-                                @csrf
-                                @method('DELETE')
-
-                                <button
-                                    type="submit"
-                                    class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Delete Image ?')">
-
-                                    Delete
-
-                                </button>
-
-                            </form>
-
-                        </div>
-
-                    @endforeach
-
-                </div>
-
-            </div>
+           
 
             <div class="mb-3">
 

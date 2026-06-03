@@ -85,6 +85,7 @@
 }
 
 /* Grid */
+
 .portfolio-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -349,7 +350,6 @@
         <div class="portfolio-divider">
             <div class="portfolio-divider-dot"></div>
         </div>
-
         <!-- Portfolio Grid -->
         <div class="portfolio-grid" id="portfolioGrid">
             @foreach($portfolios as $index => $portfolio)
