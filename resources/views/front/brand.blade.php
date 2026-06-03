@@ -91,14 +91,14 @@
 /* Brand Grid */
 .brand-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 1.5rem;
 }
 
 /* Brand Card */
 .brand-card {
     position: relative;
-    background: #111;
+    background: #FFC700;
     border: 1px solid rgba(255,255,255,0.07);
     border-radius: 16px;
     /* padding: 2rem 1.5rem; */

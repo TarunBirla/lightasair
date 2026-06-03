@@ -623,6 +623,7 @@
         </div>
     </section>
 
+
      <section class="hero-sectiontext1">
     
     <h2>Who we are and whaT WE DO</h2>
@@ -650,7 +651,9 @@ Crucially, today’s LED fixtures deliver exceptional colour accuracy and consis
    
 
 </section>
-
+ @include('front.brand')
+    @include('front.television')
+    @include('front.portfolio')
    
 
 @endsection

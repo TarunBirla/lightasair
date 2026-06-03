@@ -339,7 +339,7 @@
                 <i class="bi bi-images"></i> Our Work
             </div>
             <h2 class="portfolio-section-title">
-                Portfolio <span>Gallery</span>
+                Lighting Rental Services for Film and <span>Television</span>
             </h2>
             <p class="portfolio-section-sub">
                 A glimpse into the projects we've powered. Click any image to explore in full screen.

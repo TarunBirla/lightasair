@@ -162,4 +162,8 @@ cursor: not-allowed;
 
     </div>
 
+     @include('front.brand')
+    @include('front.television')
+    @include('front.portfolio')
+
 @endsection

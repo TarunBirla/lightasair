@@ -23,7 +23,7 @@
     align-items: center;
     gap: 6px;
     padding: 9px 18px;
-    background: #f59e0b;
+    background: #FFC700;
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -32,7 +32,7 @@
     text-decoration: none;
     transition: background 0.2s;
 }
-.btn-add:hover { background: #d97706; color: #fff; }
+.btn-add:hover { background: #FFC700; color: #fff; }
 .btn-add svg { width: 16px; height: 16px; }
 
 .data-card {
