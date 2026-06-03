@@ -457,6 +457,33 @@
 
     <div class="container py-5">
 
+    <div class="mb-4">
+
+    <h3 class="fw-bold mb-3">
+        {{ $category->name }}
+    </h3>
+
+    <div class="row g-3">
+
+        @foreach($category->images as $img)
+
+            <div class="col-md-3 col-6">
+
+                <img
+                    src="{{ asset('uploads/category/'.$img->image) }}"
+                    class="img-fluid rounded shadow-sm"
+                    style="width:100%;
+                           height:220px;
+                           object-fit:cover;">
+
+            </div>
+
+        @endforeach
+
+    </div>
+
+</div>
+
         <div class="mb-4">
 
             <h5 class="fw-bold mb-3">

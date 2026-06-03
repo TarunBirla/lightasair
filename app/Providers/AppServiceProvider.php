@@ -1,6 +1,10 @@
 <?php
 
 namespace App\Providers;
+use App\Models\Brand;
+use App\Models\Portfolio;
+use App\Models\Television;
+use Illuminate\Support\Facades\View;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -14,11 +18,22 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
+    
     public function boot(): void
-    {
-        //
-    }
+{
+    View::share(
+        'brands',
+        Brand::latest()->get()
+    );
+
+    View::share(
+        'portfolios',
+        Portfolio::latest()->get()
+    );
+
+    View::share(
+        'televisions',
+        Television::latest()->get()
+    );
+}
 }

@@ -320,6 +320,29 @@
                     Request To Product
                 </a>
             </li>
+            <li>
+    <a href="/admin/brands"
+       class="{{ request()->is('admin/brands*') ? 'active' : '' }}">
+        <i class="fa-solid fa-tags"></i>
+        Brands
+    </a>
+</li>
+
+<li>
+    <a href="/admin/portfolios"
+       class="{{ request()->is('admin/portfolios*') ? 'active' : '' }}">
+        <i class="fa-solid fa-images"></i>
+        Portfolio
+    </a>
+</li>
+
+<li>
+    <a href="/admin/televisions"
+       class="{{ request()->is('admin/televisions*') ? 'active' : '' }}">
+        <i class="fa-solid fa-tv"></i>
+        Television
+    </a>
+</li>
             <!-- <li>
                 <a href="/admin/users" class="{{ request()->is('admin/users*') ? 'active' : '' }}">
                     <i class="fa-solid fa-users"></i>

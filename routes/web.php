@@ -6,7 +6,9 @@ use App\Http\Controllers\Front\BookingController as UserBookingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\CategoryController;
-
+use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\PortfolioController;
+use App\Http\Controllers\Admin\TelevisionController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 
@@ -30,6 +32,15 @@ Route::get(
 );
 Route::get('/about', function () {
     return view('front.about');
+});
+Route::get('/brand', function () {
+    return view('front.brand');
+});
+Route::get('/television', function () {
+    return view('front.television');
+});
+Route::get('/portfolio', function () {
+    return view('front.portfolio');
 });
 Route::get('/terms', function () {
     return view('front.terms');
@@ -121,6 +132,25 @@ Route::post(
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->group(function () {
+
+    Route::resource(
+    'brands',
+    BrandController::class
+);
+
+Route::resource(
+    'portfolios',
+    PortfolioController::class
+);
+
+Route::resource(
+    'televisions',
+    TelevisionController::class
+);
+Route::delete(
+    '/category-image/{id}',
+    [CategoryController::class,'deleteImage']
+)->name('category.image.delete');
 
     Route::get(
         '/bookings',

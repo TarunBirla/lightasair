@@ -762,7 +762,12 @@ onclick="addToRequest(
         </div>
     </section>
 
-    <!-- ── HOW IT WORKS ── -->
+   
+
+    @include('front.brand')
+    @include('front.television')
+    @include('front.portfolio')
+     <!-- ── HOW IT WORKS ── -->
     <section class="how-section py-5">
         <div class="container">
             <div class="text-center mb-5">
@@ -801,7 +806,6 @@ onclick="addToRequest(
             </div>
         </div>
     </section>
-
     
     <script>
         document.addEventListener('DOMContentLoaded', function () {

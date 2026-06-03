@@ -36,10 +36,11 @@
                     Image
                 </label>
 
-                <input
-                type="file"
-                name="image"
-                class="form-control">
+               <input
+    type="file"
+    name="images[]"
+    multiple
+    class="form-control">
 
             </div>
 

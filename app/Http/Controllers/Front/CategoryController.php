@@ -23,9 +23,10 @@ class CategoryController extends Controller
         );
     }
 
-   public function show($id)
+public function show($id)
 {
-    $category = Category::findOrFail($id);
+    $category = Category::with('images')
+        ->findOrFail($id);
 
     $categories = Category::where(
         'status',

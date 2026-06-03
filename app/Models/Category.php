@@ -8,7 +8,11 @@ class Category extends Model
 {
     protected $fillable = [
         'name',
-        'image',
         'status'
     ];
+
+ public function images()
+{
+    return $this->hasMany(CategoryImage::class);
+}
 }
