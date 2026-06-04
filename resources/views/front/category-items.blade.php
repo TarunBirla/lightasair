@@ -456,6 +456,28 @@
     </style>
 
     <div class="container py-5">
+        <div class="mb-4">
+
+            <h5 class="fw-bold mb-3">
+                Browse Categories
+            </h5>
+
+            <div class="category-scroll">
+
+                @foreach($categories as $cat)
+
+                    <a href="{{ url('/category/' . $cat->id) }}"
+                        class="category-pill {{ $cat->id == $category->id ? 'active' : '' }}">
+
+                        {{ $cat->name }}
+
+                    </a>
+
+                @endforeach
+
+            </div>
+
+        </div>
 
     <div class="mb-4">
 
@@ -484,28 +506,7 @@
 
 </div>
 
-        <div class="mb-4">
-
-            <h5 class="fw-bold mb-3">
-                Browse Categories
-            </h5>
-
-            <div class="category-scroll">
-
-                @foreach($categories as $cat)
-
-                    <a href="{{ url('/category/' . $cat->id) }}"
-                        class="category-pill {{ $cat->id == $category->id ? 'active' : '' }}">
-
-                        {{ $cat->name }}
-
-                    </a>
-
-                @endforeach
-
-            </div>
-
-        </div>
+        
 
         <div class="row g-4">
 

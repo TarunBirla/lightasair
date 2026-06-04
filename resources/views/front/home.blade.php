@@ -768,7 +768,7 @@ onclick="addToRequest(
     @include('front.television')
     @include('front.portfolio')
      <!-- ── HOW IT WORKS ── -->
-    <section class="how-section py-5">
+    <!-- <section class="how-section py-5">
         <div class="container">
             <div class="text-center mb-5">
                 <div class="section-label mb-1"><i class="bi bi-info-circle-fill me-1"></i>Simple Process</div>
@@ -805,7 +805,7 @@ onclick="addToRequest(
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
     
     <script>
         document.addEventListener('DOMContentLoaded', function () {

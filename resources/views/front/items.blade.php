@@ -466,13 +466,75 @@
             }
 
         }
+        .category-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    scrollbar-width: none;
+}
+
+.category-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.category-pill {
+    white-space: nowrap;
+    padding: 10px 18px;
+    border-radius: 30px;
+    background: #fff;
+    border: 1px solid #ddd;
+    text-decoration: none;
+    color: #111;
+    font-weight: 600;
+    transition: .3s;
+}
+
+.category-pill:hover {
+    background: #ffc700;
+    border-color: #ffc700;
+    color: #111;
+}
+
+.category-pill.active {
+    background: #ffc700;
+    border-color: #ffc700;
+    color: #111;
+}
     </style>
+
+   
 
     <div class="container py-5">
 
         <h2 class="mb-4">
             All Rental Equipment
         </h2>
+         <div class="mb-4">
+
+    <h5 class="fw-bold mb-3">
+        Browse Categories
+    </h5>
+
+    <div class="category-scroll">
+
+        <a href="{{ url('/items') }}"
+           class="category-pill {{ !request('category') ? 'active' : '' }}">
+            All
+        </a>
+
+        @foreach($categories as $cat)
+
+            <a href="{{ url('/items?category='.$cat->id) }}"
+               class="category-pill {{ request('category') == $cat->id ? 'active' : '' }}">
+                {{ $cat->name }}
+            </a>
+
+        @endforeach
+
+    </div>
+
+</div>
 
         <div class="row g-4">
 
@@ -535,7 +597,8 @@ onclick="addToRequest(
 
             <!-- {{ $items->links() }} -->
             <div class="d-flex justify-content-center mt-5">
-    {{ $items->onEachSide(1)->links('pagination::bootstrap-5') }}
+    <!-- {{ $items->onEachSide(1)->links('pagination::bootstrap-5') }} -->
+    {{ $items->appends(request()->query())->onEachSide(1)->links('pagination::bootstrap-5') }}
 </div>
 
         </div>
