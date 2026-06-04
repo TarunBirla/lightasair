@@ -252,7 +252,7 @@
                 <i class="bi bi-patch-check-fill"></i> Trusted Partners
             </div>
             <h2 class="brand-section-title">
-                Brands We <span>Trust</span>
+                Production Houses <span>We Trust</span>
             </h2>
             <p class="brand-section-sub">
                 We partner with the world's leading equipment manufacturers to bring you only the finest rental gear.
