@@ -233,22 +233,22 @@
 }
 
 .cat-card-body {
-    padding: 24px 20px;
+    padding: 24px 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
 .cat-card-body h6 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     /* font-weight: 700; */
     margin: 0;
     color: #fff;
 }
 
 .cat-arrow {
-    width: 42px;
-    height: 42px;
+    width: 35px;
+    height: 35px;
     background: var(--brand);
     color: #fff;
     border-radius: 50%;
@@ -314,18 +314,22 @@
         }
 
         .item-card .img-wrap {
-            overflow: hidden;
-            position: relative;
-        }
+    height: 250px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
 
-        .item-card img {
-            width: 100%;
-            height: 210px;
-            object-fit: cover;
-            transition: transform .4s;
-        }
+.item-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform .4s;
+}
 
-        .item-card:hover img {
+        .item-card:hover img {  
             transform: scale(1.06);
         }
 
@@ -573,6 +577,44 @@
                 padding: 15px 30px;
             }
         }
+        .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 15px;
+}
+
+@media (max-width:768px) {
+
+    .section-header {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .section-header .section-title {
+        font-size: 22px;
+        line-height: 1.2;
+    }
+
+    .section-header .btn-brand-outline {
+        padding: 8px 14px;
+        font-size: 13px;
+        white-space: nowrap;
+        margin-left: auto;
+    }
+}
+@media(max-width:768px){
+
+    .item-card .img-wrap{
+        height:180px;
+        padding:8px;
+    }
+
+    .item-card img{
+        object-fit:contain;
+    }
+
+}
     </style>
 
     <!-- ── HERO CAROUSEL ── -->
@@ -656,7 +698,8 @@
     <section class="py-5 mt-2">
         <div class="container">
 
-            <div class="d-flex align-items-end justify-content-between mb-4 flex-wrap gap-2">
+            <!-- <div class="d-flex align-items-end justify-content-between mb-4 flex-wrap gap-2"> -->
+                <div class="section-header d-flex align-items-end justify-content-between mb-4">
                 <div>
                     <div class="section-label mb-1"><i class="bi bi-box-seam me-1"></i>Browse by Category</div>
                     <h2 class="section-title mb-0">What Are You Looking For?</h2>
@@ -691,7 +734,9 @@
     <!-- ── RENTAL ITEMS ── -->
     <section class="py-5 bg-light" id="items">
         <div class="container">
-            <div class="d-flex align-items-end justify-content-between mb-4 flex-wrap gap-2">
+            <!-- <div class="d-flex align-items-end justify-content-between mb-4 flex-wrap gap-2"> -->
+                <div class="section-header d-flex align-items-end justify-content-between mb-4">
+
                 <div>
                     <div class="section-label mb-1"><i class="bi bi-box-seam me-1"></i>Available Now</div>
                     <h2 class="section-title mb-0">Rental Equipment</h2>

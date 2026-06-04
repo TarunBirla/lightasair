@@ -164,14 +164,29 @@
     transform: scale(1.06);
 }
 
-.brand-img-wrap img {
+/* .brand-img-wrap img {
     width: 150px;
     height: 120px;
     object-fit: contain;
     filter: grayscale(30%) brightness(1.1);
     transition: filter .35s;
+} */
+
+.brand-img-wrap {
+    width: 100%;
+    height: 180px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+.brand-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* image cut nahi hogi */
+    object-position: center;
+}
 .brand-card:hover .brand-img-wrap img {
     filter: grayscale(0%) brightness(1.2);
 }
@@ -224,15 +239,18 @@
     }
     .brand-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        gap: 12px;
     }
+
     .brand-img-wrap {
-        width: 70px;
-        height: 70px;
+        height: 120px;
+        padding: 10px;
     }
+
     .brand-img-wrap img {
-        width: 50px;
-        height: 50px;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
     }
 }
 

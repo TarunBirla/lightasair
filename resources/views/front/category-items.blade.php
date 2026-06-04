@@ -253,16 +253,20 @@
         }
 
         .item-card .img-wrap {
-            overflow: hidden;
-            position: relative;
-        }
+    height: 250px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
 
-        .item-card img {
-            width: 100%;
-            height: 210px;
-            object-fit: cover;
-            transition: transform .4s;
-        }
+.item-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform .4s;
+}
 
         .item-card:hover img {
             transform: scale(1.06);
@@ -453,6 +457,18 @@
             color: #000;
             border-color: #ffc107;
         }
+        @media(max-width:768px){
+
+    .item-card .img-wrap{
+        height:180px;
+        padding:8px;
+    }
+
+    .item-card img{
+        object-fit:contain;
+    }
+
+}
     </style>
 
     <div class="container py-5">
