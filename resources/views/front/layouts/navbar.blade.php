@@ -156,7 +156,7 @@
         <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
 
-                @if(Auth::check())
+                <!-- @if(Auth::check())
 
                     <li class="nav-item">
                         <a class="nav-link cart-wrap" href="/cart">
@@ -189,7 +189,7 @@
                         </a>
                     </li>
 
-                @else
+                @else -->
 
                    <!-- <li class="nav-item">
                         <a href="#items" class="btn-hero-primary">
