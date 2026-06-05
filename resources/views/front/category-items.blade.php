@@ -584,8 +584,8 @@
         </div>
 
     </div>
- @include('front.brand')
     @include('front.television')
+ @include('front.brand')
     @include('front.portfolio')
 
     <div class="modal fade" id="requestModal">
