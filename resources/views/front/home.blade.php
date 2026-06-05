@@ -693,7 +693,8 @@
             </div>
         </div>
     </section>
-    @include('front.television')
+    @include('front.portfolio')
+
 
 
     <!-- ── CATEGORIES ── -->
@@ -812,7 +813,8 @@ onclick="addToRequest(
    
 
     @include('front.brand')
-    @include('front.portfolio')
+    @include('front.television')
+
      <!-- ── HOW IT WORKS ── -->
     <!-- <section class="how-section py-5">
         <div class="container">

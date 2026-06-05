@@ -620,9 +620,9 @@ onclick="addToRequest(
         </div>
 
     </div>
-    @include('front.television')
-     @include('front.brand')
     @include('front.portfolio')
+     @include('front.brand')
+    @include('front.television')
 
        <div class="modal fade" id="requestModal">
 <div class="modal-dialog">
