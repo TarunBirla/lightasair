@@ -14,7 +14,7 @@ class CategoryController extends Controller
             'status',
             'active'
         )
-        ->latest()
+        ->orderBy('number', 'asc')
         ->paginate(12);
 
         return view(
@@ -31,7 +31,9 @@ public function show($id)
     $categories = Category::where(
         'status',
         'active'
-    )->orderBy('name')->get();
+    )
+     ->orderBy('number', 'asc')
+    ->get();
 
     $items = Item::where(
         'category_id',

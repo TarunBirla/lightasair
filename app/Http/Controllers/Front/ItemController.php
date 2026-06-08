@@ -12,7 +12,7 @@ class ItemController extends Controller
     public function index(Request $request)
     {
         $categories = Category::where('status', 'active')
-            ->orderBy('name')
+            ->orderBy('number', 'asc')
             ->get();
 
         $items = Item::where('status', 'active');

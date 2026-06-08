@@ -469,6 +469,18 @@
     }
 
 }
+.gallery-box{
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.gallery-box img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
     </style>
 
     <div class="container py-5">
@@ -501,24 +513,24 @@
         {{ $category->name }}
     </h3>
 
-    <div class="row g-3">
+   <div class="row g-3">
 
-        @foreach($category->images as $img)
+    @foreach($category->images as $img)
 
-            <div class="col-md-3 col-6">
+        <div class="col-md-3 col-6">
 
+            <div class="gallery-box">
                 <img
                     src="{{ asset('uploads/category/'.$img->image) }}"
-                    class="img-fluid rounded shadow-sm"
-                    style="width:100%;
-                           height:220px;
-                           object-fit:cover;">
-
+                    alt=""
+                >
             </div>
 
-        @endforeach
+        </div>
 
-    </div>
+    @endforeach
+
+</div>
 
 </div>
 

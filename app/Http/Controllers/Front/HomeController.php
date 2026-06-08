@@ -79,7 +79,8 @@ public function guestRequest(Request $request)
         'status',
         'active'
     )
-    ->latest()
+    ->orderBy('number', 'asc')
+    
     ->take(8)
     ->get();
 
