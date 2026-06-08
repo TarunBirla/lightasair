@@ -58,13 +58,12 @@ class="form-control">
 </div>
 
 <div class="col-md-12 mb-3">
+    <label>Description</label>
 
-<label>Description</label>
-
-<textarea
-name="description"
-class="form-control"></textarea>
-
+    <textarea
+        name="description"
+        id="description"
+        class="form-control"></textarea>
 </div>
 
 <div class="col-md-4 mb-3">
@@ -131,6 +130,17 @@ Save Item
 </button>
 
 </form>
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    ClassicEditor
+        .create(document.querySelector('#description'))
+        .catch(error => {
+            console.error(error);
+        });
+});
+</script>
 
 </div>
 

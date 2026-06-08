@@ -244,7 +244,8 @@
                     <span class="feature-pill"><i class="bi bi-arrow-counterclockwise text-primary"></i> Easy Returns</span>
                 </div>
 
-                <p class="item-desc">{{ $item->description }}</p>
+                <!-- <p class="item-desc">{{ $item->description }}</p> -->
+                <p class="item-desc">{!! $item->description !!}</p>
 
                 <!-- <div class="price-block">
                     <span class="price-amount">£{{ number_format($item->price_per_day, 2) }}</span>
