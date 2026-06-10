@@ -120,25 +120,20 @@
 .btn-delete:hover { background: #ffe4e6; }
 .btn-edit svg, .btn-delete svg { width: 13px; height: 13px; }
 
-.table-footer {
-    padding: 14px 16px;
-    border-top: 1px solid #e2e8f0;
-    background: #f8fafc;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.img-tablepagination{
+.table-footer{
+    padding:20px;
+    border-top:1px solid #e2e8f0;
+    background:#f8fafc;
     display:flex;
     justify-content:center;
-    margin-top:25px;
 }
 
-.img-tablepagination nav{
-    width:auto;
+.table-footer nav{
+    display:flex;
+    justify-content:center;
 }
 
-.img-tablepagination .pagination{
+.table-footer .pagination{
     display:flex;
     align-items:center;
     gap:8px;
@@ -147,52 +142,48 @@
     list-style:none;
 }
 
-.img-tablepagination .page-item{
+.table-footer .page-item{
     list-style:none;
 }
 
-.img-tablepagination .page-link{
+.table-footer .page-link{
     min-width:42px;
     height:42px;
     padding:0 14px;
     display:flex;
     align-items:center;
     justify-content:center;
-    border:1px solid #E8E6DF;
+    border:none;
+    border-radius:12px;
     background:#fff;
-    color:#111;
-    font-size:14px;
+    color:#334155;
     font-weight:600;
-    border-radius:10px;
     text-decoration:none;
-    transition:all .2s ease;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+    transition:.25s;
 }
 
-.img-tablepagination .page-link:hover{
+.table-footer .page-link:hover{
     background:#FFC700;
-    border-color:#FFC700;
     color:#111;
 }
 
-.img-tablepagination .page-item.active .page-link{
-    background:#FFC700;
-    border-color:#FFC700;
-    color:#111;
+.table-footer .active .page-link{
+    background:#FFC700 !important;
+    color:#111 !important;
 }
 
-.img-tablepagination .page-item.disabled .page-link{
-    opacity:.5;
-    cursor:not-allowed;
+.table-footer .disabled .page-link{
+    opacity:.45;
+    pointer-events:none;
 }
 
-.img-tablepagination svg{
+.table-footer svg{
     width:16px;
     height:16px;
 }
 
-.img-tablepagination p{
-    display:none;
-}
+
 </style>
 
 <div class="section-header">
@@ -248,9 +239,9 @@
             @endforelse
         </tbody>
     </table>
-    <div class="img-tablepagination">
-        {{ $portfolios->links() }}
-    </div>
+    <div class="table-footer">
+    {{ $portfolios->onEachSide(1)->links('pagination::bootstrap-5') }}
+</div>
 </div>
 
 @endsection
