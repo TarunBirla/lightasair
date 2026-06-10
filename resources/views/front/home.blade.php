@@ -615,6 +615,35 @@
     }
 
 }
+.studio-banner{
+    width: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.studio-banner img{
+    width: 100%;
+    height: 100vh; /* Full Screen Height */
+    object-fit: cover;
+    display: block;
+}
+
+/* Tablet */
+@media (max-width: 992px){
+    .studio-banner img{
+        height: 70vh;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px){
+    .studio-banner img{
+        height: auto;
+        min-height: 300px;
+        object-fit: cover;
+    }
+}
     </style>
 
     <!-- ── HERO CAROUSEL ── -->
@@ -814,6 +843,9 @@ onclick="addToRequest(
 
     @include('front.brand')
     @include('front.television')
+    <section class="studio-banner">
+    <img src="{{ asset('img.jpeg') }}" alt="Studio Setup">
+</section>
 
      <!-- ── HOW IT WORKS ── -->
     <!-- <section class="how-section py-5">
