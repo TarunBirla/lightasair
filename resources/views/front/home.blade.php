@@ -844,11 +844,11 @@ onclick="addToRequest(
     @include('front.brand')
     @include('front.television')
     <section class="studio-banner">
-        <div class="container">
+        <!-- <div class="container"> -->
 
     <img src="{{ asset('img.jpeg') }}" alt="Studio Setup">
 
-        </div>
+        <!-- </div> -->
 </section>
 
      <!-- ── HOW IT WORKS ── -->
