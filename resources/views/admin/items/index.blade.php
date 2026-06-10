@@ -217,54 +217,70 @@
         color: #bbb;
         font-size: 14px;
     }
-    .table-footer{
-    padding:18px;
-    background:#fafaf8;
-    border-top:1px solid #E8E6DF;
+    .items-tablepagination{
     display:flex;
     justify-content:center;
+    margin-top:25px;
 }
 
-.pagination{
+.items-tablepagination nav{
+    width:auto;
+}
+
+.items-tablepagination .pagination{
     display:flex;
+    align-items:center;
     gap:8px;
     margin:0;
-}
-
-.pagination .page-item{
+    padding:0;
     list-style:none;
 }
 
-.pagination .page-link{
+.items-tablepagination .page-item{
+    list-style:none;
+}
+
+.items-tablepagination .page-link{
     min-width:42px;
     height:42px;
+    padding:0 14px;
     display:flex;
     align-items:center;
     justify-content:center;
-    border-radius:10px;
     border:1px solid #E8E6DF;
     background:#fff;
     color:#111;
+    font-size:14px;
     font-weight:600;
+    border-radius:10px;
     text-decoration:none;
-    transition:.2s;
+    transition:all .2s ease;
 }
 
-.pagination .page-link:hover{
+.items-tablepagination .page-link:hover{
     background:#FFC700;
     border-color:#FFC700;
     color:#111;
 }
 
-.pagination .page-item.active .page-link{
+.items-tablepagination .page-item.active .page-link{
     background:#FFC700;
     border-color:#FFC700;
     color:#111;
 }
 
-.pagination .page-item.disabled .page-link{
+.items-tablepagination .page-item.disabled .page-link{
     opacity:.5;
     cursor:not-allowed;
+}
+
+.items-tablepagination svg{
+    width:16px;
+    height:16px;
+}
+
+.items-tablepagination p{
+    display:none;
 }
 </style>
 
@@ -350,7 +366,7 @@
             @endforelse
         </tbody>
     </table>
-    <div class="table-footer">
+    <div class="items-tablepagination">
     {{ $items->links() }}
 </div>
 </div>
