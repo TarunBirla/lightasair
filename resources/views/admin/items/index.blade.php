@@ -217,68 +217,43 @@
         color: #bbb;
         font-size: 14px;
     }
-    .custom-pagination{
+    .pagination-wrap{
     display:flex;
     justify-content:center;
     margin-top:25px;
 }
 
-.custom-pagination nav{
-    width:auto;
+.pagination{
+    gap:8px !important;
 }
 
-.custom-pagination .pagination{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    margin:0;
-    padding:0;
-    list-style:none;
+.page-item{
+    margin:0 3px;
 }
 
-.custom-pagination .page-item{
-    list-style:none;
-}
-
-.custom-pagination .page-link{
-    min-width:42px;
+.page-link{
+    width:42px;
     height:42px;
-    padding:0 14px;
-    display:flex;
+    border:none !important;
+    border-radius:10px !important;
+    background:#fff !important;
+    color:#333 !important;
+    font-weight:600;
+    display:flex !important;
     align-items:center;
     justify-content:center;
-    border:none;
-    border-radius:12px;
-    background:#fff;
-    color:#374151;
-    font-weight:600;
-    box-shadow:0 2px 10px rgba(0,0,0,.08);
-    text-decoration:none;
-    transition:.25s;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
 
-.custom-pagination .page-link:hover{
-    background:#FFC700;
-    color:#111;
-    transform:translateY(-2px);
+.page-item.active .page-link{
+    background:#FFC700 !important;
+    color:#111 !important;
 }
 
-.custom-pagination .active .page-link{
-    background:#FFC700;
-    color:#111;
-    font-weight:700;
+.page-link:hover{
+    background:#FFC700 !important;
+    color:#111 !important;
 }
-
-.custom-pagination .disabled .page-link{
-    opacity:.4;
-    cursor:not-allowed;
-}
-
-.custom-pagination svg{
-    width:16px;
-    height:16px;
-}
-    
 </style>
 
 <div class="page-header">
@@ -363,8 +338,8 @@
             @endforelse
         </tbody>
     </table>
-   <div class="custom-pagination">
-    {{ $items->onEachSide(1)->links() }}
+   <div class="pagination-wrap">
+    {{ $items->links('pagination::bootstrap-5') }}
 </div>
 </div>
 
