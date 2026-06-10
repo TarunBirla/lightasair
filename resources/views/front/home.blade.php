@@ -619,7 +619,7 @@
     width: 100%;
     overflow: hidden;
     margin: 0;
-     padding: 80px 0;
+     padding: 0;
 }
 
 .studio-banner img{
@@ -844,7 +844,11 @@ onclick="addToRequest(
     @include('front.brand')
     @include('front.television')
     <section class="studio-banner">
+        <div class="container">
+
     <img src="{{ asset('img.jpeg') }}" alt="Studio Setup">
+
+        </div>
 </section>
 
      <!-- ── HOW IT WORKS ── -->
