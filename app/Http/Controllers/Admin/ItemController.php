@@ -13,7 +13,8 @@ class ItemController extends Controller
     {
         $items = Item::with('category')
             ->latest()
-             ->paginate(10);
+            ->paginate(10)
+            ->onEachSide(1);
 
         return view(
             'admin.items.index',
@@ -49,7 +50,7 @@ class ItemController extends Controller
 
             $file = $request->file('image');
 
-            $image = time().'.'.$file->extension();
+            $image = time() . '.' . $file->extension();
 
             $file->move(
                 public_path('uploads/items'),
@@ -103,7 +104,7 @@ class ItemController extends Controller
 
             $file = $request->file('image');
 
-            $image = time().'.'.$file->extension();
+            $image = time() . '.' . $file->extension();
 
             $file->move(
                 public_path('uploads/items'),

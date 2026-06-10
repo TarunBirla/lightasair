@@ -217,17 +217,17 @@
         color: #bbb;
         font-size: 14px;
     }
-    .items-tablepagination{
+    .custom-pagination{
     display:flex;
     justify-content:center;
     margin-top:25px;
 }
 
-.items-tablepagination nav{
+.custom-pagination nav{
     width:auto;
 }
 
-.items-tablepagination .pagination{
+.custom-pagination .pagination{
     display:flex;
     align-items:center;
     gap:8px;
@@ -236,52 +236,49 @@
     list-style:none;
 }
 
-.items-tablepagination .page-item{
+.custom-pagination .page-item{
     list-style:none;
 }
 
-.items-tablepagination .page-link{
+.custom-pagination .page-link{
     min-width:42px;
     height:42px;
     padding:0 14px;
     display:flex;
     align-items:center;
     justify-content:center;
-    border:1px solid #E8E6DF;
+    border:none;
+    border-radius:12px;
     background:#fff;
-    color:#111;
-    font-size:14px;
+    color:#374151;
     font-weight:600;
-    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
     text-decoration:none;
-    transition:all .2s ease;
+    transition:.25s;
 }
 
-.items-tablepagination .page-link:hover{
+.custom-pagination .page-link:hover{
     background:#FFC700;
-    border-color:#FFC700;
     color:#111;
+    transform:translateY(-2px);
 }
 
-.items-tablepagination .page-item.active .page-link{
+.custom-pagination .active .page-link{
     background:#FFC700;
-    border-color:#FFC700;
     color:#111;
+    font-weight:700;
 }
 
-.items-tablepagination .page-item.disabled .page-link{
-    opacity:.5;
+.custom-pagination .disabled .page-link{
+    opacity:.4;
     cursor:not-allowed;
 }
 
-.items-tablepagination svg{
+.custom-pagination svg{
     width:16px;
     height:16px;
 }
-
-.items-tablepagination p{
-    display:none;
-}
+    
 </style>
 
 <div class="page-header">
@@ -366,8 +363,8 @@
             @endforelse
         </tbody>
     </table>
-    <div class="items-tablepagination">
-    {{ $items->links() }}
+   <div class="custom-pagination">
+    {{ $items->onEachSide(1)->links() }}
 </div>
 </div>
 
