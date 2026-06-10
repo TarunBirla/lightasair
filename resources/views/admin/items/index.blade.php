@@ -217,6 +217,55 @@
         color: #bbb;
         font-size: 14px;
     }
+    .table-footer{
+    padding:18px;
+    background:#fafaf8;
+    border-top:1px solid #E8E6DF;
+    display:flex;
+    justify-content:center;
+}
+
+.pagination{
+    display:flex;
+    gap:8px;
+    margin:0;
+}
+
+.pagination .page-item{
+    list-style:none;
+}
+
+.pagination .page-link{
+    min-width:42px;
+    height:42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:10px;
+    border:1px solid #E8E6DF;
+    background:#fff;
+    color:#111;
+    font-weight:600;
+    text-decoration:none;
+    transition:.2s;
+}
+
+.pagination .page-link:hover{
+    background:#FFC700;
+    border-color:#FFC700;
+    color:#111;
+}
+
+.pagination .page-item.active .page-link{
+    background:#FFC700;
+    border-color:#FFC700;
+    color:#111;
+}
+
+.pagination .page-item.disabled .page-link{
+    opacity:.5;
+    cursor:not-allowed;
+}
 </style>
 
 <div class="page-header">
@@ -301,6 +350,9 @@
             @endforelse
         </tbody>
     </table>
+    <div class="table-footer">
+    {{ $items->links() }}
+</div>
 </div>
 
 @endsection

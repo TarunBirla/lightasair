@@ -13,7 +13,7 @@ class ItemController extends Controller
     {
         $items = Item::with('category')
             ->latest()
-            ->get();
+             ->paginate(10);
 
         return view(
             'admin.items.index',
