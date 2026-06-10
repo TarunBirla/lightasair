@@ -619,12 +619,12 @@
     width: 100%;
     overflow: hidden;
     margin: 0;
-    padding: 0;
+     padding: 80px 0;
 }
 
 .studio-banner img{
     width: 100%;
-    height: 100vh; /* Full Screen Height */
+    height: 100%; /* Full Screen Height */
     object-fit: cover;
     display: block;
 }
