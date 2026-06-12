@@ -636,12 +636,87 @@
     }
 }
 
+.generator-banner-section{
+    width:100%;
+    margin:0;
+    padding:0;
+}
+
+#generatorBannerCarousel{
+    width:100%;
+}
+
+.generator-banner-card{
+    position:relative;
+    width:100%;
+    height:500px;
+    overflow:hidden;
+}
+
+.generator-banner-card img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.generator-overlay{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.35);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+}
+
+.generator-overlay h2{
+    color:#fff;
+    font-size:42px;
+    font-weight:700;
+    margin-bottom:20px;
+    text-shadow:0 2px 10px rgba(0,0,0,.5);
+}
+
+.generator-overlay .btn{
+    padding:12px 30px;
+    font-size:16px;
+    font-weight:600;
+    border-radius:8px;
+}
+
+/* Tablet */
+@media(max-width:992px){
+
+    .generator-banner-card{
+        height:350px;
+    }
+
+    .generator-overlay h2{
+        font-size:30px;
+    }
+}
+
 /* Mobile */
-@media (max-width: 768px){
-    .studio-banner img{
-        height: auto;
-        min-height: 300px;
-        object-fit: cover;
+@media(max-width:768px){
+
+    .generator-banner-card{
+        height:220px;
+    }
+
+    .generator-overlay h2{
+        font-size:20px;
+        margin-bottom:12px;
+    }
+
+    .generator-overlay .btn{
+        font-size:13px;
+        padding:8px 16px;
     }
 }
     </style>
@@ -724,7 +799,59 @@
     </section>
     @include('front.portfolio')
 
+@if($generatorbanners->count())
 
+<section class="generator-banner-section">
+
+<div id="generatorBannerCarousel"
+     class="carousel slide"
+     data-bs-ride="carousel"
+     data-bs-interval="3000"
+     data-bs-pause="false">
+
+    <div class="carousel-inner">
+
+        @foreach($generatorbanners as $key => $banner)
+
+        <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+
+            <div class="generator-banner-card">
+
+                <img
+                    src="{{ asset('uploads/generator-banner/'.$banner->image) }}"
+                    alt="{{ $banner->title }}">
+
+                <div class="generator-overlay">
+
+                    <!-- <h2>{{ $banner->title }}</h2> -->
+
+                    @if($banner->item_id)
+
+                    <a href="{{ url('item/'.$banner->item_id) }}"
+                       class="btn btn-warning">
+
+                        <i class="bi bi-eye"></i>
+                        View Product
+
+                    </a>
+
+                    @endif
+
+                </div>
+
+            </div>
+
+        </div>
+
+        @endforeach
+
+    </div>
+
+</div>
+
+</section>
+
+@endif
 
     <!-- ── CATEGORIES ── -->
     <section class="py-5 mt-2">

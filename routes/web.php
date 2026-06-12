@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 
 
+use App\Http\Controllers\Admin\GeneratorBannerController;
 
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\AuthController as FrontAuthController;
@@ -136,6 +137,10 @@ Route::middleware(['auth', 'admin'])
     Route::resource(
     'brands',
     BrandController::class
+);
+Route::resource(
+    'generator-banners',
+    GeneratorBannerController::class
 );
 
 Route::resource(

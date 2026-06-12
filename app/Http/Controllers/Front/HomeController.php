@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Item;
+use App\Models\GeneratorBanner;
 use App\Models\RequestLead;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -75,6 +76,11 @@ public function guestRequest(Request $request)
         'active'
     )->get();
 
+    $generatorbanners = GeneratorBanner::where(
+        'status',
+        1
+    )->get();
+
     $categories = Category::where(
         'status',
         'active'
@@ -97,7 +103,8 @@ public function guestRequest(Request $request)
         compact(
             'banners',
             'categories',
-            'items'
+            'items',
+            'generatorbanners'
         )
     );
 }

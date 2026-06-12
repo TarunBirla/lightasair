@@ -343,12 +343,12 @@
         Television
     </a>
 </li>
-            <!-- <li>
-                <a href="/admin/users" class="{{ request()->is('admin/users*') ? 'active' : '' }}">
+            <li>
+                <a href="/admin/generator-banners" class="{{ request()->is('admin/generator-banners*') ? 'active' : '' }}">
                     <i class="fa-solid fa-users"></i>
-                    Users
+                    generator banners
                 </a>
-            </li> -->
+            </li>
         </ul>
     </nav>
 
