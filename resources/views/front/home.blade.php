@@ -636,87 +636,126 @@
     }
 }
 
-.generator-banner-section{
-    width:100%;
-    margin:0;
-    padding:0;
+/* ===== Generator Banner Section ===== */
+.generator-banner-section {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
-#generatorBannerCarousel{
-    width:100%;
+#generatorBannerCarousel {
+    width: 100%;
 }
 
-.generator-banner-card{
-    position:relative;
-    width:100%;
-    height:500px;
-    overflow:hidden;
+/* Card — works as <a> or <div> */
+.generator-banner-card {
+    position: relative;
+    display: block;          /* <a> tag ko block banata hai */
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    text-decoration: none;   /* link underline hatao */
+    cursor: pointer;
 }
 
-.generator-banner-card img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
+/* Image — poori visible, crop nahi */
+.generator-banner-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.4s ease;   /* hover zoom effect */
 }
 
-.generator-overlay{
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.35);
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    padding:20px;
+
+
+/* Overlay — default mein transparent */
+.generator-overlay {
+    position: absolute;
+    inset: 0;                /* top/left/right/bottom: 0 shorthand */
+    background: rgba(0, 0, 0, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.35s ease;
 }
 
-.generator-overlay h2{
-    color:#fff;
-    font-size:42px;
-    font-weight:700;
-    margin-bottom:20px;
-    text-shadow:0 2px 10px rgba(0,0,0,.5);
+/* Hover pe dark overlay aaye */
+.generator-banner-card:hover .generator-overlay {
+    /* background: rgba(0, 0, 0, 0.45); */
 }
 
-.generator-overlay .btn{
-    padding:12px 30px;
-    font-size:16px;
-    font-weight:600;
-    border-radius:8px;
+/* View Icon Wrap — default mein hidden */
+.view-icon-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    opacity: 0;
+    width: 20px;
+    height: 20px;
+    /* transform: translateY(16px) scale(0.85); */
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    pointer-events: none;
 }
 
-/* Tablet */
-@media(max-width:992px){
+/* Hover pe icon smoothly aaye */
+.generator-banner-card:hover .view-icon-wrap {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
 
-    .generator-banner-card{
-        height:350px;
+.view-icon-wrap i {
+    font-size: 52px;
+    line-height: 1;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+}
+
+.view-icon-wrap span {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+}
+
+/* Carousel Indicators */
+.carousel-indicators button {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.6);
+    border: none;
+    transition: background 0.3s;
+}
+
+.carousel-indicators button.active {
+    background: #fff;
+}
+
+/* ===== Tablet ===== */
+@media (max-width: 992px) {
+    .generator-banner-card {
+        height: 350px;
     }
-
-    .generator-overlay h2{
-        font-size:30px;
+    .view-icon-wrap i {
+        font-size: 40px;
     }
 }
 
-/* Mobile */
-@media(max-width:768px){
-
-    .generator-banner-card{
-        height:220px;
+/* ===== Mobile ===== */
+@media (max-width: 768px) {
+    .generator-banner-card {
+        height: 220px;
     }
-
-    .generator-overlay h2{
-        font-size:20px;
-        margin-bottom:12px;
+    .view-icon-wrap i {
+        font-size: 30px;
     }
-
-    .generator-overlay .btn{
-        font-size:13px;
-        padding:8px 16px;
+    .view-icon-wrap span {
+        font-size: 12px;
     }
 }
     </style>
@@ -803,51 +842,61 @@
 
 <section class="generator-banner-section">
 
-<div id="generatorBannerCarousel"
-     class="carousel slide"
-     data-bs-ride="carousel"
-     data-bs-interval="3000"
-     data-bs-pause="false">
+    <div id="generatorBannerCarousel"
+         class="carousel slide"
+         data-bs-ride="carousel"
+         data-bs-interval="3000"
+         data-bs-pause="false">
 
-    <div class="carousel-inner">
+        <div class="carousel-inner">
 
-        @foreach($generatorbanners as $key => $banner)
+            @foreach($generatorbanners as $key => $banner)
 
-        <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+            <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
 
-            <div class="generator-banner-card">
+                @if($banner->item_id)
+                    <a href="{{ url('item/'.$banner->item_id) }}" class="generator-banner-card">
+                @else
+                    <div class="generator-banner-card">
+                @endif
 
-                <img
-                    src="{{ asset('uploads/generator-banner/'.$banner->image) }}"
-                    alt="{{ $banner->title }}">
+                        <img
+                            src="{{ asset('uploads/generator-banner/'.$banner->image) }}"
+                            alt="{{ $banner->title }}">
 
-                <div class="generator-overlay">
+                        <div class="generator-overlay">
+                            <div class="view-icon-wrap">
+                                <i class="bi bi-eye"></i>
+                            </div>
+                        </div>
 
-                    <!-- <h2>{{ $banner->title }}</h2> -->
-
-                    @if($banner->item_id)
-
-                    <a href="{{ url('item/'.$banner->item_id) }}"
-                       class="btn btn-warning">
-
-                        <i class="bi bi-eye"></i>
-                        View Product
-
+                @if($banner->item_id)
                     </a>
-
-                    @endif
-
-                </div>
+                @else
+                    </div>
+                @endif
 
             </div>
 
+            @endforeach
+
         </div>
 
-        @endforeach
+        {{-- Optional: Indicators for multiple banners --}}
+        @if($generatorbanners->count() > 1)
+        <div class="carousel-indicators">
+            @foreach($generatorbanners as $key => $banner)
+            <button type="button"
+                    data-bs-target="#generatorBannerCarousel"
+                    data-bs-slide-to="{{ $key }}"
+                    class="{{ $key == 0 ? 'active' : '' }}"
+                    aria-current="{{ $key == 0 ? 'true' : 'false' }}">
+            </button>
+            @endforeach
+        </div>
+        @endif
 
     </div>
-
-</div>
 
 </section>
 
