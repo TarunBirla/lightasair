@@ -17,8 +17,8 @@ class ItemController extends Controller
 
         // $items = Item::where('status', 'active');
         $items = Item::orderBy('category_id')
-            ->orderBy('sort_order','asc')
-            ->get();
+            ->orderBy('sort_order','asc');
+            // ->get();
 
         // Category Filter
         if ($request->filled('category')) {
