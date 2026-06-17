@@ -298,7 +298,7 @@
         <i class="fa-solid fa-plus"></i> Add Item
     </a>
 </div>
-<div style="display:flex;align-items:center;gap:10px;">
+<div style="display:flex;align-items:center;gap:10px; margin-bottom:20px;">
 
     <form method="GET" action="{{ route('items.index') }}" style="display:flex;gap:10px;">
         <input
