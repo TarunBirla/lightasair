@@ -15,7 +15,10 @@ class ItemController extends Controller
             ->orderBy('number', 'asc')
             ->get();
 
-        $items = Item::where('status', 'active');
+        // $items = Item::where('status', 'active');
+        $items = Item::orderBy('category_id')
+            ->orderBy('sort_order','asc')
+            ->get();
 
         // Category Filter
         if ($request->filled('category')) {
