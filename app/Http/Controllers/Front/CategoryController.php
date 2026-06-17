@@ -10,12 +10,9 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::where(
-            'status',
-            'active'
-        )
-        ->orderBy('number', 'asc')
-        ->paginate(12);
+        $categories = Category::where('status', 'active')
+            ->orderBy('number', 'asc')
+            ->paginate(12);
 
         return view(
             'front.categories',
@@ -23,35 +20,28 @@ class CategoryController extends Controller
         );
     }
 
-public function show($id)
-{
-    $category = Category::with('images')
-        ->findOrFail($id);
 
-    $categories = Category::where(
-        'status',
-        'active'
-    )
-     ->orderBy('number', 'asc')
-    ->get();
+    public function show($id)
+    {
+        $category = Category::with('images')
+            ->findOrFail($id);
 
-    $items = Item::where(
-        'category_id',
-        $id
-    )
-    ->where(
-        'status',
-        'active'
-    )
-    ->paginate(12);
+        $categories = Category::where('status', 'active')
+            ->orderBy('number', 'asc')
+            ->get();
 
-    return view(
-        'front.category-items',
-        compact(
-            'category',
-            'items',
-            'categories'
-        )
-    );
-}
+        $items = Item::where('category_id', $id)
+            ->where('status', 'active')
+            ->orderBy('sort_order', 'asc') // ✅ sequence wise
+            ->paginate(12);
+
+        return view(
+            'front.category-items',
+            compact(
+                'category',
+                'items',
+                'categories'
+            )
+        );
+    }
 }

@@ -9,27 +9,36 @@ use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
-    public function index(Request $request)
-    {
-        $categories = Category::where('status', 'active')
-            ->orderBy('number', 'asc')
-            ->get();
+   public function index(Request $request)
+{
+    $categories = Category::where('status', 'active')
+        ->orderBy('number', 'asc')
+        ->get();
 
-        // $items = Item::where('status', 'active');
-        $items = Item::orderBy('category_id')
-            ->orderBy('sort_order','asc');
-            // ->get();
 
-        // Category Filter
-        if ($request->filled('category')) {
-            $items->where('category_id', $request->category);
-        }
+    $items = Item::where('status', 'active')
+        ->orderBy('category_id', 'asc')
+        ->orderBy('sort_order', 'asc');
 
-        $items = $items->latest()->paginate(12);
 
-        return view(
-            'front.items',
-            compact('items', 'categories')
+    // Category Filter
+    if ($request->filled('category')) {
+        $items->where(
+            'category_id',
+            $request->category
         );
     }
+
+
+    $items = $items->paginate(12);
+
+
+    return view(
+        'front.items',
+        compact(
+            'items',
+            'categories'
+        )
+    );
+}
 }

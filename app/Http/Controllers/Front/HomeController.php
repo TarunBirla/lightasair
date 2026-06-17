@@ -69,34 +69,24 @@ public function guestRequest(Request $request)
         'message'=> $request->message
     ]);
 }
-   public function index()
+public function index()
 {
-    $banners = Banner::where(
-        'status',
-        'active'
-    )->get();
+    $banners = Banner::where('status','active')
+        ->get();
 
-    $generatorbanners = GeneratorBanner::where(
-        'status',
-        1
-    )->get();
+    $generatorbanners = GeneratorBanner::where('status',1)
+        ->get();
 
-    $categories = Category::where(
-        'status',
-        'active'
-    )
-    ->orderBy('number', 'asc')
-    
-    ->take(8)
-    ->get();
+    $categories = Category::where('status','active')
+        ->orderBy('number','asc')
+        ->take(8)
+        ->get();
 
-    $items = Item::where(
-        'status',
-        'active'
-    )
-    ->latest()
-    ->take(8)
-    ->get();
+    $items = Item::where('status','active')
+        ->orderBy('category_id','asc')
+        ->orderBy('sort_order','asc')
+        ->take(8)
+        ->get();
 
     return view(
         'front.home',
