@@ -254,6 +254,42 @@
     background:#FFC700 !important;
     color:#111 !important;
 }
+.search-input{
+    width:320px;
+    height:44px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:0 15px;
+    font-size:14px;
+    outline:none;
+    transition:.2s;
+}
+
+.search-input:focus{
+    border-color:#FFC700;
+    box-shadow:0 0 0 3px rgba(255,199,0,.15);
+}
+
+.btn-clear{
+    height:44px;
+    padding:0 18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    background:#fff;
+    border:1px solid #e5e5e5;
+    border-radius:10px;
+    text-decoration:none;
+    color:#666;
+    font-weight:600;
+    font-family:'Akshar', sans-serif;
+}
+
+.btn-clear:hover{
+    background:#f5f5f5;
+    color:#111;
+}
 </style>
 
 <div class="page-header">
@@ -262,28 +298,29 @@
         <i class="fa-solid fa-plus"></i> Add Item
     </a>
 </div>
-<form method="GET" action="{{ route('items.index') }}" style="display:flex;gap:10px;">
-    <input
-        type="text"
-        name="search"
-        value="{{ request('search') }}"
-        placeholder="Search by title or category..."
-        style="
-            width:300px;
-            padding:10px 15px;
-            border:1px solid #ddd;
-            border-radius:10px;
-            outline:none;
-        "
-    >
+<div style="display:flex;align-items:center;gap:10px;">
 
-    <button type="submit" class="btn-add">
-        <i class="fa-solid fa-search"></i> Search
-    </button>
-</form>
-<a href="{{ route('items.index') }}" class="btn-del">
-    Clear
-</a>
+    <form method="GET" action="{{ route('items.index') }}" style="display:flex;gap:10px;">
+        <input
+            type="text"
+            name="search"
+            value="{{ request('search') }}"
+            placeholder="Search by title or category..."
+            class="search-input"
+        >
+
+        <button type="submit" class="btn-add">
+            <i class="fa-solid fa-search"></i> Search
+        </button>
+    </form>
+
+    @if(request('search'))
+        <a href="{{ route('items.index') }}" class="btn-clear">
+            <i class="fa-solid fa-xmark"></i> Clear
+        </a>
+    @endif
+
+</div>
 
 <div class="table-card">
     <table>
