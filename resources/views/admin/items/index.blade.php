@@ -262,6 +262,28 @@
         <i class="fa-solid fa-plus"></i> Add Item
     </a>
 </div>
+<form method="GET" action="{{ route('items.index') }}" style="display:flex;gap:10px;">
+    <input
+        type="text"
+        name="search"
+        value="{{ request('search') }}"
+        placeholder="Search by title or category..."
+        style="
+            width:300px;
+            padding:10px 15px;
+            border:1px solid #ddd;
+            border-radius:10px;
+            outline:none;
+        "
+    >
+
+    <button type="submit" class="btn-add">
+        <i class="fa-solid fa-search"></i> Search
+    </button>
+</form>
+<a href="{{ route('items.index') }}" class="btn-del">
+    Clear
+</a>
 
 <div class="table-card">
     <table>
@@ -339,7 +361,7 @@
         </tbody>
     </table>
    <div class="pagination-wrap">
-    {{ $items->links('pagination::bootstrap-5') }}
+    {{ $items->appends(request()->query())->links('pagination::bootstrap-5') }}
 </div>
 </div>
 

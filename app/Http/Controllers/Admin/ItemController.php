@@ -9,18 +9,22 @@ use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
-    public function index()
-    {
-        $items = Item::with('category')
-            ->latest()
-            ->paginate(10)
-            ->onEachSide(1);
+   public function index(Request $request)
+{
+    $search = $request->search;
 
-        return view(
-            'admin.items.index',
-            compact('items')
-        );
-    }
+    $items = Item::with('category')
+        ->when($search, function ($query) use ($search) {
+            $query->where('title', 'LIKE', "%{$search}%")
+                  ->orWhereHas('category', function ($q) use ($search) {
+                      $q->where('name', 'LIKE', "%{$search}%");
+                  });
+        })
+        ->latest()
+        ->paginate(20);
+
+    return view('admin.items.index', compact('items'));
+}
 
     public function create()
     {
