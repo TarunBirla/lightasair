@@ -22,33 +22,29 @@ class CategoryController extends Controller
     }
 
 
-    public function show(Request $request,$id)
-    {
-        $category = Category::with('images')
-            ->findOrFail($id);
+    public function show(Request $request, $id)
+{
+    $category = Category::with('images')->findOrFail($id);
 
-        $categories = Category::where('status', 'active')
-            ->orderBy('number', 'asc')
-            ->get();
+    $categories = Category::where('status', 'active')
+        ->orderBy('number', 'asc')
+        ->get();
 
-            
-        $items = Item::where('category_id', $id)
-            ->where('status', 'active')
-            ->orderBy('sort_order', 'asc') // ✅ sequence wise
-            ->paginate(12);
+    $items = Item::where('category_id', $id)
+        ->where('status', 'active');
 
-             // Search by title
+    // Search
     if ($request->filled('search')) {
         $items->where('title', 'LIKE', '%' . $request->search . '%');
     }
 
-        return view(
-            'front.category-items',
-            compact(
-                'category',
-                'items',
-                'categories'
-            )
-        );
-    }
+    $items = $items
+        ->orderBy('sort_order', 'asc')
+        ->paginate(12);
+
+    return view(
+        'front.category-items',
+        compact('category', 'items', 'categories')
+    );
+}
 }
