@@ -29,7 +29,10 @@ class ItemController extends Controller
         );
     }
 
-
+// Title Search
+    if ($request->filled('search')) {
+        $items->where('title', 'LIKE', '%' . $request->search . '%');
+    }
     $items = $items->paginate(12);
 
 

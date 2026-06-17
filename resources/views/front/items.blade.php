@@ -552,6 +552,39 @@
 
 </div>
 
+<div class="row mb-4">
+    <div class="col-md-6">
+        <form method="GET" action="{{ url('/items') }}">
+            
+            @if(request('category'))
+                <input type="hidden"
+                       name="category"
+                       value="{{ request('category') }}">
+            @endif
+
+            <div class="input-group">
+                <input
+                    type="text"
+                    name="search"
+                    value="{{ request('search') }}"
+                    class="form-control"
+                    placeholder="Search equipment by title..."
+                >
+
+                <button class="btn btn-warning" type="submit">
+                    <i class="bi bi-search"></i> Search
+                </button>
+
+                @if(request('search'))
+                    <a href="{{ request('category') ? url('/items?category='.request('category')) : url('/items') }}"
+                       class="btn btn-outline-secondary">
+                        Clear
+                    </a>
+                @endif
+            </div>
+        </form>
+    </div>
+</div>
         <div class="row g-4">
 
             <div class="row g-4">
