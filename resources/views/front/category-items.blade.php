@@ -512,6 +512,37 @@
     <h3 class="fw-bold mb-3">
         {{ $category->name }}
     </h3>
+    <div class="row mb-4">
+    <div class="col-md-6">
+
+        <form method="GET" action="{{ url('/category/'.$category->id) }}">
+
+            <div class="input-group">
+
+                <input
+                    type="text"
+                    name="search"
+                    value="{{ request('search') }}"
+                    class="form-control"
+                    placeholder="Search items in {{ $category->name }}">
+
+                <button type="submit" class="btn btn-warning">
+                    <i class="bi bi-search"></i> Search
+                </button>
+
+                @if(request('search'))
+                    <a href="{{ url('/category/'.$category->id) }}"
+                       class="btn btn-outline-secondary">
+                        Clear
+                    </a>
+                @endif
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
 
    <div class="row g-3">
 
