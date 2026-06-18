@@ -219,6 +219,52 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(255, 199, 0, .4);
         }
+        .product-image{
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.product-image:hover{
+    transform:scale(1.02);
+}
+
+.image-modal .modal-dialog{
+    max-width:100vw;
+    margin:0;
+}
+
+.image-modal .modal-content{
+    background:#000;
+    border:none;
+    border-radius:0;
+    height:100vh;
+}
+
+.image-modal .modal-body{
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.image-modal img{
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+}
+
+.image-close{
+    position:absolute;
+    top:15px;
+    right:20px;
+    z-index:9999;
+    font-size:35px;
+    color:#fff;
+    background:none;
+    border:none;
+    cursor:pointer;
+}
     </style>
 
     <!-- Page Header -->
@@ -249,9 +295,32 @@
             <!-- Image -->
             <div class="col-lg-5">
                 <div class="item-img-wrap">
-                    <img src="{{ asset('uploads/items/' . $item->image) }}" alt="{{ $item->title }}">
+                    <!-- <img src="{{ asset('uploads/items/' . $item->image) }}" alt="{{ $item->title }}"> -->
+                    <img src="{{ asset('uploads/items/' . $item->image) }}"
+     alt="{{ $item->title }}"
+     class="product-image"
+     data-bs-toggle="modal"
+     data-bs-target="#imageModal">
                 </div>
             </div>
+            <div class="modal fade image-modal" id="imageModal" tabindex="-1">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+
+            <button type="button"
+                    class="image-close"
+                    data-bs-dismiss="modal">
+                &times;
+            </button>
+
+            <div class="modal-body">
+                <img src="{{ asset('uploads/items/' . $item->image) }}"
+                     alt="{{ $item->title }}">
+            </div>
+
+        </div>
+    </div>
+</div>
 
             <!-- Details -->
             <div class="col-lg-7">
@@ -260,10 +329,10 @@
 
                     <div class="feature-list">
                         <span class="feature-pill"><i class="bi bi-check-circle-fill text-success"></i> Available Now</span>
-                        <span class="feature-pill"><i class="bi bi-truck" style="color:var(--brand-dk);"></i> Free
+                        <!-- <span class="feature-pill"><i class="bi bi-truck" style="color:var(--brand-dk);"></i> Free
                             Delivery</span>
                         <span class="feature-pill"><i class="bi bi-arrow-counterclockwise text-primary"></i> Easy
-                            Returns</span>
+                            Returns</span> -->
                     </div>
 
                     <!-- <p class="item-desc">{{ $item->description }}</p> -->

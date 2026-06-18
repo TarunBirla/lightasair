@@ -296,12 +296,12 @@
                                 <div class="d-flex align-items-center gap-2" style="font-size:.78rem;color:var(--muted);">
                                     <i class="bi bi-shield-fill-check text-success"></i> Secure Booking
                                 </div>
-                                <div class="d-flex align-items-center gap-2" style="font-size:.78rem;color:var(--muted);">
+                                <!-- <div class="d-flex align-items-center gap-2" style="font-size:.78rem;color:var(--muted);">
                                     <i class="bi bi-truck" style="color:var(--brand-dk);"></i> Free Delivery
                                 </div>
                                 <div class="d-flex align-items-center gap-2" style="font-size:.78rem;color:var(--muted);">
                                     <i class="bi bi-arrow-counterclockwise text-primary"></i> Easy Returns
-                                </div>
+                                </div> -->
                             </div>
 
                             <button type="button" class="btn-place-order" onclick="placeOrder()">

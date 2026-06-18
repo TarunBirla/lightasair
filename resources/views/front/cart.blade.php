@@ -349,7 +349,7 @@ class="btn btn-sm btn-warning">
                         <div class="d-flex align-items-center gap-2 p-3 rounded-3" style="background:var(--white);border:1px solid var(--border);">
                             <i class="bi bi-truck fs-4" style="color:var(--brand-dk);"></i>
                             <div>
-                                <div style="font-size:.78rem;font-weight:700;">Free Delivery</div>
+                                <!-- <div style="font-size:.78rem;font-weight:700;">Free Delivery</div> -->
                                 <div style="font-size:.7rem;color:var(--muted);">Orders over £50</div>
                             </div>
                         </div>

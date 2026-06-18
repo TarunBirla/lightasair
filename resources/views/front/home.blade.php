@@ -780,8 +780,8 @@
                         <div class="hero-content">
                             <span class="hero-tag"><i class="bi bi-lightning-charge-fill me-1"></i>Premium Rental Service</span>
                             <h1 class="hero-title">{{ $banner->title }}</h1>
-                            <p class="hero-sub">Professional equipment rental with flexible terms. Book online in minutes,
-                                delivered to your door.</p>
+                            <p class="hero-sub">Professional equipment rental with flexible terms. Book online in minutes.
+                                </p>
                             <div class="hero-actions">
                                 <a href="#items" class="btn-hero-primary1">
                                     <i class="bi bi-search"></i> Browse Equipment
