@@ -391,58 +391,15 @@
 
                     <div class="feature-list">
                         <span class="feature-pill"><i class="bi bi-check-circle-fill text-success"></i> Available Now</span>
-                        <!-- <span class="feature-pill"><i class="bi bi-truck" style="color:var(--brand-dk);"></i> Free
-                                        Delivery</span>
-                                    <span class="feature-pill"><i class="bi bi-arrow-counterclockwise text-primary"></i> Easy
-                                        Returns</span> -->
+                       
                     </div>
 
-                    <!-- <p class="item-desc">{{ $item->description }}</p> -->
                     <p class="item-desc">{!! $item->description !!}</p>
 
-                    <!-- <div class="price-block">
-                                    <span class="price-amount">£{{ number_format($item->price_per_day, 2) }}</span>
-                                    <span class="price-label">per day</span>
-                                </div> -->
+                    
+                   
 
-                    <!-- <div class="avail-row">
-                                    <i class="bi bi-boxes fs-5"></i>
-                                    Available Quantity:
-                                    <span class="avail-badge">
-                                        <i class="bi bi-check-circle-fill me-1"></i>{{ $item->available_qty }} in stock
-                                    </span>
-                                </div> -->
-                    @if(Auth::check())
-                        <form action="/add-to-cart" method="POST">
-                            @csrf
-                            <input type="hidden" name="item_id" value="{{ $item->id }}">
-
-                            <div
-                                style="font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--dark);margin-bottom:.5rem;">
-                                Quantity
-                            </div>
-
-                            <div class="qty-wrap">
-                                <button type="button" class="qty-btn" onclick="changeQty(-1)">−</button>
-                                <input type="number" name="qty" id="qtyInput" value="1" min="1" max="{{ $item->available_qty }}"
-                                    class="form-control qty-input">
-                                <button type="button" class="qty-btn" onclick="changeQty(1)">+</button>
-                            </div>
-
-                            <button type="submit" class="btn-add-cart">
-                                <i class="bi bi-cart-plus-fill"></i> Request to Product
-                            </button>
-                        </form>
-
-                    @else
-
-                        <!-- <button class="btn-add-cart" onclick="openRequestModal(
-                                                                    '{{ $item->id }}',
-                                                                    '{{ $item->title }}'
-                                                                    )">
-                                                                                                <i class="bi bi-cart-plus-fill"></i>
-                                                                                                Request
-                                                                                            </button> -->
+                       
                     @endif
                 </div>
             </div>
