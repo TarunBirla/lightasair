@@ -193,107 +193,108 @@
         }
 
         /* Category Background Section */
-.category-wrapper {
-    position: relative;
-    padding: 40px;
-    border-radius: 25px;
-    overflow: hidden;
-    background: url('/images.jpg') center center/cover no-repeat;
-}
+        .category-wrapper {
+            position: relative;
+            padding: 40px;
+            border-radius: 25px;
+            overflow: hidden;
+            background: url('/images.jpg') center center/cover no-repeat;
+        }
 
-/* Dark Overlay */
-.category-wrapper::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(3px);
-}
+        /* Dark Overlay */
+        .category-wrapper::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(3px);
+        }
 
-.category-wrapper .row {
-    position: relative;
-    z-index: 2;
-}
+        .category-wrapper .row {
+            position: relative;
+            z-index: 2;
+        }
 
-/* Category Card */
-.cat-card {
-    /* background: rgba(255,255,255,0.95); */
-    backdrop-filter: blur(10px);
-    border-radius: 18px;
-    overflow: hidden;
-    /* min-height: 110px; */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-    transition: all .3s ease;
-    /* border: 1px solid rgba(255,255,255,0.3); */
-}
+        /* Category Card */
+        .cat-card {
+            /* background: rgba(255,255,255,0.95); */
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            overflow: hidden;
+            /* min-height: 110px; */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            transition: all .3s ease;
+            /* border: 1px solid rgba(255,255,255,0.3); */
+        }
 
-.cat-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0,0,0,.18);
-}
+        .cat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, .18);
+        }
 
-.cat-card-body {
-    padding: 24px 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+        .cat-card-body {
+            padding: 24px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-.cat-card-body h6 {
-    font-size: 1.3rem;
-    /* font-weight: 700; */
-    margin: 0;
-    color: #fff;
-}
+        .cat-card-body h6 {
+            font-size: 1.3rem;
+            /* font-weight: 700; */
+            margin: 0;
+            color: #fff;
+        }
 
-.cat-arrow {
-    width: 35px;
-    height: 35px;
-    background: var(--brand);
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: .3s;
-}
+        .cat-arrow {
+            width: 35px;
+            height: 35px;
+            background: var(--brand);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: .3s;
+        }
 
-.cat-card:hover .cat-arrow {
-    transform: rotate(-45deg);
-}
-/* Mobile */
-@media (max-width: 767px) {
+        .cat-card:hover .cat-arrow {
+            transform: rotate(-45deg);
+        }
 
-    .category-wrapper {
-        padding: 15px;
-        border-radius: 15px;
-    }
+        /* Mobile */
+        @media (max-width: 767px) {
 
-    .cat-card {
-        min-height: 75px;
-    }
+            .category-wrapper {
+                padding: 15px;
+                border-radius: 15px;
+            }
 
-    .cat-card-body {
-        padding: 12px;
-    }
+            .cat-card {
+                min-height: 75px;
+            }
 
-    .cat-card-body h6 {
-        font-size: 13px;
-        line-height: 1.3;
-    }
+            .cat-card-body {
+                padding: 12px;
+            }
 
-    .cat-arrow {
-        width: 30px;
-        height: 30px;
-        min-width: 30px;
-        font-size: 12px;
-    }
+            .cat-card-body h6 {
+                font-size: 13px;
+                line-height: 1.3;
+            }
 
-    .row.g-4 {
-        --bs-gutter-x: .75rem;
-        --bs-gutter-y: .75rem;
-    }
-}
+            .cat-arrow {
+                width: 30px;
+                height: 30px;
+                min-width: 30px;
+                font-size: 12px;
+            }
+
+            .row.g-4 {
+                --bs-gutter-x: .75rem;
+                --bs-gutter-y: .75rem;
+            }
+        }
 
         /* ── ITEM CARDS ── */
         .item-card {
@@ -314,22 +315,22 @@
         }
 
         .item-card .img-wrap {
-    height: 250px;
-    background: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-}
+            height: 250px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
 
-.item-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    transition: transform .4s;
-}
+        .item-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform .4s;
+        }
 
-        .item-card:hover img {  
+        .item-card:hover img {
             transform: scale(1.06);
         }
 
@@ -577,187 +578,236 @@
                 padding: 15px 30px;
             }
         }
+
         .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 15px;
-}
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 15px;
+        }
 
-@media (max-width:768px) {
+        @media (max-width:768px) {
 
-    .section-header {
-        flex-direction: row;
-        align-items: center;
-    }
+            .section-header {
+                flex-direction: row;
+                align-items: center;
+            }
 
-    .section-header .section-title {
-        font-size: 22px;
-        line-height: 1.2;
-    }
+            .section-header .section-title {
+                font-size: 22px;
+                line-height: 1.2;
+            }
 
-    .section-header .btn-brand-outline {
-        padding: 8px 14px;
-        font-size: 13px;
-        white-space: nowrap;
-        margin-left: auto;
-    }
-}
-@media(max-width:768px){
+            .section-header .btn-brand-outline {
+                padding: 8px 14px;
+                font-size: 13px;
+                white-space: nowrap;
+                margin-left: auto;
+            }
+        }
 
-    .item-card .img-wrap{
-        height:180px;
-        padding:8px;
-    }
+        @media(max-width:768px) {
 
-    .item-card img{
-        object-fit:contain;
-    }
+            .item-card .img-wrap {
+                height: 180px;
+                padding: 8px;
+            }
 
-}
-.studio-banner{
-    width: 100%;
-    overflow: hidden;
-    margin: 0;
-     padding: 0;
-}
+            .item-card img {
+                object-fit: contain;
+            }
 
-.studio-banner img{
-    width: 100%;
-    height: 100%; /* Full Screen Height */
-    object-fit: cover;
-    display: block;
-}
+        }
 
-/* Tablet */
-@media (max-width: 992px){
-    .studio-banner img{
-        height: 70vh;
-    }
-}
+        .studio-banner {
+            width: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
 
-/* ===== Generator Banner Section ===== */
-.generator-banner-section {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
+        .studio-banner img {
+            width: 100%;
+            height: 100%;
+            /* Full Screen Height */
+            object-fit: cover;
+            display: block;
+        }
 
-#generatorBannerCarousel {
-    width: 100%;
-}
+        /* Tablet */
+        @media (max-width: 992px) {
+            .studio-banner img {
+                height: 70vh;
+            }
+        }
 
-/* Card — works as <a> or <div> */
-.generator-banner-card {
-    position: relative;
-    display: block;          /* <a> tag ko block banata hai */
-    width: 100%;
-    height: 500px;
-    overflow: hidden;
-    text-decoration: none;   /* link underline hatao */
-    cursor: pointer;
-}
+        /* ===== Generator Banner Section ===== */
+        .generator-banner-section {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
 
-/* Image — poori visible, crop nahi */
-.generator-banner-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-    transition: transform 0.4s ease;   /* hover zoom effect */
-}
+        #generatorBannerCarousel {
+            width: 100%;
+        }
+
+        /* Card — works as <a> or <div> */
+        .generator-banner-card {
+            position: relative;
+            display: block;
+            /* <a> tag ko block banata hai */
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            text-decoration: none;
+            /* link underline hatao */
+            cursor: pointer;
+        }
+
+        /* Image — poori visible, crop nahi */
+        .generator-banner-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition: transform 0.4s ease;
+            /* hover zoom effect */
+        }
 
 
 
-/* Overlay — default mein transparent */
-.generator-overlay {
-    position: absolute;
-    inset: 0;                /* top/left/right/bottom: 0 shorthand */
-    background: rgba(0, 0, 0, 0);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.35s ease;
-}
+        /* Overlay — default mein transparent */
+        .generator-overlay {
+            position: absolute;
+            inset: 0;
+            /* top/left/right/bottom: 0 shorthand */
+            background: rgba(0, 0, 0, 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.35s ease;
+        }
 
-/* Hover pe dark overlay aaye */
-.generator-banner-card:hover .generator-overlay {
-    /* background: rgba(0, 0, 0, 0.45); */
-}
+        /* Hover pe dark overlay aaye */
+        .generator-banner-card:hover .generator-overlay {
+            /* background: rgba(0, 0, 0, 0.45); */
+        }
 
-/* View Icon Wrap — default mein hidden */
-.view-icon-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    color: #fff;
-    opacity: 0;
-    width: 20px;
-    height: 20px;
-    /* transform: translateY(16px) scale(0.85); */
-    transition: opacity 0.35s ease, transform 0.35s ease;
-    pointer-events: none;
-}
+        /* View Icon Wrap — default mein hidden */
+        .view-icon-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+            opacity: 0;
+            width: 20px;
+            height: 20px;
+            /* transform: translateY(16px) scale(0.85); */
+            transition: opacity 0.35s ease, transform 0.35s ease;
+            pointer-events: none;
+        }
 
-/* Hover pe icon smoothly aaye */
-.generator-banner-card:hover .view-icon-wrap {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-}
+        /* Hover pe icon smoothly aaye */
+        .generator-banner-card:hover .view-icon-wrap {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
 
-.view-icon-wrap i {
-    font-size: 52px;
-    line-height: 1;
-    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
-}
+        .view-icon-wrap i {
+            font-size: 52px;
+            line-height: 1;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+        }
 
-.view-icon-wrap span {
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    text-shadow: 0 1px 6px rgba(0,0,0,0.5);
-}
+        .view-icon-wrap span {
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+        }
 
-/* Carousel Indicators */
-.carousel-indicators button {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.6);
-    border: none;
-    transition: background 0.3s;
-}
+        /* Carousel Indicators */
+        .carousel-indicators button {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            border: none;
+            transition: background 0.3s;
+        }
 
-.carousel-indicators button.active {
-    background: #fff;
-}
+        .carousel-indicators button.active {
+            background: #fff;
+        }
 
-/* ===== Tablet ===== */
-@media (max-width: 992px) {
-    .generator-banner-card {
-        height: 350px;
-    }
-    .view-icon-wrap i {
-        font-size: 40px;
-    }
-}
+        /* ===== Tablet ===== */
+        @media (max-width: 992px) {
+            .generator-banner-card {
+                height: 350px;
+            }
 
-/* ===== Mobile ===== */
-@media (max-width: 768px) {
-    .generator-banner-card {
-        height: 220px;
-    }
-    .view-icon-wrap i {
-        font-size: 30px;
-    }
-    .view-icon-wrap span {
-        font-size: 12px;
-    }
-}
+            .view-icon-wrap i {
+                font-size: 40px;
+            }
+        }
+
+        /* ===== Mobile ===== */
+        @media (max-width: 768px) {
+            .generator-banner-card {
+                height: 220px;
+            }
+
+            .view-icon-wrap i {
+                font-size: 30px;
+            }
+
+            .view-icon-wrap span {
+                font-size: 12px;
+            }
+        }
+
+        .slider-wrap {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .slider-image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0;
+            transition: .5s;
+        }
+
+        .active-img {
+            opacity: 1;
+        }
+
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 8px;
+        }
+
+        .dot-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ccc;
+        }
+
+        .active-dot {
+            background: #22c55e;
+        }
     </style>
 
     <!-- ── HERO CAROUSEL ── -->
@@ -781,14 +831,14 @@
                             <span class="hero-tag"><i class="bi bi-lightning-charge-fill me-1"></i>Premium Rental Service</span>
                             <h1 class="hero-title">{{ $banner->title }}</h1>
                             <p class="hero-sub">Professional equipment rental with flexible terms. Book online in minutes.
-                                </p>
+                            </p>
                             <div class="hero-actions">
                                 <a href="#items" class="btn-hero-primary1">
                                     <i class="bi bi-search"></i> Browse Equipment
                                 </a>
                                 <!-- <a href="/register" class="btn-hero-secondary">
-                                            Get Started
-                                        </a> -->
+                                                    Get Started
+                                                </a> -->
                             </div>
                         </div>
                     </div>
@@ -796,11 +846,11 @@
             </div>
 
             <!-- <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-                <i class="bi bi-chevron-left" style="font-size:1.1rem;color:#fff;"></i>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-                <i class="bi bi-chevron-right" style="font-size:1.1rem;color:#fff;"></i>
-            </button> -->
+                    <i class="bi bi-chevron-left" style="font-size:1.1rem;color:#fff;"></i>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                    <i class="bi bi-chevron-right" style="font-size:1.1rem;color:#fff;"></i>
+                </button> -->
         </div>
     </section>
 
@@ -838,76 +888,68 @@
     </section>
     @include('front.portfolio')
 
-@if($generatorbanners->count())
+    @if($generatorbanners->count())
 
-<section class="generator-banner-section">
+        <section class="generator-banner-section">
 
-    <div id="generatorBannerCarousel"
-         class="carousel slide"
-         data-bs-ride="carousel"
-         data-bs-interval="3000"
-         data-bs-pause="false">
+            <div id="generatorBannerCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000"
+                data-bs-pause="false">
 
-        <div class="carousel-inner">
+                <div class="carousel-inner">
 
-            @foreach($generatorbanners as $key => $banner)
+                    @foreach($generatorbanners as $key => $banner)
 
-            <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                            <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
 
-                @if($banner->item_id)
-                    <a href="{{ url('item/'.$banner->item_id) }}" class="generator-banner-card">
-                @else
-                    <div class="generator-banner-card">
-                @endif
+                                @if($banner->item_id)
+                                    <a href="{{ url('item/' . $banner->item_id) }}" class="generator-banner-card">
+                                @else
+                                        <div class="generator-banner-card">
+                                    @endif
 
-                        <img
-                            src="{{ asset('uploads/generator-banner/'.$banner->image) }}"
-                            alt="{{ $banner->title }}">
+                                        <img src="{{ asset('uploads/generator-banner/' . $banner->image) }}" alt="{{ $banner->title }}">
 
-                        <div class="generator-overlay">
-                            <div class="view-icon-wrap">
-                                <i class="bi bi-eye"></i>
-                            </div>
+                                        <div class="generator-overlay">
+                                            <div class="view-icon-wrap">
+                                                <i class="bi bi-eye"></i>
+                                            </div>
+                                        </div>
+
+                                        @if($banner->item_id)
+                                            </a>
+                                        @else
+                                    </div>
+                                @endif
+
                         </div>
 
-                @if($banner->item_id)
-                    </a>
-                @else
-                    </div>
-                @endif
+                    @endforeach
 
             </div>
 
-            @endforeach
+            {{-- Optional: Indicators for multiple banners --}}
+            @if($generatorbanners->count() > 1)
+                <div class="carousel-indicators">
+                    @foreach($generatorbanners as $key => $banner)
+                        <button type="button" data-bs-target="#generatorBannerCarousel" data-bs-slide-to="{{ $key }}"
+                            class="{{ $key == 0 ? 'active' : '' }}" aria-current="{{ $key == 0 ? 'true' : 'false' }}">
+                        </button>
+                    @endforeach
+                </div>
+            @endif
 
-        </div>
+            </div>
 
-        {{-- Optional: Indicators for multiple banners --}}
-        @if($generatorbanners->count() > 1)
-        <div class="carousel-indicators">
-            @foreach($generatorbanners as $key => $banner)
-            <button type="button"
-                    data-bs-target="#generatorBannerCarousel"
-                    data-bs-slide-to="{{ $key }}"
-                    class="{{ $key == 0 ? 'active' : '' }}"
-                    aria-current="{{ $key == 0 ? 'true' : 'false' }}">
-            </button>
-            @endforeach
-        </div>
-        @endif
+        </section>
 
-    </div>
-
-</section>
-
-@endif
+    @endif
 
     <!-- ── CATEGORIES ── -->
     <section class="py-5 mt-2">
         <div class="container">
 
             <!-- <div class="d-flex align-items-end justify-content-between mb-4 flex-wrap gap-2"> -->
-                <div class="section-header d-flex align-items-end justify-content-between mb-4">
+            <div class="section-header d-flex align-items-end justify-content-between mb-4">
                 <div>
                     <div class="section-label mb-1"><i class="bi bi-box-seam me-1"></i>Browse by Category</div>
                     <h2 class="section-title mb-0">What Are You Looking For?</h2>
@@ -917,24 +959,24 @@
                     View All <i class="bi bi-arrow-right"></i>
                 </a>
             </div>
-           <div class="category-wrapper">
-    <div class="row g-4">
-        @foreach($categories as $category)
-            <div class="col-6 col-md-3">
-                <a href="{{ url('/category/' . $category->id) }}" class="text-decoration-none">
-                    <div class="cat-card">
-                        <div class="cat-card-body">
-                            <h6>{{ $category->name }}</h6>
-                            <div class="cat-arrow">
-                                <i class="bi bi-arrow-right"></i>
-                            </div>
+            <div class="category-wrapper">
+                <div class="row g-4">
+                    @foreach($categories as $category)
+                        <div class="col-6 col-md-3">
+                            <a href="{{ url('/category/' . $category->id) }}" class="text-decoration-none">
+                                <div class="cat-card">
+                                    <div class="cat-card-body">
+                                        <h6>{{ $category->name }}</h6>
+                                        <div class="cat-arrow">
+                                            <i class="bi bi-arrow-right"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
-                    </div>
-                </a>
+                    @endforeach
+                </div>
             </div>
-        @endforeach
-    </div>
-</div>
 
         </div>
     </section>
@@ -943,7 +985,7 @@
     <section class="py-5 bg-light" id="items">
         <div class="container">
             <!-- <div class="d-flex align-items-end justify-content-between mb-4 flex-wrap gap-2"> -->
-                <div class="section-header d-flex align-items-end justify-content-between mb-4">
+            <div class="section-header d-flex align-items-end justify-content-between mb-4">
 
                 <div>
                     <div class="section-label mb-1"><i class="bi bi-box-seam me-1"></i>Available Now</div>
@@ -958,21 +1000,48 @@
                 @foreach($items as $item)
                     <div class="col-12 col-md-4 col-lg-3">
                         <div class="item-card">
-                            <div class="img-wrap">
-                                <img src="{{ asset('uploads/items/' . $item->image) }}" alt="{{ $item->title }}">
-                                <!-- <span class="item-badge"><i class="bi bi-check-circle-fill me-1"></i>Available</span> -->
+                            @php
+
+                                $images = $item->image ?? [];
+
+                                if (!is_array($images)) {
+                                    $images = [$images];
+                                }
+
+                            @endphp
+
+                            <div class="img-wrap slider-wrap">
+
+                                @foreach($images as $key => $img)
+
+                                    <img src="{{ asset('uploads/items/' . $img) }}"
+                                        class="slider-image {{ $key == 0 ? 'active-img' : '' }}" data-item="{{ $item->id }}">
+
+                                @endforeach
+
+                            </div>
+
+                            <div class="slider-dots">
+
+                                @foreach($images as $key => $img)
+
+                                    <span class="dot-indicator {{ $key == 0 ? 'active-dot' : '' }}" data-item="{{ $item->id }}">
+                                    </span>
+
+                                @endforeach
+
                             </div>
                             <div class="item-card-body">
                                 <div class="item-title">{{ $item->title }}</div>
                                 <!-- <div class="item-price mt-1">
-                                    £{{ number_format($item->price_per_day, 2) }}
-                                    <small>/ day</small>
-                                </div> -->
-                                <!-- <div class="mt-2">
-                                            <span class="qty-badge">
-                                                <i class="bi bi-boxes"></i> {{ $item->available_qty }} in stock
-                                            </span>
+                                            £{{ number_format($item->price_per_day, 2) }}
+                                            <small>/ day</small>
                                         </div> -->
+                                <!-- <div class="mt-2">
+                                                    <span class="qty-badge">
+                                                        <i class="bi bi-boxes"></i> {{ $item->available_qty }} in stock
+                                                    </span>
+                                                </div> -->
                             </div>
                             <div class="item-card-footer">
                                 <a href="{{ url('item/' . $item->id) }}" class="btn-view">
@@ -988,24 +1057,22 @@
                                         </button>
                                     </form>
                                 @else
-<!-- 
-                                                            <button class="btn-cart w-100" onclick="openRequestModal(
+                                                            <!-- 
+                                                                                                <button class="btn-cart w-100" onclick="openRequestModal(
+                                                                        '{{ $item->id }}',
+                                                                        '{{ $item->title }}'
+                                                                        )">
+                                                                                                    <i class="bi bi-cart-plus-fill"></i>
+                                                                                                    Request
+                                                                                                </button> -->
+
+                                                            <button class="btn-cart w-100" onclick="addToRequest(
                                     '{{ $item->id }}',
                                     '{{ $item->title }}'
                                     )">
-                                                                <i class="bi bi-cart-plus-fill"></i>
+                                                                <i class="bi bi-plus-circle"></i>
                                                                 Request
-                                                            </button> -->
-
-                                                            <button
-class="btn-cart w-100"
-onclick="addToRequest(
-'{{ $item->id }}',
-'{{ $item->title }}'
-)">
-    <i class="bi bi-plus-circle"></i>
-    Request
-</button>
+                                                            </button>
                                 @endif
                             </div>
                         </div>
@@ -1015,58 +1082,93 @@ onclick="addToRequest(
         </div>
     </section>
 
-   
+<script>
+
+document.querySelectorAll('.slider-wrap').forEach(slider => {
+
+    let images =
+        slider.querySelectorAll('.slider-image');
+
+    let itemId =
+        images[0]?.dataset.item;
+
+    let dots =
+        document.querySelectorAll(
+            '.dot-indicator[data-item="'+itemId+'"]'
+        );
+
+    let current = 0;
+
+    setInterval(() => {
+
+        images[current].classList.remove('active-img');
+        dots[current].classList.remove('active-dot');
+
+        current++;
+
+        if(current >= images.length){
+            current = 0;
+        }
+
+        images[current].classList.add('active-img');
+        dots[current].classList.add('active-dot');
+
+    }, 5000);
+
+});
+
+</script>
 
     @include('front.brand')
     @include('front.television')
     <section class="studio-banner">
         <!-- <div class="container"> -->
 
-    <img src="{{ asset('img.jpeg') }}" alt="Studio Setup">
+        <img src="{{ asset('img.jpeg') }}" alt="Studio Setup">
 
         <!-- </div> -->
-</section>
+    </section>
 
-     <!-- ── HOW IT WORKS ── -->
+    <!-- ── HOW IT WORKS ── -->
     <!-- <section class="how-section py-5">
-        <div class="container">
-            <div class="text-center mb-5">
-                <div class="section-label mb-1"><i class="bi bi-info-circle-fill me-1"></i>Simple Process</div>
-                <h2 class="section-title mb-0">How It Works</h2>
+            <div class="container">
+                <div class="text-center mb-5">
+                    <div class="section-label mb-1"><i class="bi bi-info-circle-fill me-1"></i>Simple Process</div>
+                    <h2 class="section-title mb-0">How It Works</h2>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <div class="step-card">
+                            <div class="step-num"><i class="bi bi-search" style="font-size:1.3rem;"></i></div>
+                            <h5>Browse & Select</h5>
+                            <p>Explore our wide range of professional equipment by category or search.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="step-card">
+                            <div class="step-num"><i class="bi bi-cart-check-fill" style="font-size:1.3rem;"></i></div>
+                            <h5>Add to Cart</h5>
+                            <p>Select items and quantities, then add them to your cart in one click.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="step-card">
+                            <div class="step-num"><i class="bi bi-calendar2-check-fill" style="font-size:1.3rem;"></i></div>
+                            <h5>Choose Dates</h5>
+                            <p>Pick your rental start and end dates at checkout. Flexible options available.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="step-card">
+                            <div class="step-num"><i class="bi bi-truck" style="font-size:1.3rem;"></i></div>
+                            <h5>Get It Delivered</h5>
+                            <p>We deliver to your door and collect when your rental period ends.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="row g-4">
-                <div class="col-md-3">
-                    <div class="step-card">
-                        <div class="step-num"><i class="bi bi-search" style="font-size:1.3rem;"></i></div>
-                        <h5>Browse & Select</h5>
-                        <p>Explore our wide range of professional equipment by category or search.</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="step-card">
-                        <div class="step-num"><i class="bi bi-cart-check-fill" style="font-size:1.3rem;"></i></div>
-                        <h5>Add to Cart</h5>
-                        <p>Select items and quantities, then add them to your cart in one click.</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="step-card">
-                        <div class="step-num"><i class="bi bi-calendar2-check-fill" style="font-size:1.3rem;"></i></div>
-                        <h5>Choose Dates</h5>
-                        <p>Pick your rental start and end dates at checkout. Flexible options available.</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="step-card">
-                        <div class="step-num"><i class="bi bi-truck" style="font-size:1.3rem;"></i></div>
-                        <h5>Get It Delivered</h5>
-                        <p>We deliver to your door and collect when your rental period ends.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
-    
+        </section> -->
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
@@ -1081,247 +1183,232 @@ onclick="addToRequest(
 
         });
     </script>
-    
+
 
     <div class="modal fade" id="requestModal">
-<div class="modal-dialog">
-<div class="modal-content">
+        <div class="modal-dialog">
+            <div class="modal-content">
 
-<div class="modal-header">
-<h5>Request Item</h5>
-<button class="btn-close" data-bs-dismiss="modal"></button>
-</div>
+                <div class="modal-header">
+                    <h5>Request Item</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
 
-<div class="modal-body">
+                <div class="modal-body">
 
-<input type="hidden" id="item_id">
+                    <input type="hidden" id="item_id">
 
-<div class="mb-3">
-    <label>Name *</label>
-    <input type="text" id="name" class="form-control">
-    <small class="text-danger" id="name_error"></small>
-</div>
+                    <div class="mb-3">
+                        <label>Name *</label>
+                        <input type="text" id="name" class="form-control">
+                        <small class="text-danger" id="name_error"></small>
+                    </div>
 
-<div class="mb-3">
-    <label>Email *</label>
-    <input type="email" id="email" class="form-control">
-    <small class="text-danger" id="email_error"></small>
-</div>
+                    <div class="mb-3">
+                        <label>Email *</label>
+                        <input type="email" id="email" class="form-control">
+                        <small class="text-danger" id="email_error"></small>
+                    </div>
 
-<div class="mb-3">
-    <label>Phone *</label>
-    <input type="text" id="phone" class="form-control">
-    <small class="text-danger" id="phone_error"></small>
-</div>
+                    <div class="mb-3">
+                        <label>Phone *</label>
+                        <input type="text" id="phone" class="form-control">
+                        <small class="text-danger" id="phone_error"></small>
+                    </div>
 
-<div class="mb-3">
-    <label>Message</label>
-    <textarea id="message" class="form-control"></textarea>
-</div>
+                    <div class="mb-3">
+                        <label>Message</label>
+                        <textarea id="message" class="form-control"></textarea>
+                    </div>
 
-<button
-class="btn btn-warning w-100"
-onclick="submitRequest()">
-Send Request
-</button>
+                    <button class="btn btn-warning w-100" onclick="submitRequest()">
+                        Send Request
+                    </button>
 
-</div>
+                </div>
 
-</div>
-</div>
-</div>
-<script>
-    function showToast(message)
-{
-    document.getElementById('toastMessage').innerHTML = message;
-
-    let toastEl =
-    document.getElementById('liveToast');
-
-    let toast =
-    new bootstrap.Toast(toastEl,{
-        delay:3000
-    });
-
-    toast.show();
-}
-
-
-
-
-</script>
-<div class="position-fixed top-0 end-0 p-3" style="z-index:99999">
-
-    <div id="liveToast"
-         class="toast border-0 shadow">
-
-        <div class="toast-header bg-success text-white">
-            <strong class="me-auto">Light As AIR</strong>
-            <button type="button"
-                    class="btn-close btn-close-white"
-                    data-bs-dismiss="toast"></button>
+            </div>
         </div>
+    </div>
+    <script>
+        function showToast(message) {
+            document.getElementById('toastMessage').innerHTML = message;
 
-        <div class="toast-body" id="toastMessage">
+            let toastEl =
+                document.getElementById('liveToast');
+
+            let toast =
+                new bootstrap.Toast(toastEl, {
+                    delay: 3000
+                });
+
+            toast.show();
+        }
+
+
+
+
+    </script>
+    <div class="position-fixed top-0 end-0 p-3" style="z-index:99999">
+
+        <div id="liveToast" class="toast border-0 shadow">
+
+            <div class="toast-header bg-success text-white">
+                <strong class="me-auto">Light As AIR</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+
+            <div class="toast-body" id="toastMessage">
+            </div>
+
         </div>
 
     </div>
+    <script>
+        async function submitRequest() {
+            document.getElementById('name_error').innerHTML = '';
+            document.getElementById('email_error').innerHTML = '';
+            document.getElementById('phone_error').innerHTML = '';
 
-</div>
-<script>
-    async function submitRequest()
-{
-    document.getElementById('name_error').innerHTML = '';
-    document.getElementById('email_error').innerHTML = '';
-    document.getElementById('phone_error').innerHTML = '';
+            let name =
+                document.getElementById('name').value.trim();
 
-    let name =
-        document.getElementById('name').value.trim();
+            let email =
+                document.getElementById('email').value.trim();
 
-    let email =
-        document.getElementById('email').value.trim();
+            let phone =
+                document.getElementById('phone').value.trim();
 
-    let phone =
-        document.getElementById('phone').value.trim();
+            let valid = true;
 
-    let valid = true;
+            if (!name) {
+                document.getElementById('name_error')
+                    .innerHTML = 'Name is required';
 
-    if(!name)
-    {
-        document.getElementById('name_error')
-        .innerHTML = 'Name is required';
+                valid = false;
+            }
 
-        valid = false;
-    }
+            if (!email) {
+                document.getElementById('email_error')
+                    .innerHTML = 'Email is required';
 
-    if(!email)
-    {
-        document.getElementById('email_error')
-        .innerHTML = 'Email is required';
+                valid = false;
+            }
+            else {
+                let emailRegex =
+                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        valid = false;
-    }
-    else
-    {
-        let emailRegex =
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    document.getElementById('email_error')
+                        .innerHTML = 'Enter valid email';
 
-        if(!emailRegex.test(email))
-        {
-            document.getElementById('email_error')
-            .innerHTML = 'Enter valid email';
+                    valid = false;
+                }
+            }
 
-            valid = false;
+            if (!phone) {
+                document.getElementById('phone_error')
+                    .innerHTML = 'Phone number is required';
+
+                valid = false;
+            }
+
+            if (!valid) {
+                return;
+            }
+
+            try {
+
+                const response =
+                    await fetch('/guest-request', {
+
+                        method: 'POST',
+
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document
+                                .querySelector('meta[name="csrf-token"]')
+                                .content
+                        },
+
+                        body: JSON.stringify({
+
+                            // item_id:
+                            // document.getElementById('item_id').value,
+                            items: JSON.parse(
+                                localStorage.getItem('requests')
+                            ),
+
+                            name: name,
+                            email: email,
+                            phone: phone,
+
+                            message:
+                                document.getElementById('message').value
+                        })
+                    });
+
+                // const data = await response.json();
+                const data = await response.json();
+
+                console.log(data);
+
+                if (!data.status) {
+                    showToast('Request failed.');
+                    return;
+                }
+
+                let msg =
+
+                    `🔥 NEW LIGHT AS AIR REQUEST
+
+    Items:
+    ${data.items}
+
+    Name: ${data.name}
+
+    Email: ${data.email}
+
+    Phone: ${data.phone}`;
+
+                window.open(
+                    `https://wa.me/447879175585?text=${encodeURIComponent(msg)}`,
+                    '_blank'
+                );
+
+                bootstrap.Modal
+                    .getInstance(
+                        document.getElementById('requestModal')
+                    ).hide();
+
+                console.log(msg);
+
+                document.getElementById('name').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('phone').value = '';
+                document.getElementById('message').value = '';
+
+                // Request list clear
+                localStorage.removeItem('requests');
+
+                // Count update
+                updateRequestCount();
+
+                showToast(
+                    '✅ Request submitted successfully.'
+                );
+
+            }
+            catch (error) {
+                console.log(error);
+
+                showToast(
+                    '❌ Something went wrong. Please try again.'
+                );
+            }
         }
-    }
-
-    if(!phone)
-    {
-        document.getElementById('phone_error')
-        .innerHTML = 'Phone number is required';
-
-        valid = false;
-    }
-
-    if(!valid)
-    {
-        return;
-    }
-
-    try{
-
-        const response =
-        await fetch('/guest-request',{
-
-            method:'POST',
-
-            headers:{
-                'Content-Type':'application/json',
-                'Accept':'application/json',
-                'X-CSRF-TOKEN':document
-                .querySelector('meta[name="csrf-token"]')
-                .content
-            },
-
-            body:JSON.stringify({
-
-                // item_id:
-                // document.getElementById('item_id').value,
-                items: JSON.parse(
-        localStorage.getItem('requests')
-    ),
-
-                name:name,
-                email:email,
-                phone:phone,
-
-                message:
-                document.getElementById('message').value
-            })
-        });
-
-        // const data = await response.json();
-        const data = await response.json();
-
-console.log(data);
-
-        if(!data.status)
-        {
-            showToast('Request failed.');
-            return;
-        }
-
-        let msg =
-
-`🔥 NEW LIGHT AS AIR REQUEST
-
-Items:
-${data.items}
-
-Name: ${data.name}
-
-Email: ${data.email}
-
-Phone: ${data.phone}`;
-
-        window.open(
-            `https://wa.me/447879175585?text=${encodeURIComponent(msg)}`,
-            '_blank'
-        );
-
-        bootstrap.Modal
-.getInstance(
-    document.getElementById('requestModal')
-).hide();
-
-console.log(msg);
-
-document.getElementById('name').value='';
-document.getElementById('email').value='';
-document.getElementById('phone').value='';
-document.getElementById('message').value='';
-
-// Request list clear
-localStorage.removeItem('requests');
-
-// Count update
-updateRequestCount();
-
-showToast(
-    '✅ Request submitted successfully.'
-);
-
-    }
-    catch(error)
-    {
-        console.log(error);
-
-        showToast(
-            '❌ Something went wrong. Please try again.'
-        );
-    }
-}
-</script>
+    </script>
 
 
 @endsection
