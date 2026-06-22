@@ -52,7 +52,7 @@
                             class="form-control">{{ $item->description }}</textarea>
                     </div>
 
-                    <div class="col-md-3 mb-3">
+                    <div class="col-md-4 mb-3">
 
                         <label>Total Qty</label>
 
@@ -60,7 +60,7 @@
 
                     </div>
 
-                    <div class="col-md-3 mb-3">
+                    <div class="col-md-4 mb-3">
 
                         <label>Available Qty</label>
 
@@ -68,7 +68,7 @@
 
                     </div>
 
-                    <div class="col-md-3 mb-3">
+                    <div class="col-md-4 mb-3">
 
                         <label>Price Per Day (£)</label>
 
@@ -77,7 +77,7 @@
 
                     </div>
 
-                    <div class="col-md-3 mb-3">
+                    <div class="col-md-4 mb-3">
 
                         <label>Status</label>
 
@@ -95,56 +95,68 @@
 
                     </div>
 
-                   @php
+                    <div class="col-md-4 mb-3">
 
-$images = [];
+    <label>Sort Order</label>
 
-if ($item->image) {
+    <input
+        type="number"
+        name="sort_order"
+        value="{{ $item->sort_order }}"
+        class="form-control">
 
-    if (is_array($item->image)) {
+</div>
 
-        $images = $item->image;
+                    @php
 
-    } else {
+                        $images = [];
 
-        $decoded = json_decode($item->image, true);
+                        if ($item->image) {
 
-        if (is_array($decoded)) {
-            $images = $decoded;
-        } else {
-            $images = [$item->image];
-        }
-    }
-}
+                            if (is_array($item->image)) {
 
-@endphp
+                                $images = $item->image;
+
+                            } else {
+
+                                $decoded = json_decode($item->image, true);
+
+                                if (is_array($decoded)) {
+                                    $images = $decoded;
+                                } else {
+                                    $images = [$item->image];
+                                }
+                            }
+                        }
+
+                    @endphp
 
                     <div class="row">
 
                         @foreach($images as $index => $img)
 
-                                <div class="col-md-2 mb-3 image-box">
+                            <div class="col-md-2 mb-3 image-box">
 
-                                    <div style="position:relative">
+                                <div style="position:relative">
 
-                                        <img src="{{ asset('uploads/items/' . $img) }}" class="img-fluid border rounded"
-                                            style="height:120px;width:100%;object-fit:cover;">
+                                    <img src="{{ asset('uploads/items/' . $img) }}" class="img-fluid border rounded"
+                                        style="height:120px;width:100%;object-fit:cover;">
 
-                                        <button type="button" class="btn btn-danger btn-sm remove-image" data-index="{{ $index }}"
-                                            style="
-                            position:absolute;
-                            top:5px;
-                            right:5px;
-                            border-radius:50%;
-                            width:28px;
-                            height:28px;
-                            padding:0;">
-                                            ×
-                                        </button>
-
-                                    </div>
+                                    <button type="button" class="btn btn-danger btn-sm remove-image" data-index="{{ $index }}"
+                                        style="
+                                    position:absolute;
+                                    top:5px;
+                                    right:5px;
+                                    border-radius:50%;
+                                    width:28px;
+                                    height:28px;
+                                    padding:0;">
+                                        ×
+                                    </button>
 
                                 </div>
+
+                            </div>
 
                         @endforeach
 
@@ -182,28 +194,28 @@ if ($item->image) {
 
 
             </script>
-               <script>
+            <script>
 
-let deletedImages = [];
+                let deletedImages = [];
 
-document.querySelectorAll('.remove-image').forEach(btn => {
+                document.querySelectorAll('.remove-image').forEach(btn => {
 
-    btn.addEventListener('click', function() {
+                    btn.addEventListener('click', function () {
 
-        let index = this.dataset.index;
+                        let index = this.dataset.index;
 
-        deletedImages.push(index);
+                        deletedImages.push(index);
 
-        document.getElementById('deleted_images').value =
-            JSON.stringify(deletedImages);
+                        document.getElementById('deleted_images').value =
+                            JSON.stringify(deletedImages);
 
-        this.closest('.image-box').remove();
+                        this.closest('.image-box').remove();
 
-    });
+                    });
 
-});
+                });
 
-</script>
+            </script>
 
         </div>
 

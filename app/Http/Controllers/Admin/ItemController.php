@@ -74,7 +74,8 @@ class ItemController extends Controller
             'qty' => $request->qty,
             'available_qty' => $request->qty,
             'price_per_day' => $request->price_per_day,
-            'status' => $request->status
+            'status' => $request->status,
+            'sort_order' => $request->sort_order ?? 0
         ]);
 
         return redirect()
@@ -173,7 +174,8 @@ if (!empty($item->image)) {
             'qty' => $request->qty,
             'available_qty' => $request->available_qty,
             'price_per_day' => $request->price_per_day,
-            'status' => $request->status
+            'status' => $request->status,
+            'sort_order' => $request->sort_order ?? 0
         ]);
 
         return redirect()

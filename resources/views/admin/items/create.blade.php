@@ -70,7 +70,7 @@
 
                     </div>
 
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-3 mb-3">
 
                         <label>Status</label>
 
@@ -85,6 +85,13 @@
                             </option>
 
                         </select>
+
+                    </div>
+                    <div class="col-md-3 mb-3">
+
+                        <label>Sort Order</label>
+
+                        <input type="number" name="sort_order" value="0" class="form-control">
 
                     </div>
 

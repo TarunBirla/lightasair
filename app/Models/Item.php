@@ -19,7 +19,8 @@ class Item extends Model
     'qty',
     'available_qty',
     'price_per_day',
-    'status'
+    'status',
+    'sort_order'
 ];
 
 protected $casts = [

@@ -392,26 +392,26 @@
                     <div class="feature-list">
                         <span class="feature-pill"><i class="bi bi-check-circle-fill text-success"></i> Available Now</span>
                         <!-- <span class="feature-pill"><i class="bi bi-truck" style="color:var(--brand-dk);"></i> Free
-                                    Delivery</span>
-                                <span class="feature-pill"><i class="bi bi-arrow-counterclockwise text-primary"></i> Easy
-                                    Returns</span> -->
+                                        Delivery</span>
+                                    <span class="feature-pill"><i class="bi bi-arrow-counterclockwise text-primary"></i> Easy
+                                        Returns</span> -->
                     </div>
 
                     <!-- <p class="item-desc">{{ $item->description }}</p> -->
                     <p class="item-desc">{!! $item->description !!}</p>
 
                     <!-- <div class="price-block">
-                                <span class="price-amount">£{{ number_format($item->price_per_day, 2) }}</span>
-                                <span class="price-label">per day</span>
-                            </div> -->
+                                    <span class="price-amount">£{{ number_format($item->price_per_day, 2) }}</span>
+                                    <span class="price-label">per day</span>
+                                </div> -->
 
                     <!-- <div class="avail-row">
-                                <i class="bi bi-boxes fs-5"></i>
-                                Available Quantity:
-                                <span class="avail-badge">
-                                    <i class="bi bi-check-circle-fill me-1"></i>{{ $item->available_qty }} in stock
-                                </span>
-                            </div> -->
+                                    <i class="bi bi-boxes fs-5"></i>
+                                    Available Quantity:
+                                    <span class="avail-badge">
+                                        <i class="bi bi-check-circle-fill me-1"></i>{{ $item->available_qty }} in stock
+                                    </span>
+                                </div> -->
                     @if(Auth::check())
                         <form action="/add-to-cart" method="POST">
                             @csrf
@@ -437,12 +437,12 @@
                     @else
 
                         <!-- <button class="btn-add-cart" onclick="openRequestModal(
-                                                            '{{ $item->id }}',
-                                                            '{{ $item->title }}'
-                                                            )">
-                                                                                        <i class="bi bi-cart-plus-fill"></i>
-                                                                                        Request
-                                                                                    </button> -->
+                                                                    '{{ $item->id }}',
+                                                                    '{{ $item->title }}'
+                                                                    )">
+                                                                                                <i class="bi bi-cart-plus-fill"></i>
+                                                                                                Request
+                                                                                            </button> -->
                     @endif
                 </div>
             </div>
@@ -626,13 +626,13 @@
 
                     `🔥 NEW LIGHT AS AIR REQUEST
 
-            Item: ${data.item_name}
+                Item: ${data.item_name}
 
-            Name: ${data.name}
+                Name: ${data.name}
 
-            Email: ${data.email}
+                Email: ${data.email}
 
-            Phone: ${data.phone}`;
+                Phone: ${data.phone}`;
 
                 window.open(
                     `https://wa.me/447879175585?text=${encodeURIComponent(msg)}`,
