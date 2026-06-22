@@ -95,22 +95,29 @@
 
                     </div>
 
-                    @php
+                   @php
 
-                        $images = [];
+$images = [];
 
-                        if ($item->image) {
+if ($item->image) {
 
-                            $decoded = json_decode($item->image, true);
+    if (is_array($item->image)) {
 
-                            if (is_array($decoded)) {
-                                $images = $decoded;
-                            } else {
-                                $images = [$item->image];
-                            }
-                        }
+        $images = $item->image;
 
-                    @endphp
+    } else {
+
+        $decoded = json_decode($item->image, true);
+
+        if (is_array($decoded)) {
+            $images = $decoded;
+        } else {
+            $images = [$item->image];
+        }
+    }
+}
+
+@endphp
 
                     <div class="row">
 

@@ -104,18 +104,25 @@ class ItemController extends Controller
     {
         $item = Item::findOrFail($id);
 
-        $oldImages = [];
+    $oldImages = [];
 
-        if (!empty($item->image)) {
+if (!empty($item->image)) {
 
-            $decoded = json_decode($item->image, true);
+    if (is_array($item->image)) {
 
-            if (is_array($decoded)) {
-                $oldImages = $decoded;
-            } else {
-                $oldImages = [$item->image];
-            }
+        $oldImages = $item->image;
+
+    } else {
+
+        $decoded = json_decode($item->image, true);
+
+        if (is_array($decoded)) {
+            $oldImages = $decoded;
+        } else {
+            $oldImages = [$item->image];
         }
+    }
+}
 
         // Delete Images
         $deletedImages = json_decode(
