@@ -2,148 +2,123 @@
 
 @section('content')
 
-<div class="card">
+    <div class="card">
 
-<div class="card-header">
-Add Item
-</div>
+        <div class="card-header">
+            Add Item
+        </div>
 
-<div class="card-body">
+        <div class="card-body">
 
-<form
-action="{{ route('items.store') }}"
-method="POST"
-enctype="multipart/form-data">
+            <form action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data">
 
-@csrf
+                @csrf
 
-<div class="row">
+                <div class="row">
 
-<div class="col-md-6 mb-3">
+                    <div class="col-md-6 mb-3">
 
-<label>Category</label>
+                        <label>Category</label>
 
-<select
-name="category_id"
-class="form-control">
+                        <select name="category_id" class="form-control">
 
-<option value="">
-Select Category
-</option>
+                            <option value="">
+                                Select Category
+                            </option>
 
-@foreach($categories as $category)
+                            @foreach($categories as $category)
 
-<option
-value="{{ $category->id }}">
+                                <option value="{{ $category->id }}">
 
-{{ $category->name }}
+                                    {{ $category->name }}
 
-</option>
+                                </option>
 
-@endforeach
+                            @endforeach
 
-</select>
+                        </select>
 
-</div>
+                    </div>
 
-<div class="col-md-6 mb-3">
+                    <div class="col-md-6 mb-3">
 
-<label>Title</label>
+                        <label>Title</label>
 
-<input
-type="text"
-name="title"
-class="form-control">
+                        <input type="text" name="title" class="form-control">
 
-</div>
+                    </div>
 
-<div class="col-md-12 mb-3">
-    <label>Description</label>
+                    <div class="col-md-12 mb-3">
+                        <label>Description</label>
 
-    <textarea
-        name="description"
-        id="description"
-        class="form-control"></textarea>
-</div>
+                        <textarea name="description" id="description" class="form-control"></textarea>
+                    </div>
 
-<div class="col-md-4 mb-3">
+                    <div class="col-md-4 mb-3">
 
-<label>Qty</label>
+                        <label>Qty</label>
 
-<input
-type="number"
-name="qty"
-class="form-control">
+                        <input type="number" name="qty" class="form-control">
 
-</div>
+                    </div>
 
-<div class="col-md-4 mb-3">
+                    <div class="col-md-4 mb-3">
 
-<label>Price Per Day (£)</label>
+                        <label>Price Per Day (£)</label>
 
-<input
-type="number"
-step="0.01"
-name="price_per_day"
-class="form-control">
+                        <input type="number" step="0.01" name="price_per_day" class="form-control">
 
-</div>
+                    </div>
 
-<div class="col-md-4 mb-3">
+                    <div class="col-md-4 mb-3">
 
-<label>Status</label>
+                        <label>Status</label>
 
-<select
-name="status"
-class="form-control">
+                        <select name="status" class="form-control">
 
-<option value="active">
-Active
-</option>
+                            <option value="active">
+                                Active
+                            </option>
 
-<option value="inactive">
-Inactive
-</option>
+                            <option value="inactive">
+                                Inactive
+                            </option>
 
-</select>
+                        </select>
 
-</div>
+                    </div>
 
-<div class="col-md-12 mb-3">
+                    <div class="col-md-12 mb-3">
 
-<label>Image</label>
+                        <label>Image</label>
 
-<input
-type="file"
-name="image"
-class="form-control">
+                        <input type="file" name="image[]" class="form-control">
 
-</div>
+                    </div>
 
-</div>
+                </div>
 
-<button
-class="btn btn-success">
+                <button class="btn btn-success">
 
-Save Item
+                    Save Item
 
-</button>
+                </button>
 
-</form>
-<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+            </form>
+            <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    ClassicEditor
-        .create(document.querySelector('#description'))
-        .catch(error => {
-            console.error(error);
-        });
-});
-</script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    ClassicEditor
+                        .create(document.querySelector('#description'))
+                        .catch(error => {
+                            console.error(error);
+                        });
+                });
+            </script>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
 @endsection

@@ -2,171 +2,204 @@
 
 @section('content')
 
-<div class="card">
+    <div class="card">
 
-<div class="card-header">
-Edit Item
-</div>
+        <div class="card-header">
+            Edit Item
+        </div>
 
-<div class="card-body">
+        <div class="card-body">
 
-<form
-action="{{ route('items.update',$item->id) }}"
-method="POST"
-enctype="multipart/form-data">
+            <form action="{{ route('items.update', $item->id) }}" method="POST" enctype="multipart/form-data">
 
-@csrf
-@method('PUT')
+                @csrf
+                @method('PUT')
 
-<div class="row">
+                <div class="row">
 
-<div class="col-md-6 mb-3">
+                    <div class="col-md-6 mb-3">
 
-<label>Category</label>
+                        <label>Category</label>
 
-<select
-name="category_id"
-class="form-control">
+                        <select name="category_id" class="form-control">
 
-@foreach($categories as $category)
+                            @foreach($categories as $category)
 
-<option
-value="{{ $category->id }}"
-{{ $item->category_id == $category->id ? 'selected':'' }}>
+                                <option value="{{ $category->id }}" {{ $item->category_id == $category->id ? 'selected' : '' }}>
 
-{{ $category->name }}
+                                    {{ $category->name }}
 
-</option>
+                                </option>
 
-@endforeach
+                            @endforeach
 
-</select>
+                        </select>
 
-</div>
+                    </div>
 
-<div class="col-md-6 mb-3">
+                    <div class="col-md-6 mb-3">
 
-<label>Title</label>
+                        <label>Title</label>
 
-<input
-type="text"
-name="title"
-value="{{ $item->title }}"
-class="form-control">
+                        <input type="text" name="title" value="{{ $item->title }}" class="form-control">
 
-</div>
+                    </div>
 
-<div class="col-md-12 mb-3">
-    <label>Description</label>
+                    <div class="col-md-12 mb-3">
+                        <label>Description</label>
 
-    <textarea
-        name="description"
-        id="description"
-        class="form-control">{{ $item->description }}</textarea>
-</div>
+                        <textarea name="description" id="description"
+                            class="form-control">{{ $item->description }}</textarea>
+                    </div>
 
-<div class="col-md-3 mb-3">
+                    <div class="col-md-3 mb-3">
 
-<label>Total Qty</label>
+                        <label>Total Qty</label>
 
-<input
-type="number"
-name="qty"
-value="{{ $item->qty }}"
-class="form-control">
+                        <input type="number" name="qty" value="{{ $item->qty }}" class="form-control">
 
-</div>
+                    </div>
 
-<div class="col-md-3 mb-3">
+                    <div class="col-md-3 mb-3">
 
-<label>Available Qty</label>
+                        <label>Available Qty</label>
 
-<input
-type="number"
-name="available_qty"
-value="{{ $item->available_qty }}"
-class="form-control">
+                        <input type="number" name="available_qty" value="{{ $item->available_qty }}" class="form-control">
 
-</div>
+                    </div>
 
-<div class="col-md-3 mb-3">
+                    <div class="col-md-3 mb-3">
 
-<label>Price Per Day (£)</label>
+                        <label>Price Per Day (£)</label>
 
-<input
-type="number"
-step="0.01"
-name="price_per_day"
-value="{{ $item->price_per_day }}"
-class="form-control">
+                        <input type="number" step="0.01" name="price_per_day" value="{{ $item->price_per_day }}"
+                            class="form-control">
 
-</div>
+                    </div>
 
-<div class="col-md-3 mb-3">
+                    <div class="col-md-3 mb-3">
 
-<label>Status</label>
+                        <label>Status</label>
 
-<select
-name="status"
-class="form-control">
+                        <select name="status" class="form-control">
 
-<option
-value="active"
-{{ $item->status=='active' ? 'selected':'' }}>
-Active
-</option>
+                            <option value="active" {{ $item->status == 'active' ? 'selected' : '' }}>
+                                Active
+                            </option>
 
-<option
-value="inactive"
-{{ $item->status=='inactive' ? 'selected':'' }}>
-Inactive
-</option>
+                            <option value="inactive" {{ $item->status == 'inactive' ? 'selected' : '' }}>
+                                Inactive
+                            </option>
 
-</select>
+                        </select>
 
-</div>
+                    </div>
 
-<div class="col-md-12 mb-3">
+                    @php
 
-<img
-src="{{ asset('uploads/items/'.$item->image) }}"
-width="120">
+                        $images = [];
 
-</div>
+                        if ($item->image) {
 
-<div class="col-md-12 mb-3">
+                            $decoded = json_decode($item->image, true);
 
-<input
-type="file"
-name="image"
-class="form-control">
+                            if (is_array($decoded)) {
+                                $images = $decoded;
+                            } else {
+                                $images = [$item->image];
+                            }
+                        }
 
-</div>
+                    @endphp
 
-</div>
+                    <div class="row">
 
-<button
-class="btn btn-primary">
+                        @foreach($images as $index => $img)
 
-Update Item
+                                <div class="col-md-2 mb-3 image-box">
 
-</button>
+                                    <div style="position:relative">
 
-</form>
-<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+                                        <img src="{{ asset('uploads/items/' . $img) }}" class="img-fluid border rounded"
+                                            style="height:120px;width:100%;object-fit:cover;">
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    ClassicEditor
-        .create(document.querySelector('#description'))
-        .catch(error => {
-            console.error(error);
-        });
+                                        <button type="button" class="btn btn-danger btn-sm remove-image" data-index="{{ $index }}"
+                                            style="
+                            position:absolute;
+                            top:5px;
+                            right:5px;
+                            border-radius:50%;
+                            width:28px;
+                            height:28px;
+                            padding:0;">
+                                            ×
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                        @endforeach
+
+                    </div>
+
+                    <input type="hidden" name="deleted_images" id="deleted_images">
+
+                    <div class="col-md-12 mb-3">
+
+                        <label>Add More Images</label>
+
+                        <input type="file" name="image[]" multiple class="form-control">
+
+                    </div>
+
+                </div>
+
+                <button class="btn btn-primary">
+
+                    Update Item
+
+                </button>
+
+            </form>
+            <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    ClassicEditor
+                        .create(document.querySelector('#description'))
+                        .catch(error => {
+                            console.error(error);
+                        });
+                });
+
+
+            </script>
+               <script>
+
+let deletedImages = [];
+
+document.querySelectorAll('.remove-image').forEach(btn => {
+
+    btn.addEventListener('click', function() {
+
+        let index = this.dataset.index;
+
+        deletedImages.push(index);
+
+        document.getElementById('deleted_images').value =
+            JSON.stringify(deletedImages);
+
+        this.closest('.image-box').remove();
+
+    });
+
 });
+
 </script>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
 @endsection

@@ -342,7 +342,48 @@
             <tr>
                 <td><span class="id-badge">{{ $item->id }}</span></td>
                 <td>
-                    <img src="{{ asset('uploads/items/'.$item->image) }}" class="item-img" alt="{{ $item->title }}">
+                    @php
+
+$images = json_decode($item->image, true);
+
+if (!is_array($images)) {
+    $images = [$item->image];
+}
+
+$firstImage = $images[0] ?? null;
+
+@endphp
+
+<div style="position:relative">
+
+@if($firstImage)
+
+<img
+src="{{ asset('uploads/items/'.$firstImage) }}"
+class="item-img">
+
+@endif
+
+@if(count($images) > 1)
+
+<span
+style="
+position:absolute;
+top:-5px;
+right:-5px;
+background:#FFC700;
+color:#111;
+padding:3px 8px;
+border-radius:20px;
+font-size:11px;
+font-weight:700;">
++{{ count($images)-1 }}
+</span>
+
+@endif
+
+</div>
+                    <!-- <img src="{{ asset('uploads/items/'.$item->image) }}" class="item-img" alt="{{ $item->title }}"> -->
                 </td>
                 <td>
                     <span class="item-title">

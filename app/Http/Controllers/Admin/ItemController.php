@@ -9,22 +9,22 @@ use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
-   public function index(Request $request)
-{
-    $search = $request->search;
+    public function index(Request $request)
+    {
+        $search = $request->search;
 
-    $items = Item::with('category')
-        ->when($search, function ($query) use ($search) {
-            $query->where('title', 'LIKE', "%{$search}%")
-                  ->orWhereHas('category', function ($q) use ($search) {
-                      $q->where('name', 'LIKE', "%{$search}%");
-                  });
-        })
-        ->latest()
-        ->paginate(20);
+        $items = Item::with('category')
+            ->when($search, function ($query) use ($search) {
+                $query->where('title', 'LIKE', "%{$search}%")
+                    ->orWhereHas('category', function ($q) use ($search) {
+                        $q->where('name', 'LIKE', "%{$search}%");
+                    });
+            })
+            ->latest()
+            ->paginate(20);
 
-    return view('admin.items.index', compact('items'));
-}
+        return view('admin.items.index', compact('items'));
+    }
 
     public function create()
     {
@@ -48,25 +48,29 @@ class ItemController extends Controller
             'price_per_day' => 'required'
         ]);
 
-        $image = null;
+        $images = [];
 
         if ($request->hasFile('image')) {
 
-            $file = $request->file('image');
+            foreach ($request->file('image') as $file) {
 
-            $image = time() . '.' . $file->extension();
+                $imageName =
+                    time() . '_' . uniqid() . '.' . $file->extension();
 
-            $file->move(
-                public_path('uploads/items'),
-                $image
-            );
+                $file->move(
+                    public_path('uploads/items'),
+                    $imageName
+                );
+
+                $images[] = $imageName;
+            }
         }
 
         Item::create([
             'category_id' => $request->category_id,
             'title' => $request->title,
             'description' => $request->description,
-            'image' => $image,
+            'image' => json_encode($images),
             'qty' => $request->qty,
             'available_qty' => $request->qty,
             'price_per_day' => $request->price_per_day,
@@ -96,31 +100,69 @@ class ItemController extends Controller
         );
     }
 
-    public function update(
-        Request $request,
-        $id
-    ) {
+    public function update(Request $request, $id)
+    {
         $item = Item::findOrFail($id);
 
-        $image = $item->image;
+        $oldImages = [];
 
+        if (!empty($item->image)) {
+
+            $decoded = json_decode($item->image, true);
+
+            if (is_array($decoded)) {
+                $oldImages = $decoded;
+            } else {
+                $oldImages = [$item->image];
+            }
+        }
+
+        // Delete Images
+        $deletedImages = json_decode(
+            $request->deleted_images,
+            true
+        ) ?? [];
+
+        foreach ($deletedImages as $index) {
+
+            if (isset($oldImages[$index])) {
+
+                $filePath = public_path(
+                    'uploads/items/' . $oldImages[$index]
+                );
+
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+
+                unset($oldImages[$index]);
+            }
+        }
+
+        $oldImages = array_values($oldImages);
+
+        // Upload New Images
         if ($request->hasFile('image')) {
 
-            $file = $request->file('image');
+            foreach ($request->file('image') as $file) {
 
-            $image = time() . '.' . $file->extension();
+                $imageName =
+                    time() . '_' . uniqid() . '.' . $file->extension();
 
-            $file->move(
-                public_path('uploads/items'),
-                $image
-            );
+                $file->move(
+                    public_path('uploads/items'),
+                    $imageName
+                );
+
+                $oldImages[] = $imageName;
+            }
         }
 
         $item->update([
             'category_id' => $request->category_id,
             'title' => $request->title,
             'description' => $request->description,
-            'image' => $image,
+            'image' => json_encode($oldImages),
             'qty' => $request->qty,
             'available_qty' => $request->available_qty,
             'price_per_day' => $request->price_per_day,
