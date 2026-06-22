@@ -92,7 +92,11 @@
 
                         <label>Image</label>
 
-                        <input type="file" name="image[]" class="form-control">
+                        <input
+    type="file"
+    name="image[]"
+    multiple
+    class="form-control">
 
                     </div>
 
