@@ -383,7 +383,6 @@ font-weight:700;">
 @endif
 
 </div>
-                    <!-- <img src="{{ asset('uploads/items/'.$item->image) }}" class="item-img" alt="{{ $item->title }}"> -->
                 </td>
                 <td>
                     <span class="item-title">
