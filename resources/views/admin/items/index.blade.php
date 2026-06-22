@@ -342,12 +342,12 @@
             <tr>
                 <td><span class="id-badge">{{ $item->id }}</span></td>
                 <td>
-                    @php
+         @php
 
-$images = json_decode($item->image, true);
+$images = $item->image ?? [];
 
 if (!is_array($images)) {
-    $images = [$item->image];
+    $images = [$images];
 }
 
 $firstImage = $images[0] ?? null;
