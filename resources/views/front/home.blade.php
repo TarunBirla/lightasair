@@ -837,8 +837,8 @@
                                     <i class="bi bi-search"></i> Browse Equipment
                                 </a>
                                 <!-- <a href="/register" class="btn-hero-secondary">
-                                                    Get Started
-                                                </a> -->
+                                                            Get Started
+                                                        </a> -->
                             </div>
                         </div>
                     </div>
@@ -846,11 +846,11 @@
             </div>
 
             <!-- <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-                    <i class="bi bi-chevron-left" style="font-size:1.1rem;color:#fff;"></i>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-                    <i class="bi bi-chevron-right" style="font-size:1.1rem;color:#fff;"></i>
-                </button> -->
+                        <i class="bi bi-chevron-left" style="font-size:1.1rem;color:#fff;"></i>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                        <i class="bi bi-chevron-right" style="font-size:1.1rem;color:#fff;"></i>
+                    </button> -->
         </div>
     </section>
 
@@ -1034,14 +1034,14 @@
                             <div class="item-card-body">
                                 <div class="item-title">{{ $item->title }}</div>
                                 <!-- <div class="item-price mt-1">
-                                            £{{ number_format($item->price_per_day, 2) }}
-                                            <small>/ day</small>
-                                        </div> -->
-                                <!-- <div class="mt-2">
-                                                    <span class="qty-badge">
-                                                        <i class="bi bi-boxes"></i> {{ $item->available_qty }} in stock
-                                                    </span>
+                                                    £{{ number_format($item->price_per_day, 2) }}
+                                                    <small>/ day</small>
                                                 </div> -->
+                                <!-- <div class="mt-2">
+                                                            <span class="qty-badge">
+                                                                <i class="bi bi-boxes"></i> {{ $item->available_qty }} in stock
+                                                            </span>
+                                                        </div> -->
                             </div>
                             <div class="item-card-footer">
                                 <a href="{{ url('item/' . $item->id) }}" class="btn-view">
@@ -1057,22 +1057,22 @@
                                         </button>
                                     </form>
                                 @else
-                                                            <!-- 
-                                                                                                <button class="btn-cart w-100" onclick="openRequestModal(
-                                                                        '{{ $item->id }}',
-                                                                        '{{ $item->title }}'
-                                                                        )">
-                                                                                                    <i class="bi bi-cart-plus-fill"></i>
-                                                                                                    Request
-                                                                                                </button> -->
+                                    <!-- 
+                                                                                                            <button class="btn-cart w-100" onclick="openRequestModal(
+                                                                                    '{{ $item->id }}',
+                                                                                    '{{ $item->title }}'
+                                                                                    )">
+                                                                                                                <i class="bi bi-cart-plus-fill"></i>
+                                                                                                                Request
+                                                                                                            </button> -->
 
-                                                            <button class="btn-cart w-100" onclick="addToRequest(
-                                    '{{ $item->id }}',
-                                    '{{ $item->title }}'
-                                    )">
-                                                                <i class="bi bi-plus-circle"></i>
-                                                                Request
-                                                            </button>
+                                    <button class="btn-cart w-100" onclick="addToRequest(
+                                                '{{ $item->id }}',
+                                                '{{ $item->title }}'
+                                                )">
+                                        <i class="bi bi-plus-circle"></i>
+                                        Request
+                                    </button>
                                 @endif
                             </div>
                         </div>
@@ -1082,42 +1082,42 @@
         </div>
     </section>
 
-<script>
+    <script>
 
-document.querySelectorAll('.slider-wrap').forEach(slider => {
+        document.querySelectorAll('.slider-wrap').forEach(slider => {
 
-    let images =
-        slider.querySelectorAll('.slider-image');
+            let images =
+                slider.querySelectorAll('.slider-image');
 
-    let itemId =
-        images[0]?.dataset.item;
+            let itemId =
+                images[0]?.dataset.item;
 
-    let dots =
-        document.querySelectorAll(
-            '.dot-indicator[data-item="'+itemId+'"]'
-        );
+            let dots =
+                document.querySelectorAll(
+                    '.dot-indicator[data-item="' + itemId + '"]'
+                );
 
-    let current = 0;
+            let current = 0;
 
-    setInterval(() => {
+            setInterval(() => {
 
-        images[current].classList.remove('active-img');
-        dots[current].classList.remove('active-dot');
+                images[current].classList.remove('active-img');
+                dots[current].classList.remove('active-dot');
 
-        current++;
+                current++;
 
-        if(current >= images.length){
-            current = 0;
-        }
+                if (current >= images.length) {
+                    current = 0;
+                }
 
-        images[current].classList.add('active-img');
-        dots[current].classList.add('active-dot');
+                images[current].classList.add('active-img');
+                dots[current].classList.add('active-dot');
 
-    }, 5000);
+            }, 5000);
 
-});
+        });
 
-</script>
+    </script>
 
     @include('front.brand')
     @include('front.television')
@@ -1131,43 +1131,43 @@ document.querySelectorAll('.slider-wrap').forEach(slider => {
 
     <!-- ── HOW IT WORKS ── -->
     <!-- <section class="how-section py-5">
-            <div class="container">
-                <div class="text-center mb-5">
-                    <div class="section-label mb-1"><i class="bi bi-info-circle-fill me-1"></i>Simple Process</div>
-                    <h2 class="section-title mb-0">How It Works</h2>
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <div class="section-label mb-1"><i class="bi bi-info-circle-fill me-1"></i>Simple Process</div>
+                        <h2 class="section-title mb-0">How It Works</h2>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-3">
+                            <div class="step-card">
+                                <div class="step-num"><i class="bi bi-search" style="font-size:1.3rem;"></i></div>
+                                <h5>Browse & Select</h5>
+                                <p>Explore our wide range of professional equipment by category or search.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="step-card">
+                                <div class="step-num"><i class="bi bi-cart-check-fill" style="font-size:1.3rem;"></i></div>
+                                <h5>Add to Cart</h5>
+                                <p>Select items and quantities, then add them to your cart in one click.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="step-card">
+                                <div class="step-num"><i class="bi bi-calendar2-check-fill" style="font-size:1.3rem;"></i></div>
+                                <h5>Choose Dates</h5>
+                                <p>Pick your rental start and end dates at checkout. Flexible options available.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="step-card">
+                                <div class="step-num"><i class="bi bi-truck" style="font-size:1.3rem;"></i></div>
+                                <h5>Get It Delivered</h5>
+                                <p>We deliver to your door and collect when your rental period ends.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="row g-4">
-                    <div class="col-md-3">
-                        <div class="step-card">
-                            <div class="step-num"><i class="bi bi-search" style="font-size:1.3rem;"></i></div>
-                            <h5>Browse & Select</h5>
-                            <p>Explore our wide range of professional equipment by category or search.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="step-card">
-                            <div class="step-num"><i class="bi bi-cart-check-fill" style="font-size:1.3rem;"></i></div>
-                            <h5>Add to Cart</h5>
-                            <p>Select items and quantities, then add them to your cart in one click.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="step-card">
-                            <div class="step-num"><i class="bi bi-calendar2-check-fill" style="font-size:1.3rem;"></i></div>
-                            <h5>Choose Dates</h5>
-                            <p>Pick your rental start and end dates at checkout. Flexible options available.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="step-card">
-                            <div class="step-num"><i class="bi bi-truck" style="font-size:1.3rem;"></i></div>
-                            <h5>Get It Delivered</h5>
-                            <p>We deliver to your door and collect when your rental period ends.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section> -->
+            </section> -->
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -1363,14 +1363,14 @@ document.querySelectorAll('.slider-wrap').forEach(slider => {
 
                     `🔥 NEW LIGHT AS AIR REQUEST
 
-    Items:
-    ${data.items}
+        Items:
+        ${data.items}
 
-    Name: ${data.name}
+        Name: ${data.name}
 
-    Email: ${data.email}
+        Email: ${data.email}
 
-    Phone: ${data.phone}`;
+        Phone: ${data.phone}`;
 
                 window.open(
                     `https://wa.me/447879175585?text=${encodeURIComponent(msg)}`,

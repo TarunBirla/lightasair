@@ -481,6 +481,44 @@
     height: 100%;
     object-fit: contain;
 }
+
+.slider-wrap{
+    position:relative;
+    height:250px;
+    overflow:hidden;
+}
+
+.slider-image{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    opacity:0;
+    transition:.5s;
+}
+
+.active-img{
+    opacity:1;
+}
+
+.slider-dots{
+    display:flex;
+    justify-content:center;
+    gap:5px;
+    margin-top:8px;
+}
+
+.dot-indicator{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#ccc;
+}
+
+.active-dot{
+    background:#22c55e;
+}
     </style>
 
     <div class="container py-5">
@@ -573,10 +611,41 @@
             @foreach($items as $item)
                 <div class="col-12 col-md-4 col-lg-3">
                     <div class="item-card">
-                        <div class="img-wrap">
-                            <img src="{{ asset('uploads/items/' . $item->image) }}" alt="{{ $item->title }}">
-                            <!-- <span class="item-badge"><i class="bi bi-check-circle-fill me-1"></i>Available</span> -->
-                        </div>
+                        @php
+
+$images = $item->image ?? [];
+
+if (!is_array($images)) {
+    $images = [$images];
+}
+
+@endphp
+
+<div class="img-wrap slider-wrap">
+
+    @foreach($images as $key => $img)
+
+        <img
+            src="{{ asset('uploads/items/'.$img) }}"
+            class="slider-image {{ $key == 0 ? 'active-img' : '' }}"
+            data-item="{{ $item->id }}">
+
+    @endforeach
+
+</div>
+
+<div class="slider-dots">
+
+    @foreach($images as $key => $img)
+
+        <span
+            class="dot-indicator {{ $key == 0 ? 'active-dot' : '' }}"
+            data-item="{{ $item->id }}">
+        </span>
+
+    @endforeach
+
+</div>
                         <div class="item-card-body">
                             <div class="item-title">{{ $item->title }}</div>
                             <!-- <div class="item-price mt-1">
@@ -627,6 +696,43 @@
         </div>
 
     </div>
+
+    <script>
+
+document.querySelectorAll('.slider-wrap').forEach(slider => {
+
+    let images =
+        slider.querySelectorAll('.slider-image');
+
+    let itemId =
+        images[0]?.dataset.item;
+
+    let dots =
+        document.querySelectorAll(
+            '.dot-indicator[data-item="'+itemId+'"]'
+        );
+
+    let current = 0;
+
+    setInterval(() => {
+
+        images[current].classList.remove('active-img');
+        dots[current].classList.remove('active-dot');
+
+        current++;
+
+        if(current >= images.length){
+            current = 0;
+        }
+
+        images[current].classList.add('active-img');
+        dots[current].classList.add('active-dot');
+
+    }, 5000);
+
+});
+
+</script>
     @include('front.portfolio')
  @include('front.brand')
     @include('front.television')
