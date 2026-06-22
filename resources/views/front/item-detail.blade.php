@@ -219,51 +219,87 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(255, 199, 0, .4);
         }
-        .product-image{
-    cursor:pointer;
-    transition:0.3s;
-}
 
-.product-image:hover{
-    transform:scale(1.02);
-}
+        .product-image {
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-.image-modal .modal-dialog{
-    max-width:100vw;
-    margin:0;
-}
+        .product-image:hover {
+            transform: scale(1.02);
+        }
 
-.image-modal .modal-content{
-    background:#000;
-    border:none;
-    border-radius:0;
-    height:100vh;
-}
+        .image-modal .modal-dialog {
+            max-width: 100vw;
+            margin: 0;
+        }
 
-.image-modal .modal-body{
-    height:100vh;
+        .image-modal .modal-content {
+            background: #000;
+            border: none;
+            border-radius: 0;
+            height: 100vh;
+        }
+
+        .image-modal .modal-body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .image-modal img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .image-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            z-index: 9999;
+            font-size: 35px;
+            color: #fff;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .product-gallery{
     display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
+    gap:15px;
 }
 
-.image-modal img{
-    max-width:100%;
-    max-height:100%;
-    object-fit:contain;
+.thumb-gallery{
+    width:90px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
 }
 
-.image-close{
-    position:absolute;
-    top:15px;
-    right:20px;
-    z-index:9999;
-    font-size:35px;
-    color:#fff;
-    background:none;
-    border:none;
+.thumb-image{
+    width:80px;
+    height:80px;
+    object-fit:cover;
+    border:2px solid #eee;
+    border-radius:8px;
     cursor:pointer;
+    transition:.3s;
+}
+
+.thumb-image:hover{
+    border-color:#ffc700;
+}
+
+.main-gallery-image{
+    flex:1;
+}
+
+.main-gallery-image img{
+    width:100%;
+    max-height:500px;
+    object-fit:contain;
 }
     </style>
 
@@ -295,32 +331,65 @@
             <!-- Image -->
             <div class="col-lg-5">
                 <div class="item-img-wrap">
-                    <!-- <img src="{{ asset('uploads/items/' . $item->image) }}" alt="{{ $item->title }}"> -->
-                    <img src="{{ asset('uploads/items/' . $item->image) }}"
-     alt="{{ $item->title }}"
-     class="product-image"
-     data-bs-toggle="modal"
-     data-bs-target="#imageModal">
+                    @php
+
+$images = $item->image ?? [];
+
+if (!is_array($images)) {
+    $images = [$images];
+}
+
+$mainImage = $images[0] ?? '';
+
+@endphp
+
+<div class="product-gallery">
+
+    <div class="thumb-gallery">
+
+        @foreach($images as $img)
+
+        <img
+            src="{{ asset('uploads/items/'.$img) }}"
+            class="thumb-image"
+            onclick="changeImage(this)"
+            data-full="{{ asset('uploads/items/'.$img) }}">
+
+        @endforeach
+
+    </div>
+
+    <div class="main-gallery-image">
+
+        <img
+            id="mainProductImage"
+            src="{{ asset('uploads/items/'.$mainImage) }}"
+            alt="{{ $item->title }}"
+            class="product-image"
+            data-bs-toggle="modal"
+            data-bs-target="#imageModal">
+
+    </div>
+
+</div>
                 </div>
             </div>
             <div class="modal fade image-modal" id="imageModal" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
+                <div class="modal-dialog modal-fullscreen">
+                    <div class="modal-content">
 
-            <button type="button"
-                    class="image-close"
-                    data-bs-dismiss="modal">
-                &times;
-            </button>
+                        <button type="button" class="image-close" data-bs-dismiss="modal">
+                            &times;
+                        </button>
 
-            <div class="modal-body">
-                <img src="{{ asset('uploads/items/' . $item->image) }}"
-                     alt="{{ $item->title }}">
+                        <div class="modal-body">
+                            <img id="modalProductImage"
+    src="{{ asset('uploads/items/'.$mainImage) }}">
+                        </div>
+
+                    </div>
+                </div>
             </div>
-
-        </div>
-    </div>
-</div>
 
             <!-- Details -->
             <div class="col-lg-7">
@@ -330,26 +399,26 @@
                     <div class="feature-list">
                         <span class="feature-pill"><i class="bi bi-check-circle-fill text-success"></i> Available Now</span>
                         <!-- <span class="feature-pill"><i class="bi bi-truck" style="color:var(--brand-dk);"></i> Free
-                            Delivery</span>
-                        <span class="feature-pill"><i class="bi bi-arrow-counterclockwise text-primary"></i> Easy
-                            Returns</span> -->
+                                Delivery</span>
+                            <span class="feature-pill"><i class="bi bi-arrow-counterclockwise text-primary"></i> Easy
+                                Returns</span> -->
                     </div>
 
                     <!-- <p class="item-desc">{{ $item->description }}</p> -->
                     <p class="item-desc">{!! $item->description !!}</p>
 
                     <!-- <div class="price-block">
-                        <span class="price-amount">£{{ number_format($item->price_per_day, 2) }}</span>
-                        <span class="price-label">per day</span>
-                    </div> -->
+                            <span class="price-amount">£{{ number_format($item->price_per_day, 2) }}</span>
+                            <span class="price-label">per day</span>
+                        </div> -->
 
                     <!-- <div class="avail-row">
-                        <i class="bi bi-boxes fs-5"></i>
-                        Available Quantity:
-                        <span class="avail-badge">
-                            <i class="bi bi-check-circle-fill me-1"></i>{{ $item->available_qty }} in stock
-                        </span>
-                    </div> -->
+                            <i class="bi bi-boxes fs-5"></i>
+                            Available Quantity:
+                            <span class="avail-badge">
+                                <i class="bi bi-check-circle-fill me-1"></i>{{ $item->available_qty }} in stock
+                            </span>
+                        </div> -->
                     @if(Auth::check())
                         <form action="/add-to-cart" method="POST">
                             @csrf
@@ -375,12 +444,12 @@
                     @else
 
                         <!-- <button class="btn-add-cart" onclick="openRequestModal(
-                                            '{{ $item->id }}',
-                                            '{{ $item->title }}'
-                                            )">
-                                                                        <i class="bi bi-cart-plus-fill"></i>
-                                                                        Request
-                                                                    </button> -->
+                                                    '{{ $item->id }}',
+                                                    '{{ $item->title }}'
+                                                    )">
+                                                                                <i class="bi bi-cart-plus-fill"></i>
+                                                                                Request
+                                                                            </button> -->
                     @endif
                 </div>
             </div>
@@ -564,13 +633,13 @@
 
                     `🔥 NEW LIGHT AS AIR REQUEST
 
-    Item: ${data.item_name}
+        Item: ${data.item_name}
 
-    Name: ${data.name}
+        Name: ${data.name}
 
-    Email: ${data.email}
+        Email: ${data.email}
 
-    Phone: ${data.phone}`;
+        Phone: ${data.phone}`;
 
                 window.open(
                     `https://wa.me/447879175585?text=${encodeURIComponent(msg)}`,
@@ -601,5 +670,17 @@
             }
         }
     </script>
+    <script>
+
+function changeImage(el)
+{
+    let image = el.getAttribute('data-full');
+
+    document.getElementById('mainProductImage').src = image;
+
+    document.getElementById('modalProductImage').src = image;
+}
+
+</script>
 
 @endsection
