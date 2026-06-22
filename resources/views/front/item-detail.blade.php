@@ -302,6 +302,90 @@
             max-height: 500px;
             object-fit: contain;
         }
+
+        .product-gallery{
+    display:flex;
+    gap:20px;
+    align-items:flex-start;
+    width:100%;
+}
+
+.thumb-slider{
+    width:95px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.thumb-nav{
+    width:40px;
+    height:40px;
+    border:none;
+    border-radius:50%;
+    background:#f5f5f5;
+    margin:5px 0;
+    cursor:pointer;
+}
+
+.thumb-gallery{
+    height:280px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.thumb-image{
+    width:80px;
+    height:80px;
+    object-fit:cover;
+    border:2px solid #e5e5e5;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.active-thumb{
+    border:2px solid #ffc700;
+}
+
+.main-gallery-image{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.main-gallery-image img{
+    width:100%;
+    max-height:500px;
+    object-fit:contain;
+}
+
+@media(max-width:768px){
+
+    .product-gallery{
+        flex-direction:column-reverse;
+    }
+
+    .thumb-slider{
+        width:100%;
+    }
+
+    .thumb-gallery{
+        flex-direction:row;
+        height:auto;
+        overflow-x:auto;
+    }
+
+    .thumb-image{
+        min-width:70px;
+    }
+
+    .thumb-nav{
+        display:none;
+    }
+}
     </style>
 
     <!-- Page Header -->
@@ -346,22 +430,34 @@
 
                     <div class="product-gallery">
 
-                        <div class="thumb-gallery">
+                        <div class="thumb-slider">
 
-                            @foreach($images as $img)
+                            <button type="button" class="thumb-nav" id="thumbUp">
+                                <i class="bi bi-chevron-up"></i>
+                            </button>
 
-                                <img src="{{ asset('uploads/items/' . $img) }}" class="thumb-image" onclick="changeImage(this)"
-                                    data-full="{{ asset('uploads/items/' . $img) }}">
+                            <div class="thumb-gallery" id="thumbGallery">
 
-                            @endforeach
+                                @foreach($images as $index => $img)
+
+                                    <img src="{{ asset('uploads/items/' . $img) }}"
+                                        class="thumb-image {{ $index == 0 ? 'active-thumb' : '' }}" onclick="changeImage(this)"
+                                        data-full="{{ asset('uploads/items/' . $img) }}">
+
+                                @endforeach
+
+                            </div>
+
+                            <button type="button" class="thumb-nav" id="thumbDown">
+                                <i class="bi bi-chevron-down"></i>
+                            </button>
 
                         </div>
 
                         <div class="main-gallery-image">
 
-                            <img id="mainProductImage" src="{{ asset('uploads/items/' . $mainImage) }}"
-                                alt="{{ $item->title }}" class="product-image" data-bs-toggle="modal"
-                                data-bs-target="#imageModal">
+                            <img id="mainProductImage" src="{{ asset('uploads/items/' . $mainImage) }}" class="product-image"
+                                data-bs-toggle="modal" data-bs-target="#imageModal">
 
                         </div>
 
@@ -391,15 +487,15 @@
 
                     <div class="feature-list">
                         <span class="feature-pill"><i class="bi bi-check-circle-fill text-success"></i> Available Now</span>
-                       
+
                     </div>
 
                     <p class="item-desc">{!! $item->description !!}</p>
 
-                    
-                   
 
-                       
+
+
+
                 </div>
             </div>
 
@@ -582,13 +678,13 @@
 
                     `🔥 NEW LIGHT AS AIR REQUEST
 
-                Item: ${data.item_name}
+                    Item: ${data.item_name}
 
-                Name: ${data.name}
+                    Name: ${data.name}
 
-                Email: ${data.email}
+                    Email: ${data.email}
 
-                Phone: ${data.phone}`;
+                    Phone: ${data.phone}`;
 
                 window.open(
                     `https://wa.me/447879175585?text=${encodeURIComponent(msg)}`,
@@ -630,5 +726,48 @@
         }
 
     </script>
+
+    <script>
+
+function changeImage(el)
+{
+    let image = el.dataset.full;
+
+    document.getElementById('mainProductImage').src = image;
+    document.getElementById('modalProductImage').src = image;
+
+    document
+        .querySelectorAll('.thumb-image')
+        .forEach(x => x.classList.remove('active-thumb'));
+
+    el.classList.add('active-thumb');
+}
+
+const thumbGallery =
+    document.getElementById('thumbGallery');
+
+document
+    .getElementById('thumbUp')
+    ?.addEventListener('click', () => {
+
+        thumbGallery.scrollBy({
+            top:-90,
+            behavior:'smooth'
+        });
+
+    });
+
+document
+    .getElementById('thumbDown')
+    ?.addEventListener('click', () => {
+
+        thumbGallery.scrollBy({
+            top:90,
+            behavior:'smooth'
+        });
+
+    });
+
+</script>
 
 @endsection
