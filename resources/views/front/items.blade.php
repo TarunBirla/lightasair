@@ -252,21 +252,21 @@
             box-shadow: var(--shadow-lg);
         }
 
-       .item-card .img-wrap {
-    height: 250px;
-    background: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-}
+        .item-card .img-wrap {
+            height: 250px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
 
-.item-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    transition: transform .4s;
-}
+        .item-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform .4s;
+        }
 
         .item-card:hover img {
             transform: scale(1.06);
@@ -470,142 +470,216 @@
             }
 
         }
+
         .category-scroll {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    padding-bottom: 10px;
-    scrollbar-width: none;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            scrollbar-width: none;
+        }
+
+        .category-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-pill {
+            white-space: nowrap;
+            padding: 10px 18px;
+            border-radius: 30px;
+            background: #fff;
+            border: 1px solid #ddd;
+            text-decoration: none;
+            color: #111;
+            font-weight: 600;
+            transition: .3s;
+        }
+
+        .category-pill:hover {
+            background: #ffc700;
+            border-color: #ffc700;
+            color: #111;
+        }
+
+        .category-pill.active {
+            background: #ffc700;
+            border-color: #ffc700;
+            color: #111;
+        }
+
+        @media(max-width:768px) {
+
+            .item-card .img-wrap {
+                height: 180px;
+                padding: 8px;
+            }
+
+            .item-card img {
+                object-fit: contain;
+            }
+
+        }
+
+        .gallery-box{
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    border-radius: 10px;
 }
 
-.category-scroll::-webkit-scrollbar {
-    display: none;
+.gallery-box img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
-.category-pill {
-    white-space: nowrap;
-    padding: 10px 18px;
-    border-radius: 30px;
-    background: #fff;
-    border: 1px solid #ddd;
-    text-decoration: none;
-    color: #111;
-    font-weight: 600;
-    transition: .3s;
+.slider-wrap{
+    position:relative;
+    height:250px;
+    overflow:hidden;
 }
 
-.category-pill:hover {
-    background: #ffc700;
-    border-color: #ffc700;
-    color: #111;
+.slider-image{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    opacity:0;
+    transition:.5s;
 }
 
-.category-pill.active {
-    background: #ffc700;
-    border-color: #ffc700;
-    color: #111;
+.active-img{
+    opacity:1;
 }
-@media(max-width:768px){
 
-    .item-card .img-wrap{
-        height:180px;
-        padding:8px;
-    }
+.slider-dots{
+    display:flex;
+    justify-content:center;
+    gap:5px;
+    margin-top:8px;
+}
 
-    .item-card img{
-        object-fit:contain;
-    }
+.dot-indicator{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#ccc;
+}
 
+.active-dot{
+    background:#22c55e;
 }
     </style>
 
-   
+
 
     <div class="container py-5">
 
         <h2 class="mb-4">
             All Rental Equipment
         </h2>
-         <div class="mb-4">
+        <div class="mb-4">
 
-    <h5 class="fw-bold mb-3">
-        Browse Categories
-    </h5>
+            <h5 class="fw-bold mb-3">
+                Browse Categories
+            </h5>
 
-    <div class="category-scroll">
+            <div class="category-scroll">
 
-        <a href="{{ url('/items') }}"
-           class="category-pill {{ !request('category') ? 'active' : '' }}">
-            All
-        </a>
+                <a href="{{ url('/items') }}" class="category-pill {{ !request('category') ? 'active' : '' }}">
+                    All
+                </a>
 
-        @foreach($categories as $cat)
+                @foreach($categories as $cat)
 
-            <a href="{{ url('/items?category='.$cat->id) }}"
-               class="category-pill {{ request('category') == $cat->id ? 'active' : '' }}">
-                {{ $cat->name }}
-            </a>
-
-        @endforeach
-
-    </div>
-
-</div>
-
-<div class="row mb-4">
-    <div class="col-md-6">
-        <form method="GET" action="{{ url('/items') }}">
-            
-            @if(request('category'))
-                <input type="hidden"
-                       name="category"
-                       value="{{ request('category') }}">
-            @endif
-
-            <div class="input-group">
-                <input
-                    type="text"
-                    name="search"
-                    value="{{ request('search') }}"
-                    class="form-control"
-                    placeholder="Search equipment by title..."
-                >
-
-                <button class="btn btn-warning" type="submit">
-                    <i class="bi bi-search"></i> Search
-                </button>
-
-                @if(request('search'))
-                    <a href="{{ request('category') ? url('/items?category='.request('category')) : url('/items') }}"
-                       class="btn btn-outline-secondary">
-                        Clear
+                    <a href="{{ url('/items?category=' . $cat->id) }}"
+                        class="category-pill {{ request('category') == $cat->id ? 'active' : '' }}">
+                        {{ $cat->name }}
                     </a>
-                @endif
+
+                @endforeach
+
             </div>
-        </form>
-    </div>
-</div>
+
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <form method="GET" action="{{ url('/items') }}">
+
+                    @if(request('category'))
+                        <input type="hidden" name="category" value="{{ request('category') }}">
+                    @endif
+
+                    <div class="input-group">
+                        <input type="text" name="search" value="{{ request('search') }}" class="form-control"
+                            placeholder="Search equipment by title...">
+
+                        <button class="btn btn-warning" type="submit">
+                            <i class="bi bi-search"></i> Search
+                        </button>
+
+                        @if(request('search'))
+                            <a href="{{ request('category') ? url('/items?category=' . request('category')) : url('/items') }}"
+                                class="btn btn-outline-secondary">
+                                Clear
+                            </a>
+                        @endif
+                    </div>
+                </form>
+            </div>
+        </div>
         <div class="row g-4">
 
             <div class="row g-4">
+
+
                 @foreach($items as $item)
                     <div class="col-12 col-md-4 col-lg-3">
                         <div class="item-card">
-                            <div class="img-wrap">
-                                <img src="{{ asset('uploads/items/' . $item->image) }}" alt="{{ $item->title }}">
-                                <!-- <span class="item-badge"><i class="bi bi-check-circle-fill me-1"></i>Available</span> -->
+                            @php
+
+                                $images = $item->image ?? [];
+
+                                if (!is_array($images)) {
+                                    $images = [$images];
+                                }
+
+                            @endphp
+
+                            <div class="img-wrap slider-wrap">
+
+                                @foreach($images as $key => $img)
+
+                                    <img src="{{ asset('uploads/items/' . $img) }}"
+                                        class="slider-image {{ $key == 0 ? 'active-img' : '' }}" data-item="{{ $item->id }}">
+
+                                @endforeach
+
+                            </div>
+
+                            <div class="slider-dots">
+
+                                @foreach($images as $key => $img)
+
+                                    <span class="dot-indicator {{ $key == 0 ? 'active-dot' : '' }}" data-item="{{ $item->id }}">
+                                    </span>
+
+                                @endforeach
+
                             </div>
                             <div class="item-card-body">
                                 <div class="item-title">{{ $item->title }}</div>
                                 <!-- <div class="item-price mt-1">
-                                    £{{ number_format($item->price_per_day, 2) }}
-                                    <small>/ day</small>
-                                </div> -->
+                                                £{{ number_format($item->price_per_day, 2) }}
+                                                <small>/ day</small>
+                                            </div> -->
                                 <!-- <div class="mt-2">
-                                    <span class="qty-badge">
-                                        <i class="bi bi-boxes"></i> {{ $item->available_qty }} in stock
-                                    </span>
-                                </div> -->
+                                                        <span class="qty-badge">
+                                                            <i class="bi bi-boxes"></i> {{ $item->available_qty }} in stock
+                                                        </span>
+                                                    </div> -->
                             </div>
                             <div class="item-card-footer">
                                 <a href="{{ url('item/' . $item->id) }}" class="btn-view">
@@ -622,274 +696,254 @@
                                     </form>
                                 @else
 
-                                    
-
-                                                                                                 <button
-class="btn-cart w-100"
-onclick="addToRequest(
-'{{ $item->id }}',
-'{{ $item->title }}'
-)">
-    <i class="bi bi-plus-circle"></i>
-    Request
-</button>
+                                    <button class="btn-cart w-100" onclick="addToRequest(
+                                            '{{ $item->id }}',
+                                            '{{ $item->title }}'
+                                            )">
+                                        <i class="bi bi-plus-circle"></i>
+                                        Request
+                                    </button>
                                 @endif
                             </div>
                         </div>
                     </div>
                 @endforeach
             </div>
-
         </div>
 
         <div class="mt-4">
 
             <!-- {{ $items->links() }} -->
             <div class="d-flex justify-content-center mt-5">
-    <!-- {{ $items->onEachSide(1)->links('pagination::bootstrap-5') }} -->
-    {{ $items->appends(request()->query())->onEachSide(1)->links('pagination::bootstrap-5') }}
-</div>
+                <!-- {{ $items->onEachSide(1)->links('pagination::bootstrap-5') }} -->
+                {{ $items->appends(request()->query())->onEachSide(1)->links('pagination::bootstrap-5') }}
+            </div>
 
         </div>
 
     </div>
     @include('front.portfolio')
-     @include('front.brand')
+    @include('front.brand')
     @include('front.television')
 
-       <div class="modal fade" id="requestModal">
-<div class="modal-dialog">
-<div class="modal-content">
+    <div class="modal fade" id="requestModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
 
-<div class="modal-header">
-<h5>Request Item</h5>
-<button class="btn-close" data-bs-dismiss="modal"></button>
-</div>
+                <div class="modal-header">
+                    <h5>Request Item</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
 
-<div class="modal-body">
+                <div class="modal-body">
 
-<input type="hidden" id="item_id">
+                    <input type="hidden" id="item_id">
 
-<div class="mb-3">
-    <label>Name *</label>
-    <input type="text" id="name" class="form-control">
-    <small class="text-danger" id="name_error"></small>
-</div>
+                    <div class="mb-3">
+                        <label>Name *</label>
+                        <input type="text" id="name" class="form-control">
+                        <small class="text-danger" id="name_error"></small>
+                    </div>
 
-<div class="mb-3">
-    <label>Email *</label>
-    <input type="email" id="email" class="form-control">
-    <small class="text-danger" id="email_error"></small>
-</div>
+                    <div class="mb-3">
+                        <label>Email *</label>
+                        <input type="email" id="email" class="form-control">
+                        <small class="text-danger" id="email_error"></small>
+                    </div>
 
-<div class="mb-3">
-    <label>Phone *</label>
-    <input type="text" id="phone" class="form-control">
-    <small class="text-danger" id="phone_error"></small>
-</div>
+                    <div class="mb-3">
+                        <label>Phone *</label>
+                        <input type="text" id="phone" class="form-control">
+                        <small class="text-danger" id="phone_error"></small>
+                    </div>
 
-<div class="mb-3">
-    <label>Message</label>
-    <textarea id="message" class="form-control"></textarea>
-</div>
+                    <div class="mb-3">
+                        <label>Message</label>
+                        <textarea id="message" class="form-control"></textarea>
+                    </div>
 
-<button
-class="btn btn-warning w-100"
-onclick="submitRequest()">
-Send Request
-</button>
+                    <button class="btn btn-warning w-100" onclick="submitRequest()">
+                        Send Request
+                    </button>
 
-</div>
+                </div>
 
-</div>
-</div>
-</div>
-<script>
-    function showToast(message)
-{
-    document.getElementById('toastMessage').innerHTML = message;
-
-    let toastEl =
-    document.getElementById('liveToast');
-
-    let toast =
-    new bootstrap.Toast(toastEl,{
-        delay:3000
-    });
-
-    toast.show();
-}
-
-
-
-
-</script>
-<div class="position-fixed top-0 end-0 p-3" style="z-index:99999">
-
-    <div id="liveToast"
-         class="toast border-0 shadow">
-
-        <div class="toast-header bg-success text-white">
-            <strong class="me-auto">Light As AIR</strong>
-            <button type="button"
-                    class="btn-close btn-close-white"
-                    data-bs-dismiss="toast"></button>
+            </div>
         </div>
+    </div>
+    <script>
+        function showToast(message) {
+            document.getElementById('toastMessage').innerHTML = message;
 
-        <div class="toast-body" id="toastMessage">
+            let toastEl =
+                document.getElementById('liveToast');
+
+            let toast =
+                new bootstrap.Toast(toastEl, {
+                    delay: 3000
+                });
+
+            toast.show();
+        }
+
+
+
+
+    </script>
+    <div class="position-fixed top-0 end-0 p-3" style="z-index:99999">
+
+        <div id="liveToast" class="toast border-0 shadow">
+
+            <div class="toast-header bg-success text-white">
+                <strong class="me-auto">Light As AIR</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+
+            <div class="toast-body" id="toastMessage">
+            </div>
+
         </div>
 
     </div>
+    <script>
+        async function submitRequest() {
+            document.getElementById('name_error').innerHTML = '';
+            document.getElementById('email_error').innerHTML = '';
+            document.getElementById('phone_error').innerHTML = '';
 
-</div>
-<script>
-    async function submitRequest()
-{
-    document.getElementById('name_error').innerHTML = '';
-    document.getElementById('email_error').innerHTML = '';
-    document.getElementById('phone_error').innerHTML = '';
+            let name =
+                document.getElementById('name').value.trim();
 
-    let name =
-        document.getElementById('name').value.trim();
+            let email =
+                document.getElementById('email').value.trim();
 
-    let email =
-        document.getElementById('email').value.trim();
+            let phone =
+                document.getElementById('phone').value.trim();
 
-    let phone =
-        document.getElementById('phone').value.trim();
+            let valid = true;
 
-    let valid = true;
+            if (!name) {
+                document.getElementById('name_error')
+                    .innerHTML = 'Name is required';
 
-    if(!name)
-    {
-        document.getElementById('name_error')
-        .innerHTML = 'Name is required';
+                valid = false;
+            }
 
-        valid = false;
-    }
+            if (!email) {
+                document.getElementById('email_error')
+                    .innerHTML = 'Email is required';
 
-    if(!email)
-    {
-        document.getElementById('email_error')
-        .innerHTML = 'Email is required';
+                valid = false;
+            }
+            else {
+                let emailRegex =
+                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        valid = false;
-    }
-    else
-    {
-        let emailRegex =
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    document.getElementById('email_error')
+                        .innerHTML = 'Enter valid email';
 
-        if(!emailRegex.test(email))
-        {
-            document.getElementById('email_error')
-            .innerHTML = 'Enter valid email';
+                    valid = false;
+                }
+            }
 
-            valid = false;
+            if (!phone) {
+                document.getElementById('phone_error')
+                    .innerHTML = 'Phone number is required';
+
+                valid = false;
+            }
+
+            if (!valid) {
+                return;
+            }
+
+            try {
+
+                const response =
+                    await fetch('/guest-request', {
+
+                        method: 'POST',
+
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document
+                                .querySelector('meta[name="csrf-token"]')
+                                .content
+                        },
+
+                        body: JSON.stringify({
+
+                            // item_id:
+                            // document.getElementById('item_id').value,
+                            items: JSON.parse(
+                                localStorage.getItem('requests')
+                            ),
+
+                            name: name,
+                            email: email,
+                            phone: phone,
+
+                            message:
+                                document.getElementById('message').value
+                        })
+                    });
+
+                const data = await response.json();
+
+                if (!data.status) {
+                    showToast('Request failed.');
+                    return;
+                }
+
+                let msg =
+
+                    `🔥 NEW LIGHT AS AIR REQUEST
+
+    Items:
+    ${data.items}
+
+    Name: ${data.name}
+
+    Email: ${data.email}
+
+    Phone: ${data.phone}`;
+
+                window.open(
+                    `https://wa.me/447879175585?text=${encodeURIComponent(msg)}`,
+                    '_blank'
+                );
+
+                bootstrap.Modal
+                    .getInstance(
+                        document.getElementById('requestModal')
+                    ).hide();
+
+                document.getElementById('name').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('phone').value = '';
+                document.getElementById('message').value = '';
+
+                // Request list clear
+                localStorage.removeItem('requests');
+
+                // Count update
+                updateRequestCount();
+
+                showToast(
+                    '✅ Request submitted successfully.'
+                );
+
+            }
+            catch (error) {
+                console.log(error);
+
+                showToast(
+                    '❌ Something went wrong. Please try again.'
+                );
+            }
         }
-    }
-
-    if(!phone)
-    {
-        document.getElementById('phone_error')
-        .innerHTML = 'Phone number is required';
-
-        valid = false;
-    }
-
-    if(!valid)
-    {
-        return;
-    }
-
-    try{
-
-        const response =
-        await fetch('/guest-request',{
-
-            method:'POST',
-
-            headers:{
-                'Content-Type':'application/json',
-                'Accept':'application/json',
-                'X-CSRF-TOKEN':document
-                .querySelector('meta[name="csrf-token"]')
-                .content
-            },
-
-            body:JSON.stringify({
-
-                // item_id:
-                // document.getElementById('item_id').value,
-                items: JSON.parse(
-        localStorage.getItem('requests')
-    ),
-
-                name:name,
-                email:email,
-                phone:phone,
-
-                message:
-                document.getElementById('message').value
-            })
-        });
-
-        const data = await response.json();
-
-        if(!data.status)
-        {
-            showToast('Request failed.');
-            return;
-        }
-
-        let msg =
-
-`🔥 NEW LIGHT AS AIR REQUEST
-
-Items:
-${data.items}
-
-Name: ${data.name}
-
-Email: ${data.email}
-
-Phone: ${data.phone}`;
-
-        window.open(
-            `https://wa.me/447879175585?text=${encodeURIComponent(msg)}`,
-            '_blank'
-        );
-
-        bootstrap.Modal
-.getInstance(
-    document.getElementById('requestModal')
-).hide();
-
-document.getElementById('name').value='';
-document.getElementById('email').value='';
-document.getElementById('phone').value='';
-document.getElementById('message').value='';
-
-// Request list clear
-localStorage.removeItem('requests');
-
-// Count update
-updateRequestCount();
-
-showToast(
-    '✅ Request submitted successfully.'
-);
-
-    }
-    catch(error)
-    {
-        console.log(error);
-
-        showToast(
-            '❌ Something went wrong. Please try again.'
-        );
-    }
-}
-</script>
+    </script>
 
 @endsection
