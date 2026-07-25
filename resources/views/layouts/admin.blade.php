@@ -304,6 +304,37 @@
         </ul>
     </nav>
 
+    <div class="sidebar-label">Marketplace</div>
+
+    <nav>
+        <ul>
+            <li>
+                <a href="/admin/products" class="{{ request()->is('admin/products*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-store"></i>
+                    Sell Listings
+                </a>
+            </li>
+            <li>
+                <a href="/admin/rentals" class="{{ request()->is('admin/rentals*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    Rental Listings
+                </a>
+            </li>
+            <li>
+                <a href="/admin/rental-bookings" class="{{ request()->is('admin/rental-bookings*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-receipt"></i>
+                    Rental Bookings
+                </a>
+            </li>
+            <li>
+                <a href="/admin/auctions" class="{{ request()->is('admin/auctions*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-gavel"></i>
+                    Auctions
+                </a>
+            </li>
+        </ul>
+    </nav>
+
     <div class="sidebar-label">Management</div>
 
     <nav>
