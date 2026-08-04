@@ -12,7 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // Close auctions whose end_time has passed
+        $schedule->command('auctions:close-expired')->everyMinute();
     }
 
     /**

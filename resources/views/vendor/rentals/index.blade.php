@@ -1,128 +1,146 @@
 @extends('layouts.vendor')
-@section('title', 'My Rental Listings')
+
+@section('title', 'Rental Listings — Light As Air')
 
 @section('content')
-<div class="page-header">
+<div class="page-header mb-4" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
     <div>
-        <h1 class="page-title">Rental Listings</h1>
-        <p class="page-subtitle">Equipment available for rent on the marketplace</p>
+        <h1 class="page-title" style="font-size:1.6rem;font-weight:800;margin:0;">Rental Equipment Listings</h1>
+        <p style="color:#888;font-size:.9rem;margin:.2rem 0 0 0;">Manage your film lighting & grip gear available for rent</p>
     </div>
-    <a href="{{ route('vendor.rentals.create') }}" class="btn btn-primary">
-        <i class="fas fa-plus"></i> New Rental Listing
+    <a href="{{ route('vendor.rentals.create') }}" class="btn-brand">
+        <i class="bi bi-plus-lg"></i> New Rental Listing
     </a>
 </div>
 
 @if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
+    <div class="alert alert-success mb-4" style="border-radius:12px;">{{ session('success') }}</div>
+@endif
+@if(session('error'))
+    <div class="alert alert-danger mb-4" style="border-radius:12px;">{{ session('error') }}</div>
 @endif
 
-{{-- Filters --}}
-<div class="filter-bar">
-    <form method="GET" class="filter-form">
-        <select name="status" class="form-select" onchange="this.form.submit()">
-            <option value="">All Statuses</option>
-            @foreach(['draft','pending','approved','rejected','inactive'] as $s)
-                <option value="{{ $s }}" @selected(request('status') === $s)>{{ ucfirst($s) }}</option>
-            @endforeach
-        </select>
-    </form>
+{{-- Filter Toolbar --}}
+<div class="content-card mb-4">
+    <div class="content-card-body" style="padding:1rem 1.4rem;">
+        <form method="GET" action="{{ route('vendor.rentals.index') }}" class="row g-2 align-items-center">
+            <div class="col-md-4">
+                <input type="text" name="search" class="form-control" placeholder="Search equipment title..." value="{{ request('search') }}" style="border-radius:10px;font-size:.9rem;">
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-select" onchange="this.form.submit()" style="border-radius:10px;font-size:.9rem;">
+                    <option value="">All Statuses</option>
+                    @foreach(['pending' => 'Pending Approval', 'approved' => 'Approved / Active', 'rejected' => 'Rejected', 'draft' => 'Draft'] as $val => $label)
+                        <option value="{{ $val }}" @selected(request('status') === $val)>{{ $label }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-auto ms-auto d-flex gap-2">
+                <button type="submit" class="btn btn-dark" style="border-radius:10px;font-weight:700;font-size:.85rem;padding:.5rem 1.2rem;">
+                    <i class="bi bi-filter me-1"></i> Filter
+                </button>
+                <a href="{{ route('vendor.rentals.index') }}" class="btn btn-light" style="border-radius:10px;font-weight:600;font-size:.85rem;padding:.5rem 1rem;">Reset</a>
+            </div>
+        </form>
+    </div>
 </div>
 
 @if($listings->isEmpty())
-<div class="empty-state">
-    <div class="empty-icon"><i class="fas fa-calendar-alt"></i></div>
-    <h3>No rental listings yet</h3>
-    <p>Add equipment to rent out and start earning.</p>
-    <a href="{{ route('vendor.rentals.create') }}" class="btn btn-primary mt-3">Create Listing</a>
-</div>
+    <div class="content-card text-center p-5">
+        <i class="bi bi-calendar3" style="font-size:3.5rem;color:#ccc;display:block;margin-bottom:1rem;"></i>
+        <h3 style="font-weight:800;color:#333;margin-bottom:.5rem;">No Rental Listings Found</h3>
+        <p style="color:#888;font-size:.9rem;max-width:450px;margin:0 auto 1.5rem;">List your film lighting, cameras, or grip gear for rental and start earning daily revenue.</p>
+        <a href="{{ route('vendor.rentals.create') }}" class="btn-brand" style="display:inline-flex;">
+            <i class="bi bi-plus-lg"></i> Create First Rental Listing
+        </a>
+    </div>
 @else
-<div class="products-grid">
-    @foreach($listings as $listing)
-    <div class="product-card">
-        <div class="product-image">
-            <img src="{{ $listing->primaryImageUrl() }}" alt="{{ $listing->title }}" loading="lazy">
-            <span class="badge badge-type-rent">Rent</span>
-            <span class="badge badge-status badge-{{ $listing->status }}">{{ ucfirst($listing->status) }}</span>
-        </div>
-        <div class="product-info">
-            <h3 class="product-title">{{ Str::limit($listing->title, 55) }}</h3>
-            <p class="product-meta">
-                <span><i class="fas fa-tag"></i> {{ $listing->category->name ?? 'Uncategorised' }}</span>
-                <span><i class="fas fa-boxes"></i> {{ $listing->total_qty }} unit(s)</span>
-            </p>
-            <p class="product-price">
-                £{{ number_format($listing->price_per_day, 2) }}<small>/day</small>
-                @if($listing->price_per_week)
-                <span class="price-week"> · £{{ number_format($listing->price_per_week, 2) }}/wk</span>
-                @endif
-            </p>
-            @if($listing->deposit_amount > 0)
-            <p class="deposit-note"><i class="fas fa-lock"></i> Deposit: £{{ number_format($listing->deposit_amount, 2) }}</p>
-            @endif
+    <div class="row g-4">
+        @foreach($listings as $listing)
+        <div class="col-lg-4 col-md-6">
+            <div class="content-card h-100 d-flex flex-column" style="overflow:hidden;transition:transform .2s, box-shadow .2s;">
+                <div style="position:relative;height:200px;background:#f5f4ef;overflow:hidden;">
+                    <img src="{{ $listing->primaryImageUrl() }}" alt="{{ $listing->title }}" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\' fill=\'%23f5f4ef\'><text x=\'150\' y=\'105\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%23888888\' text-anchor=\'middle\'>Equipment Image</text></svg>'">
+                    <span class="badge bg-dark" style="position:absolute;top:.75rem;left:.75rem;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:.4em .8em;border-radius:20px;">
+                        <i class="bi bi-calendar3 me-1"></i> RENTAL
+                    </span>
+                    @if($listing->isApproved())
+                        <span class="status-badge badge-approved" style="position:absolute;top:.75rem;right:.75rem;">Approved</span>
+                    @elseif($listing->isPending())
+                        <span class="status-badge badge-pending" style="position:absolute;top:.75rem;right:.75rem;">Pending Approval</span>
+                    @elseif($listing->isRejected())
+                        <span class="status-badge badge-rejected" style="position:absolute;top:.75rem;right:.75rem;">Rejected</span>
+                    @else
+                        <span class="status-badge" style="position:absolute;top:.75rem;right:.75rem;background:#eee;color:#555;">{{ ucfirst($listing->status) }}</span>
+                    @endif
+                </div>
 
-            @if($listing->isRejected() && $listing->rejection_reason)
-            <div class="rejection-note"><i class="fas fa-exclamation-triangle"></i> {{ $listing->rejection_reason }}</div>
-            @endif
+                <div class="content-card-body d-flex flex-column flex-grow-1" style="padding:1.2rem;">
+                    <div style="font-size:.75rem;font-weight:700;color:var(--brand-dark);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem;">
+                        {{ $listing->category->name ?? 'Film Equipment' }}
+                    </div>
+                    <h3 style="font-size:1.05rem;font-weight:800;color:#111;margin-bottom:.5rem;line-height:1.3;">
+                        {{ Str::limit($listing->title, 50) }}
+                    </h3>
 
-            <div class="product-actions">
-                <a href="{{ route('vendor.rentals.show', $listing) }}" class="btn btn-sm btn-outline">View</a>
-                @if($listing->isApproved())
-                <a href="{{ route('vendor.rentals.calendar', $listing) }}" class="btn btn-sm btn-secondary">
-                    <i class="fas fa-calendar"></i> Calendar
-                </a>
-                @endif
-                @unless($listing->isApproved())
-                <a href="{{ route('vendor.rentals.edit', $listing) }}" class="btn btn-sm btn-secondary">Edit</a>
-                @endunless
-                <form action="{{ route('vendor.rentals.destroy', $listing) }}" method="POST"
-                      onsubmit="return confirm('Delete this listing?')" style="display:inline">
-                    @csrf @method('DELETE')
-                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                </form>
+                    <div style="font-size:.82rem;color:#666;display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+                        <span><i class="bi bi-box-seam me-1"></i> Total: <strong>{{ $listing->total_qty }} unit(s)</strong></span>
+                        @if($listing->brand)
+                            <span><i class="bi bi-tag me-1"></i> {{ $listing->brand }}</span>
+                        @endif
+                    </div>
+
+                    <div style="background:#fff8e1;border:1px solid #ffe082;border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem;">
+                        <div style="font-size:.72rem;font-weight:700;color:#8d6e63;text-transform:uppercase;">Daily Rental Rate</div>
+                        <div style="font-size:1.4rem;font-weight:900;color:#111;">
+                            £{{ number_format($listing->price_per_day, 2) }} <span style="font-size:.8rem;font-weight:600;color:#777;">/ day</span>
+                        </div>
+                        @if($listing->price_per_week > 0)
+                            <div style="font-size:.78rem;color:#666;margin-top:.2rem;">
+                                Weekly Rate: <strong>£{{ number_format($listing->price_per_week, 2) }} / wk</strong>
+                            </div>
+                        @endif
+                        @if($listing->deposit_amount > 0)
+                            <div style="font-size:.75rem;color:#888;margin-top:.2rem;">
+                                <i class="bi bi-shield-lock me-1"></i> Security Deposit: £{{ number_format($listing->deposit_amount, 2) }}
+                            </div>
+                        @endif
+                    </div>
+
+                    @if($listing->isRejected() && $listing->rejection_reason)
+                        <div class="alert alert-danger p-2 mb-3" style="font-size:.78rem;border-radius:8px;">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i> <strong>Rejection Reason:</strong> {{ $listing->rejection_reason }}
+                        </div>
+                    @endif
+
+                    <div class="mt-auto d-flex gap-2 pt-2" style="border-top:1px solid #f0efe9;">
+                        <a href="{{ route('vendor.rentals.show', $listing->id) }}" class="btn btn-sm btn-light flex-grow-1" style="border-radius:8px;font-weight:700;font-size:.8rem;">
+                            <i class="bi bi-eye"></i> View
+                        </a>
+                        @if($listing->isApproved())
+                            <a href="{{ route('vendor.rentals.calendar', $listing->id) }}" class="btn btn-sm btn-outline-dark" style="border-radius:8px;font-weight:700;font-size:.8rem;">
+                                <i class="bi bi-calendar-event"></i> Calendar
+                            </a>
+                        @endif
+                        <a href="{{ route('vendor.rentals.edit', $listing->id) }}" class="btn btn-sm btn-outline-brand" style="border-radius:8px;font-weight:700;font-size:.8rem;">
+                            <i class="bi bi-pencil-square"></i> Edit
+                        </a>
+                        <form action="{{ route('vendor.rentals.destroy', $listing->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this rental listing?')" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-outline-danger" style="border-radius:8px;font-weight:700;font-size:.8rem;">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
+        @endforeach
     </div>
-    @endforeach
-</div>
-<div class="pagination-wrapper">{{ $listings->appends(request()->query())->links() }}</div>
+
+    <div class="mt-4 d-flex justify-content-center">
+        {{ $listings->appends(request()->query())->links() }}
+    </div>
 @endif
 @endsection
-
-@push('styles')
-<style>
-.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
-.page-title{font-size:1.75rem;font-weight:700;margin:0}
-.page-subtitle{color:#6b7280;margin:0}
-.filter-bar{margin-bottom:1.5rem}
-.filter-form{display:flex;gap:.75rem}
-.form-select{padding:.5rem .75rem;border:1px solid #d1d5db;border-radius:.5rem;font-size:.875rem;background:#fff}
-.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.5rem}
-.product-card{background:#fff;border-radius:1rem;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);transition:box-shadow .2s}
-.product-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.12)}
-.product-image{position:relative;height:180px;overflow:hidden;background:#f3f4f6}
-.product-image img{width:100%;height:100%;object-fit:cover}
-.badge{position:absolute;padding:.2rem .6rem;border-radius:999px;font-size:.7rem;font-weight:600}
-.badge-type-rent{top:.6rem;left:.6rem;background:#16a34a;color:#fff}
-.badge-status{top:.6rem;right:.6rem}
-.badge-approved{background:#16a34a;color:#fff}
-.badge-pending{background:#d97706;color:#fff}
-.badge-rejected{background:#dc2626;color:#fff}
-.badge-draft{background:#6b7280;color:#fff}
-.badge-inactive{background:#9ca3af;color:#fff}
-.product-info{padding:1rem}
-.product-title{font-size:1rem;font-weight:600;margin:0 0 .5rem}
-.product-meta{display:flex;gap:1rem;font-size:.8rem;color:#6b7280;margin-bottom:.5rem}
-.product-price{font-size:1.2rem;font-weight:700;color:#16a34a;margin-bottom:.25rem}
-.product-price small{font-size:.7rem;font-weight:400;color:#6b7280}
-.price-week{font-size:.8rem;font-weight:500;color:#6b7280}
-.deposit-note{font-size:.8rem;color:#6b7280;margin-bottom:.75rem}
-.rejection-note{background:#fef2f2;color:#dc2626;padding:.5rem .75rem;border-radius:.5rem;font-size:.8rem;margin-bottom:.75rem}
-.product-actions{display:flex;gap:.4rem;flex-wrap:wrap}
-.btn-sm{padding:.3rem .65rem;font-size:.8rem}
-.btn-secondary{background:#f3f4f6;color:#374151;border:none;border-radius:.375rem;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.3rem}
-.btn-outline{border:1px solid #d1d5db;background:transparent;border-radius:.375rem;cursor:pointer;text-decoration:none;color:#374151}
-.empty-state{text-align:center;padding:4rem 2rem;color:#6b7280}
-.empty-icon{font-size:3rem;margin-bottom:1rem}
-.pagination-wrapper{margin-top:1.5rem}
-</style>
-@endpush

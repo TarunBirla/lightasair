@@ -335,6 +335,37 @@
         </ul>
     </nav>
 
+    <div class="sidebar-label">Vendors & Finance</div>
+
+    <nav>
+        <ul>
+            <li>
+                <a href="/admin/vendors" class="{{ request()->is('admin/vendors*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-store"></i>
+                    Vendors
+                </a>
+            </li>
+            <li>
+                <a href="/admin/commissions" class="{{ request()->is('admin/commissions*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-percent"></i>
+                    Commissions
+                </a>
+            </li>
+            <li>
+                <a href="/admin/orders" class="{{ request()->is('admin/orders*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-receipt"></i>
+                    Orders
+                </a>
+            </li>
+            <li>
+                <a href="/admin/payouts" class="{{ request()->is('admin/payouts*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                    Payouts
+                </a>
+            </li>
+        </ul>
+    </nav>
+
     <div class="sidebar-label">Management</div>
 
     <nav>

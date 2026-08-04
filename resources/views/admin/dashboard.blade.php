@@ -46,6 +46,8 @@
     .stat-icon.green  { background: #EDFAF0; color: #1a7a3a; }
     .stat-icon.blue   { background: #EAF3FF; color: #1a5fb4; }
     .stat-icon.red    { background: #FEF0F0; color: #c0392b; }
+    .stat-icon.purple { background: #FCE7F3; color: #BE185D; }
+    .stat-icon.pink   { background: #FDF2F8; color: #DB2777; }
 
     .stat-badge {
         font-size: 11px;
@@ -212,6 +214,61 @@
         </div>
     </div>
 
+</div>
+
+<div class="section-title">Marketplace Overview</div>
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-card-top">
+            <div class="stat-icon blue"><i class="fa-solid fa-store"></i></div>
+        </div>
+        <div class="stat-card-bottom">
+            <div class="stat-num">{{ $vendorCount ?? 0 }}</div>
+            <div class="stat-label">Vendors</div>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-card-top">
+            <div class="stat-icon yellow"><i class="fa-solid fa-user-clock"></i></div>
+            <span class="stat-badge" style="background:#FFF3B0;color:#B38A00;">Pending</span>
+        </div>
+        <div class="stat-card-bottom">
+            <div class="stat-num">{{ $pendingVendors ?? 0 }}</div>
+            <div class="stat-label">Pending Vendors</div>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-card-top">
+            <div class="stat-icon green"><i class="fa-solid fa-tags"></i></div>
+        </div>
+        <div class="stat-card-bottom">
+            <div class="stat-num">{{ $productCount ?? 0 }}</div>
+            <div class="stat-label">Sell Listings</div>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-card-top">
+            <div class="stat-icon purple"><i class="fa-solid fa-calendar"></i></div>
+        </div>
+        <div class="stat-card-bottom">
+            <div class="stat-num">{{ $rentalCount ?? 0 }}</div>
+            <div class="stat-label">Rental Listings</div>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-card-top">
+            <div class="stat-icon pink"><i class="fa-solid fa-gavel"></i></div>
+            <span class="stat-badge" style="background:#FDF2F8;color:#DB2777;">Active</span>
+        </div>
+        <div class="stat-card-bottom">
+            <div class="stat-num">{{ $activeAuctionCount ?? 0 }}</div>
+            <div class="stat-label">Active Auctions</div>
+        </div>
+    </div>
 </div>
 
 <!-- Quick Actions -->

@@ -17,7 +17,15 @@ use App\Http\Controllers\Vendor\ProductController as VendorProductController;
 use App\Http\Controllers\Vendor\RentalListingController as VendorRentalController;
 use App\Http\Controllers\Front\RentalController as FrontRentalController;
 use App\Http\Controllers\Admin\RentalController as AdminRentalController;
+use App\Http\Controllers\Vendor\ProfileController as VendorProfileController;
+use App\Http\Controllers\Admin\VendorController as AdminVendorController;
+use App\Http\Controllers\Admin\CommissionController as AdminCommissionController;
 
+use App\Http\Controllers\Front\OrderController as FrontOrderController;
+use App\Http\Controllers\Vendor\OrderController as VendorOrderController;
+use App\Http\Controllers\Vendor\PayoutController as VendorPayoutController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\PayoutController as AdminPayoutController;
 
 use App\Http\Controllers\Vendor\AuctionController as VendorAuctionController;
 use App\Http\Controllers\Front\AuctionController as FrontAuctionController;
@@ -140,6 +148,9 @@ Route::middleware(['auth', 'vendor'])
         // Dashboard
         Route::get('/dashboard', [VendorDashboardController::class, 'index'])->name('dashboard');
 
+        Route::get('/profile', [VendorProfileController::class, 'show'])->name('profile');
+        Route::put('/profile', [VendorProfileController::class, 'update'])->name('profile.update');
+
         // Product (Sell) listings
         Route::resource('products', VendorProductController::class);
 
@@ -154,6 +165,12 @@ Route::middleware(['auth', 'vendor'])
         Route::post('rental-bookings/{booking}/status',       [VendorRentalController::class, 'updateBookingStatus'])->name('vendor.rental-bookings.status');
         // ─── Auction listings ─────────────────────────────────────────────
         Route::resource('auctions', VendorAuctionController::class);
+
+        // ─── Orders & Payouts ─────────────────────────────────────────────
+        Route::get('/orders', [VendorOrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{order}', [VendorOrderController::class, 'show'])->name('orders.show');
+        Route::put('/orders/{order}/status', [VendorOrderController::class, 'updateStatus'])->name('orders.update-status');
+        Route::get('/payouts', [VendorPayoutController::class, 'index'])->name('payouts.index');
     });
 
 // ─── Front: Sell Marketplace ────────────────────────────────────────────────
@@ -176,6 +193,12 @@ Route::get('/auctions/{auction:slug}', [FrontAuctionController::class, 'show'])-
 Route::post('/auctions/{auction}/bid', [FrontAuctionController::class, 'bid'])->name('front.auctions.bid');
 Route::get('/auctions/{auction}/get-bids', [FrontAuctionController::class, 'getBids'])->name('front.auctions.get-bids');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout/{product}', [FrontOrderController::class, 'checkout'])->name('front.checkout');
+    Route::post('/checkout', [FrontOrderController::class, 'placeOrder'])->name('front.place-order');
+    Route::get('/my-orders', [FrontOrderController::class, 'myOrders'])->name('front.my-orders');
+    Route::get('/my-orders/{order}', [FrontOrderController::class, 'show'])->name('front.orders.show');
+});
 Route::get(
     '/admin/login',
     [AuthController::class, 'login']
@@ -248,6 +271,17 @@ Route::get(
             [DashboardController::class, 'index']
         );
 
+        // Vendor Management
+        Route::get('vendors', [AdminVendorController::class, 'index'])->name('admin.vendors.index');
+        Route::get('vendors/{vendor}', [AdminVendorController::class, 'show'])->name('admin.vendors.show');
+        Route::post('vendors/{vendor}/approve', [AdminVendorController::class, 'approve'])->name('admin.vendors.approve');
+        Route::post('vendors/{vendor}/reject', [AdminVendorController::class, 'reject'])->name('admin.vendors.reject');
+        Route::post('vendors/{vendor}/suspend', [AdminVendorController::class, 'suspend'])->name('admin.vendors.suspend');
+        Route::post('vendors/{vendor}/reinstate', [AdminVendorController::class, 'reinstate'])->name('admin.vendors.reinstate');
+
+        // Commission Settings
+        Route::resource('commissions', AdminCommissionController::class)->names('admin.commissions')->except(['create', 'edit', 'show']);
+
         Route::resource(
             'banner',
             BannerController::class
@@ -278,25 +312,33 @@ Route::delete(
         );
 
         // ─── Admin: Product approval ──────────────────────────────────────────
-        Route::resource('products', AdminProductController::class)->except(['create', 'edit']);
+        Route::resource('products', AdminProductController::class)->names('admin.products')->except(['create', 'edit']);
         Route::post('products/{product}/approve',         [AdminProductController::class, 'approve'])->name('admin.products.approve');
         Route::post('products/{product}/reject',          [AdminProductController::class, 'reject'])->name('admin.products.reject');
         Route::post('products/{product}/toggle-featured', [AdminProductController::class, 'toggleFeatured'])->name('admin.products.toggle-featured');
 
         // ─── Admin: Rental listings ───────────────────────────────────────
-        Route::resource('rentals', AdminRentalController::class)->except(['create', 'edit']);
+        Route::resource('rentals', AdminRentalController::class)->names('admin.rentals')->except(['create', 'edit']);
         Route::post('rentals/{rental}/approve',        [AdminRentalController::class, 'approve'])->name('admin.rentals.approve');
         Route::post('rentals/{rental}/reject',         [AdminRentalController::class, 'reject'])->name('admin.rentals.reject');
         Route::post('rentals/{rental}/toggle-featured',[AdminRentalController::class, 'toggleFeatured'])->name('admin.rentals.toggle-featured');
         Route::get('rental-bookings',                  [AdminRentalController::class, 'bookings'])->name('admin.rental-bookings');
 
         // ─── Admin: Auction listings ──────────────────────────────────────
-        Route::resource('auctions', AdminAuctionController::class)->except(['create', 'edit']);
+        Route::resource('auctions', AdminAuctionController::class)->names('admin.auctions')->except(['create', 'edit']);
         Route::post('auctions/{auction}/approve',        [AdminAuctionController::class, 'approve'])->name('admin.auctions.approve');
         Route::post('auctions/{auction}/reject',         [AdminAuctionController::class, 'reject'])->name('admin.auctions.reject');
         Route::post('auctions/{auction}/close',          [AdminAuctionController::class, 'close'])->name('admin.auctions.close');
         Route::post('auctions/{auction}/toggle-featured',[AdminAuctionController::class, 'toggleFeatured'])->name('admin.auctions.toggle-featured');
 
+        // ─── Admin: Orders & Payouts ──────────────────────────────────────
+        Route::get('orders', [AdminOrderController::class, 'index'])->name('admin.orders.index');
+        Route::get('orders/{order}', [AdminOrderController::class, 'show'])->name('admin.orders.show');
+        Route::put('orders/{order}/payment-status', [AdminOrderController::class, 'updatePaymentStatus'])->name('admin.orders.update-payment');
+        
+        Route::get('payouts', [AdminPayoutController::class, 'index'])->name('admin.payouts.index');
+        Route::post('payouts/{payout}/mark-paid', [AdminPayoutController::class, 'markPaid'])->name('admin.payouts.mark-paid');
+        Route::post('payouts/{payout}/mark-processing', [AdminPayoutController::class, 'markProcessing'])->name('admin.payouts.mark-processing');
     });
 
 

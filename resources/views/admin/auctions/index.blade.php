@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
 @section('page-title', 'Auctions Management')
-@section('breadcrumb', 'Admin / Auctions / Overview')
+@section('breadcrumb', 'Admin / Auctions / Timed Auctions')
 
 @section('content')
 
 <style>
-.stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 1.8rem; }
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.8rem; }
 .stat-box { background: #fff; border-radius: 12px; padding: 1.2rem 1.4rem; border: 1px solid #E8E6DF; display: flex; align-items: center; gap: 1rem; }
 .stat-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
 .stat-icon.yellow { background: #FFF3B0; color: #B38A00; }
@@ -29,7 +29,7 @@
 .auc-table tr:last-child td { border: none; }
 .auc-table tr:hover td { background: #fefef9; }
 
-.ab { padding: .3rem .65rem; border-radius: 6px; font-size: .75rem; font-weight: 700; text-decoration: none; border: none; cursor: pointer; transition: all .15s; display: inline-flex; align-items: center; gap: .25rem; }
+.ab { padding: .35rem .7rem; border-radius: 6px; font-size: .75rem; font-weight: 700; text-decoration: none; border: none; cursor: pointer; transition: all .15s; display: inline-flex; align-items: center; gap: .3rem; }
 .ab-view    { background: #f3f4f6; color: #374151; }
 .ab-approve { background: #d4edda; color: #155724; }
 .ab-reject  { background: #f8d7da; color: #721c24; }
@@ -38,37 +38,45 @@
 
 .reject-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 999; align-items: center; justify-content: center; }
 .reject-modal.open { display: flex; }
-.reject-box { background: #fff; border-radius: 14px; padding: 2rem; width: 440px; max-width: 95vw; }
+.reject-box { background: #fff; border-radius: 14px; padding: 2rem; width: 450px; max-width: 95vw; }
 </style>
 
-{{-- Stats --}}
+{{-- Flash Messages --}}
+@if(session('success'))
+    <div class="alert alert-success mb-3" style="border-radius:10px;">{{ session('success') }}</div>
+@endif
+@if(session('error'))
+    <div class="alert alert-danger mb-3" style="border-radius:10px;">{{ session('error') }}</div>
+@endif
+
+{{-- Stats Row --}}
 <div class="stats-row">
     <div class="stat-box">
         <div class="stat-icon yellow"><i class="fa-solid fa-clock"></i></div>
-        <div><div class="stat-num">{{ $stats['pending'] }}</div><div class="stat-label">Pending Approval</div></div>
+        <div><div class="stat-num">{{ $stats['pending'] ?? 0 }}</div><div class="stat-label">Pending Approval</div></div>
     </div>
     <div class="stat-box">
         <div class="stat-icon green"><i class="fa-solid fa-play"></i></div>
-        <div><div class="stat-num">{{ $stats['active'] }}</div><div class="stat-label">Active Auctions</div></div>
+        <div><div class="stat-num">{{ $stats['active'] ?? 0 }}</div><div class="stat-label">Active Auctions</div></div>
     </div>
     <div class="stat-box">
         <div class="stat-icon purple"><i class="fa-solid fa-flag-checkered"></i></div>
-        <div><div class="stat-num">{{ $stats['ended'] }}</div><div class="stat-label">Ended Auctions</div></div>
+        <div><div class="stat-num">{{ $stats['ended'] ?? 0 }}</div><div class="stat-label">Ended Auctions</div></div>
     </div>
     <div class="stat-box">
         <div class="stat-icon blue"><i class="fa-solid fa-gavel"></i></div>
-        <div><div class="stat-num">{{ $stats['total'] }}</div><div class="stat-label">Total Auctions</div></div>
+        <div><div class="stat-num">{{ $stats['total'] ?? 0 }}</div><div class="stat-label">Total Auctions</div></div>
     </div>
 </div>
 
-{{-- Toolbar --}}
+{{-- Filter Toolbar --}}
 <div class="toolbar">
     <form method="GET" action="/admin/auctions">
-        <input type="text" name="search" class="f-input" placeholder="Search auction title…" value="{{ request('search') }}">
+        <input type="text" name="search" class="f-input" placeholder="Search auction title..." value="{{ request('search') }}">
         <select name="status" class="f-select">
             <option value="">All Statuses</option>
-            @foreach(['pending','active','ended','rejected','cancelled'] as $s)
-                <option value="{{ $s }}" @selected(request('status') === $s)>{{ ucfirst($s) }}</option>
+            @foreach(['pending' => 'Pending Approval', 'active' => 'Active Bidding', 'ended' => 'Ended', 'rejected' => 'Rejected', 'cancelled' => 'Cancelled'] as $val => $label)
+                <option value="{{ $val }}" @selected(request('status') === $val)>{{ $label }}</option>
             @endforeach
         </select>
         <button type="submit" class="btn-go"><i class="fa-solid fa-filter me-1"></i>Filter</button>
@@ -76,81 +84,129 @@
     </form>
 </div>
 
-<table class="auc-table">
-    <thead>
-        <tr>
-            <th>Auction</th>
-            <th>Vendor</th>
-            <th>Current Bid</th>
-            <th>Reserve</th>
-            <th>Bids</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @forelse($auctions as $auction)
-        <tr>
-            <td>
-                <div style="font-weight:700;font-size:.88rem;">{{ Str::limit($auction->title, 45) }}</div>
-                <div style="font-size:.73rem;color:#aaa;">{{ $auction->category->name ?? 'Uncategorised' }}</div>
-            </td>
-            <td>
-                <div style="font-weight:600;font-size:.85rem;">{{ $auction->vendor->name }}</div>
-            </td>
-            <td style="font-weight:800;color:#16a34a;">£{{ number_format($auction->current_bid, 2) }}</td>
-            <td style="font-size:.85rem;">£{{ number_format($auction->reserve_price, 2) }}</td>
-            <td style="font-weight:700;">{{ $auction->bid_count }}</td>
-            <td><span class="badge bg-secondary">{{ ucfirst($auction->status) }}</span></td>
-            <td>
-                <div style="display:flex;gap:.3rem;">
-                    <a href="/admin/auctions/{{ $auction->id }}" class="ab ab-view"><i class="fa-solid fa-eye"></i></a>
-                    @if($auction->isPending())
-                        <form action="/admin/auctions/{{ $auction->id }}/approve" method="POST" style="display:inline">
-                            @csrf <button type="submit" class="ab ab-approve" title="Approve"><i class="fa-solid fa-check"></i></button>
-                        </form>
-                        <button onclick="openReject({{ $auction->id }})" class="ab ab-reject" title="Reject"><i class="fa-solid fa-times"></i></button>
+{{-- Data Table --}}
+<div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #E8E6DF;">
+    <table class="auc-table">
+        <thead>
+            <tr>
+                <th style="width:60px;">Image</th>
+                <th>Auction Title / Vendor</th>
+                <th>Current Bid</th>
+                <th>Reserve</th>
+                <th>Bids</th>
+                <th>Deadline / End Time</th>
+                <th>Status</th>
+                <th style="width:160px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($auctions as $auction)
+            <tr>
+                <td>
+                    <img src="{{ $auction->primaryImageUrl() }}" alt="" style="width:48px;height:48px;object-fit:cover;border-radius:8px;border:1px solid #eee;" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\' fill=\'%23eee\'><text x=\'24\' y=\'28\' font-family=\'sans-serif\' font-size=\'10\' fill=\'%23888\' text-anchor=\'middle\'>Img</text></svg>'">
+                </td>
+                <td>
+                    <div style="font-weight:700;font-size:.88rem;color:#111;">{{ Str::limit($auction->title, 45) }}</div>
+                    <div style="font-size:.76rem;color:#888;margin-top:.1rem;">
+                        <i class="fa-solid fa-store me-1"></i> Vendor: <strong>{{ $auction->vendor->name ?? 'Unknown' }}</strong>
+                        @if($auction->category) · {{ $auction->category->name }} @endif
+                    </div>
+                </td>
+                <td style="font-weight:800;color:#16a34a;font-size:.95rem;">
+                    £{{ number_format($auction->current_bid, 2) }}
+                </td>
+                <td style="font-size:.84rem;">
+                    £{{ number_format($auction->reserve_price, 2) }}
+                    @if($auction->reserveMet())
+                        <span class="badge bg-success" style="font-size:.65rem;display:block;margin-top:.1rem;">Met</span>
+                    @else
+                        <span class="badge bg-light text-muted border" style="font-size:.65rem;display:block;margin-top:.1rem;">Not Met</span>
                     @endif
+                </td>
+                <td style="font-weight:800;font-size:.85rem;">{{ $auction->bid_count }} bid(s)</td>
+                <td style="font-size:.82rem;color:#555;">
+                    {{ $auction->end_time ? $auction->end_time->format('d M Y, H:i') : '—' }}
+                </td>
+                <td>
                     @if($auction->isActive())
-                        <form action="/admin/auctions/{{ $auction->id }}/close" method="POST" style="display:inline">
-                            @csrf <button type="submit" class="ab ab-close" title="Close Auction"><i class="fa-solid fa-lock"></i></button>
-                        </form>
+                        <span class="badge bg-success" style="font-size:.72rem;">Active</span>
+                    @elseif($auction->isPending())
+                        <span class="badge bg-warning text-dark" style="font-size:.72rem;">Pending</span>
+                    @elseif($auction->isEnded())
+                        <span class="badge bg-secondary" style="font-size:.72rem;">Ended</span>
+                    @elseif($auction->isRejected())
+                        <span class="badge bg-danger" style="font-size:.72rem;">Rejected</span>
+                    @else
+                        <span class="badge bg-secondary" style="font-size:.72rem;">{{ ucfirst($auction->status) }}</span>
                     @endif
-                    <form action="/admin/auctions/{{ $auction->id }}" method="POST" onsubmit="return confirm('Delete this auction?')" style="display:inline">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="ab ab-delete"><i class="fa-solid fa-trash"></i></button>
-                    </form>
-                </div>
-            </td>
-        </tr>
-        @empty
-        <tr><td colspan="7" class="text-center p-4 text-muted">No auctions found.</td></tr>
-        @endforelse
-    </tbody>
-</table>
+                </td>
+                <td>
+                    <div style="display:flex;gap:.3rem;align-items:center;">
+                        <a href="{{ route('admin.auctions.show', $auction->id) }}" class="ab ab-view" title="View Feed & History"><i class="fa-solid fa-eye"></i></a>
+                        @if($auction->isPending())
+                            <form action="{{ route('admin.auctions.approve', $auction->id) }}" method="POST" style="display:inline">
+                                @csrf
+                                <button type="submit" class="ab ab-approve" title="Approve"><i class="fa-solid fa-check"></i></button>
+                            </form>
+                            <button type="button" class="ab ab-reject" title="Reject" onclick="openReject({{ $auction->id }}, '{{ addslashes($auction->title) }}')">
+                                <i class="fa-solid fa-times"></i>
+                            </button>
+                        @elseif($auction->isActive())
+                            <form action="{{ route('admin.auctions.close', $auction->id) }}" method="POST" style="display:inline" onsubmit="return confirm('Close this auction now?')">
+                                @csrf
+                                <button type="submit" class="ab ab-close" title="Close Auction"><i class="fa-solid fa-gavel"></i></button>
+                            </form>
+                        @endif
+                        @if($auction->bid_count == 0)
+                            <form action="{{ route('admin.auctions.destroy', $auction->id) }}" method="POST" onsubmit="return confirm('Permanently delete this auction?')" style="display:inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="ab ab-delete" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                            </form>
+                        @endif
+                    </div>
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="8" class="text-center p-4 text-muted">No auction listings found.</td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
 
-<div class="mt-3">{{ $auctions->appends(request()->query())->links() }}</div>
+<div class="mt-3">
+    {{ $auctions->appends(request()->query())->links() }}
+</div>
 
 {{-- Reject Modal --}}
 <div class="reject-modal" id="rejectModal">
     <div class="reject-box">
-        <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:1rem;">Reject Auction</h3>
+        <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:.5rem;color:#111;"><i class="fa-solid fa-circle-xmark me-1 text-danger"></i> Reject Auction</h3>
+        <p style="font-size:.85rem;color:#888;margin-bottom:1rem;" id="rejectModalSubtitle">Please provide a reason for rejection:</p>
         <form id="rejectForm" method="POST">
             @csrf
-            <textarea name="rejection_reason" class="form-control mb-3" placeholder="Reason for rejection (min 10 characters)..." required minlength="10" rows="3"></textarea>
+            <div class="mb-3">
+                <textarea name="rejection_reason" class="form-control" rows="4" required minlength="10" placeholder="Explain why this auction is rejected..." style="border-radius:10px;font-size:.88rem;"></textarea>
+            </div>
             <div style="display:flex;gap:.5rem;justify-content:flex-end;">
-                <button type="button" onclick="closeReject()" class="btn btn-light">Cancel</button>
-                <button type="submit" class="btn btn-danger">Reject Auction</button>
+                <button type="button" onclick="closeReject()" class="btn btn-light" style="border-radius:8px;font-weight:600;font-size:.85rem;">Cancel</button>
+                <button type="submit" class="btn btn-danger" style="border-radius:8px;font-weight:700;font-size:.85rem;">Reject Auction</button>
             </div>
         </form>
     </div>
 </div>
+
 <script>
-function openReject(id) {
+function openReject(id, title) {
     document.getElementById('rejectForm').action = '/admin/auctions/' + id + '/reject';
+    document.getElementById('rejectModalSubtitle').textContent = 'Rejecting: ' + title;
     document.getElementById('rejectModal').classList.add('open');
 }
-function closeReject() { document.getElementById('rejectModal').classList.remove('open'); }
+function closeReject() {
+    document.getElementById('rejectModal').classList.remove('open');
+}
 </script>
 
 @endsection

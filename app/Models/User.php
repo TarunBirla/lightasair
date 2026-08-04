@@ -78,6 +78,21 @@ class User extends Authenticatable
         return $this->hasMany(AuctionBid::class);
     }
 
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'user_id');
+    }
+
+    public function rentalListings()
+    {
+        return $this->hasMany(RentalListing::class, 'user_id');
+    }
+
+    public function auctions()
+    {
+        return $this->hasMany(Auction::class, 'user_id');
+    }
+
     // ─── Scopes ───────────────────────────────────────────────────────────────
 
     public function scopeVendors($query)

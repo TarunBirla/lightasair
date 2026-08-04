@@ -1,14 +1,14 @@
 @extends('layouts.vendor')
 
-@section('title', 'My Auctions')
+@section('title', 'My Timed Auctions — Light As Air')
 
 @section('content')
-<div class="page-header mb-4" style="display:flex;justify-content:space-between;align-items:center;">
+<div class="page-header mb-4" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
     <div>
-        <h1 class="page-title" style="font-size:1.6rem;font-weight:800;">My Auctions</h1>
-        <p style="color:#888;font-size:.9rem;margin:0;">Create and monitor your timed equipment auctions</p>
+        <h1 class="page-title" style="font-size:1.6rem;font-weight:800;margin:0;">Timed Auctions</h1>
+        <p style="color:#888;font-size:.9rem;margin:.2rem 0 0 0;">Create and monitor competitive timed bidding for your film gear</p>
     </div>
-    <a href="{{ route('vendor.auctions.create') }}" class="btn btn-brand" style="border-radius:10px;font-weight:700;">
+    <a href="{{ route('vendor.auctions.create') }}" class="btn-brand">
         <i class="bi bi-hammer me-1"></i> Create Auction
     </a>
 </div>
@@ -20,60 +20,124 @@
     <div class="alert alert-danger mb-4" style="border-radius:12px;">{{ session('error') }}</div>
 @endif
 
-<div class="card p-4" style="border-radius:16px;border:1px solid #e5e4df;">
-    @if($auctions->isEmpty())
-        <div style="text-align:center;padding:3rem 1rem;color:#888;">
-            <i class="bi bi-hammer" style="font-size:3rem;display:block;margin-bottom:1rem;opacity:.5;"></i>
-            <h4>No auctions listed yet</h4>
-            <p>List equipment for competitive timed bidding.</p>
-            <a href="{{ route('vendor.auctions.create') }}" class="btn btn-brand mt-2" style="border-radius:10px;">Create First Auction</a>
-        </div>
-    @else
-        <div class="table-responsive">
-            <table class="table align-middle">
-                <thead>
-                    <tr style="font-size:.78rem;text-transform:uppercase;color:#888;">
-                        <th>Auction Title</th>
-                        <th>Current Bid</th>
-                        <th>Reserve</th>
-                        <th>Bids</th>
-                        <th>End Time</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($auctions as $auction)
-                    <tr>
-                        <td style="font-weight:700;">
-                            <div style="display:flex;align-items:center;gap:.75rem;">
-                                <img src="{{ $auction->primaryImageUrl() }}" style="width:44px;height:44px;object-fit:cover;border-radius:8px;">
-                                <div>
-                                    <a href="{{ route('vendor.auctions.show', $auction->id) }}" style="color:#111;text-decoration:none;">{{ Str::limit($auction->title, 40) }}</a>
-                                    <div class="text-muted" style="font-size:.75rem;">{{ $auction->category->name ?? 'Uncategorised' }}</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td style="font-weight:800;color:#16a34a;">£{{ number_format($auction->current_bid, 2) }}</td>
-                        <td style="font-size:.85rem;">£{{ number_format($auction->reserve_price, 2) }}</td>
-                        <td style="font-weight:700;">{{ $auction->bid_count }} bid(s)</td>
-                        <td style="font-size:.82rem;">{{ $auction->end_time ? $auction->end_time->format('d M Y H:i') : '—' }}</td>
-                        <td><span class="badge badge-{{ $auction->status }}">{{ ucfirst($auction->status) }}</span></td>
-                        <td>
-                            <div style="display:flex;gap:.3rem;">
-                                <a href="{{ route('vendor.auctions.show', $auction->id) }}" class="btn btn-sm btn-outline-secondary" style="border-radius:8px;">View</a>
-                                @unless($auction->isActive() || $auction->isEnded())
-                                    <a href="{{ route('vendor.auctions.edit', $auction->id) }}" class="btn btn-sm btn-outline-dark" style="border-radius:8px;">Edit</a>
-                                @endunless
-                            </div>
-                        </td>
-                    </tr>
+{{-- Filter Bar --}}
+<div class="content-card mb-4">
+    <div class="content-card-body" style="padding:1rem 1.4rem;">
+        <form method="GET" action="{{ route('vendor.auctions.index') }}" class="row g-2 align-items-center">
+            <div class="col-md-5">
+                <input type="text" name="search" class="form-control" placeholder="Search auction title..." value="{{ request('search') }}" style="border-radius:10px;font-size:.9rem;">
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-select" onchange="this.form.submit()" style="border-radius:10px;font-size:.9rem;">
+                    <option value="">All Statuses</option>
+                    @foreach(['pending' => 'Pending Approval', 'active' => 'Active Bidding', 'ended' => 'Ended', 'rejected' => 'Rejected', 'cancelled' => 'Cancelled'] as $val => $label)
+                        <option value="{{ $val }}" @selected(request('status') === $val)>{{ $label }}</option>
                     @endforeach
-                </tbody>
-            </table>
-        </div>
-
-        <div class="mt-3">{{ $auctions->links() }}</div>
-    @endif
+                </select>
+            </div>
+            <div class="col-md-auto ms-auto d-flex gap-2">
+                <button type="submit" class="btn btn-dark" style="border-radius:10px;font-weight:700;font-size:.85rem;padding:.5rem 1.2rem;">
+                    <i class="bi bi-filter me-1"></i> Filter
+                </button>
+                <a href="{{ route('vendor.auctions.index') }}" class="btn btn-light" style="border-radius:10px;font-weight:600;font-size:.85rem;padding:.5rem 1rem;">Reset</a>
+            </div>
+        </form>
+    </div>
 </div>
+
+@if($auctions->isEmpty())
+    <div class="content-card text-center p-5">
+        <i class="bi bi-hammer" style="font-size:3.5rem;color:#ccc;display:block;margin-bottom:1rem;"></i>
+        <h3 style="font-weight:800;color:#333;margin-bottom:.5rem;">No Auctions Listed</h3>
+        <p style="color:#888;font-size:.9rem;max-width:450px;margin:0 auto 1.5rem;">List high-demand film equipment for timed bidding to maximize sales value.</p>
+        <a href="{{ route('vendor.auctions.create') }}" class="btn-brand" style="display:inline-flex;">
+            <i class="bi bi-plus-lg me-1"></i> Create First Auction
+        </a>
+    </div>
+@else
+    <div class="row g-4">
+        @foreach($auctions as $auction)
+        <div class="col-lg-4 col-md-6">
+            <div class="content-card h-100 d-flex flex-column" style="overflow:hidden;transition:transform .2s, box-shadow .2s;">
+                <div style="position:relative;height:200px;background:#f5f4ef;overflow:hidden;">
+                    <img src="{{ $auction->primaryImageUrl() }}" alt="{{ $auction->title }}" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\' fill=\'%23f5f4ef\'><text x=\'150\' y=\'105\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%23888888\' text-anchor=\'middle\'>Auction Image</text></svg>'">
+                    <span class="badge bg-dark" style="position:absolute;top:.75rem;left:.75rem;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:.4em .8em;border-radius:20px;">
+                        <i class="bi bi-hammer me-1"></i> AUCTION
+                    </span>
+                    @if($auction->isActive())
+                        <span class="status-badge badge-approved" style="position:absolute;top:.75rem;right:.75rem;">Active Bidding</span>
+                    @elseif($auction->isPending())
+                        <span class="status-badge badge-pending" style="position:absolute;top:.75rem;right:.75rem;">Pending Approval</span>
+                    @elseif($auction->isEnded())
+                        <span class="status-badge" style="position:absolute;top:.75rem;right:.75rem;background:#888;color:#fff;">Ended</span>
+                    @elseif($auction->isRejected())
+                        <span class="status-badge badge-rejected" style="position:absolute;top:.75rem;right:.75rem;">Rejected</span>
+                    @else
+                        <span class="status-badge" style="position:absolute;top:.75rem;right:.75rem;background:#eee;color:#555;">{{ ucfirst($auction->status) }}</span>
+                    @endif
+                </div>
+
+                <div class="content-card-body d-flex flex-column flex-grow-1" style="padding:1.2rem;">
+                    <div style="font-size:.75rem;font-weight:700;color:var(--brand-dark);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem;">
+                        {{ $auction->category->name ?? 'Film Equipment' }}
+                    </div>
+                    <h3 style="font-size:1.05rem;font-weight:800;color:#111;margin-bottom:.5rem;line-height:1.3;">
+                        {{ Str::limit($auction->title, 50) }}
+                    </h3>
+
+                    <div style="font-size:.82rem;color:#666;display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+                        <span><i class="bi bi-gavel me-1"></i> Bids: <strong>{{ $auction->bid_count }} bid(s)</strong></span>
+                        <span><i class="bi bi-clock me-1"></i> {{ $auction->end_time ? $auction->end_time->format('d M Y, H:i') : 'No end time' }}</span>
+                    </div>
+
+                    <div style="background:#fff8e1;border:1px solid #ffe082;border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem;">
+                        <div style="font-size:.72rem;font-weight:700;color:#8d6e63;text-transform:uppercase;">Current Highest Bid</div>
+                        <div style="font-size:1.4rem;font-weight:900;color:#111;">
+                            £{{ number_format($auction->current_bid, 2) }}
+                        </div>
+                        <div style="font-size:.75rem;color:#777;margin-top:.2rem;">
+                            Reserve Price: <strong>£{{ number_format($auction->reserve_price, 2) }}</strong>
+                            @if($auction->reserveMet())
+                                <span class="badge bg-success ms-1" style="font-size:.65rem;">Reserve Met</span>
+                            @else
+                                <span class="badge bg-secondary ms-1" style="font-size:.65rem;">Reserve Not Met</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    @if($auction->isRejected() && $auction->rejection_reason)
+                        <div class="alert alert-danger p-2 mb-3" style="font-size:.78rem;border-radius:8px;">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i> <strong>Rejection Reason:</strong> {{ $auction->rejection_reason }}
+                        </div>
+                    @endif
+
+                    <div class="mt-auto d-flex gap-2 pt-2" style="border-top:1px solid #f0efe9;">
+                        <a href="{{ route('vendor.auctions.show', $auction->id) }}" class="btn btn-sm btn-light flex-grow-1" style="border-radius:8px;font-weight:700;font-size:.8rem;">
+                            <i class="bi bi-eye"></i> View Live Feed
+                        </a>
+                        @unless($auction->isActive() || $auction->isEnded())
+                            <a href="{{ route('vendor.auctions.edit', $auction->id) }}" class="btn btn-sm btn-outline-brand" style="border-radius:8px;font-weight:700;font-size:.8rem;">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                        @endunless
+                        @if($auction->bid_count == 0)
+                            <form action="{{ route('vendor.auctions.destroy', $auction->id) }}" method="POST" onsubmit="return confirm('Delete this auction?')" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-outline-danger" style="border-radius:8px;font-weight:700;font-size:.8rem;">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+
+    <div class="mt-4 d-flex justify-content-center">
+        {{ $auctions->appends(request()->query())->links() }}
+    </div>
+@endif
 @endsection

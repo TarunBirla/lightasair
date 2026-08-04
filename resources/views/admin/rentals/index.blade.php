@@ -122,11 +122,7 @@
         <tr>
             <td>
                 <div style="display:flex;align-items:center;gap:.7rem;">
-                    @if($listing->images && count($listing->images))
-                        <img src="{{ asset('storage/' . $listing->images[0]) }}" class="listing-thumb" alt="">
-                    @else
-                        <div class="listing-thumb-ph"><i class="fa-solid fa-image"></i></div>
-                    @endif
+                    <img src="{{ $listing->primaryImageUrl() }}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;border:1px solid #eee;" alt="" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\' fill=\'%23eee\'><text x=\'24\' y=\'28\' font-family=\'sans-serif\' font-size=\'10\' fill=\'%23888\' text-anchor=\'middle\'>Img</text></svg>'">
                     <div>
                         <div style="font-weight:700;font-size:.88rem;line-height:1.3;">{{ Str::limit($listing->title, 45) }}</div>
                         <div style="font-size:.73rem;color:#aaa;">{{ $listing->category->name ?? 'Uncategorised' }}</div>

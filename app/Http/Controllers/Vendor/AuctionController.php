@@ -110,8 +110,29 @@ class AuctionController extends Controller
             'start_time'        => 'required|date',
             'end_time'          => 'required|date|after:start_time',
             'location'          => 'nullable|string|max:255',
+            'new_images'        => 'nullable|array|max:10',
+            'new_images.*'      => 'image|mimes:jpeg,png,jpg,webp|max:4096',
+            'remove_images'     => 'nullable|array',
         ]);
 
+        $existing = $auction->images ?? [];
+        if (is_string($existing)) {
+            $existing = json_decode($existing, true) ?: [];
+        }
+
+        if ($request->has('remove_images')) {
+            foreach ($request->remove_images as $path) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($path);
+                $existing = array_filter($existing, fn($i) => $i !== $path);
+            }
+        }
+        if ($request->hasFile('new_images')) {
+            foreach ($request->file('new_images') as $img) {
+                $existing[] = $img->store('auctions', 'public');
+            }
+        }
+
+        $validated['images'] = array_values($existing);
         $validated['status'] = 'pending'; // re-submit for approval
 
         $auction->update($validated);

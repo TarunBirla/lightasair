@@ -8,6 +8,10 @@ use App\Models\Category;
 use App\Models\Item;
 use App\Models\User;
 use App\Models\RequestLead;
+use App\Models\VendorProfile;
+use App\Models\Product;
+use App\Models\RentalListing;
+use App\Models\Auction;
 
 class DashboardController extends Controller
 {
@@ -26,6 +30,13 @@ class DashboardController extends Controller
             'user'
         )->count();
 
+        $vendorCount = User::where('role', 'vendor')->count();
+        $pendingVendors = VendorProfile::where('approval_status', 'pending')->count();
+        $productCount = Product::count();
+        $rentalCount = RentalListing::count();
+        $auctionCount = Auction::count();
+        $activeAuctionCount = Auction::where('status', 'active')->count();
+
         return view(
             'admin.dashboard',
             compact(
@@ -33,7 +44,13 @@ class DashboardController extends Controller
                 'categoryCount',
                 'itemCount',
                 'userCount',
-                'requestCount'
+                'requestCount',
+                'vendorCount',
+                'pendingVendors',
+                'productCount',
+                'rentalCount',
+                'auctionCount',
+                'activeAuctionCount'
             )
         );
     }

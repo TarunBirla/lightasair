@@ -1,276 +1,204 @@
 @extends('layouts.vendor')
 
-@section('title', 'Edit Listing')
+@section('title', 'Edit Sell Listing')
 
 @section('content')
-<div class="page-header">
+<div class="page-header mb-4" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
     <div>
-        <h1 class="page-title">Edit Listing</h1>
-        <p class="page-subtitle">Update your listing details. It will be re-submitted for approval.</p>
+        <h1 class="page-title" style="font-size:1.6rem;font-weight:800;margin:0;">Edit Sell Listing</h1>
+        <p style="color:#888;font-size:.9rem;margin:.2rem 0 0 0;">Update listing details, pricing, photos or stock</p>
     </div>
-    <a href="{{ route('vendor.products.index') }}" class="btn btn-outline">
-        <i class="fas fa-arrow-left"></i> Back to Listings
+    <a href="{{ route('vendor.products.index') }}" class="btn btn-outline-secondary" style="border-radius:10px;font-weight:700;font-size:.85rem;">
+        <i class="bi bi-arrow-left me-1"></i> Back to Listings
     </a>
 </div>
 
-<form action="{{ route('vendor.products.update', $product) }}" method="POST" enctype="multipart/form-data" class="listing-form">
-    @csrf @method('PUT')
+@if($errors->any())
+    <div class="alert alert-danger mb-4" style="border-radius:12px;">
+        <strong class="d-block mb-1"><i class="bi bi-exclamation-triangle-fill me-1"></i> Please check form errors:</strong>
+        <ul class="mb-0 ps-3" style="font-size:.88rem;">
+            @foreach($errors->all() as $err)
+                <li>{{ $err }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
-    <div class="form-grid">
-        <div class="form-main">
+<form method="POST" action="{{ route('vendor.products.update', $product->id) }}" enctype="multipart/form-data">
+    @csrf
+    @method('PUT')
+    <input type="hidden" name="listing_type" value="sell">
 
-            <div class="form-card">
-                <h2 class="card-title"><i class="fas fa-info-circle"></i> Basic Information</h2>
-                <div class="form-group">
-                    <label class="form-label">Listing Title <span class="req">*</span></label>
-                    <input type="text" name="title" class="form-control @error('title') is-invalid @enderror"
-                           value="{{ old('title', $product->title) }}" required>
-                    @error('title')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Short Description</label>
-                    <input type="text" name="short_description" class="form-control"
-                           value="{{ old('short_description', $product->short_description) }}" maxlength="500">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Full Description <span class="req">*</span></label>
-                    <textarea name="description" rows="6" class="form-control @error('description') is-invalid @enderror" required>{{ old('description', $product->description) }}</textarea>
-                    @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
-            </div>
-
-            {{-- Existing Images --}}
-            <div class="form-card">
-                <h2 class="card-title"><i class="fas fa-images"></i> Images</h2>
-
-                @if($product->images && count($product->images))
-                <p class="form-label">Current Images (check to remove)</p>
-                <div class="existing-images">
-                    @foreach($product->images as $img)
-                    <div class="existing-thumb">
-                        <img src="{{ asset('storage/' . $img) }}" alt="Product image">
-                        <label class="remove-label">
-                            <input type="checkbox" name="remove_images[]" value="{{ $img }}">
-                            <span class="remove-icon"><i class="fas fa-times"></i></span>
-                        </label>
-                    </div>
-                    @endforeach
-                </div>
-                @endif
-
-                <div class="image-dropzone" style="margin-top:.75rem">
-                    <input type="file" name="new_images[]" multiple accept="image/*" id="newImages" class="dropzone-input">
-                    <div class="dropzone-label">
-                        <i class="fas fa-cloud-upload-alt fa-2x"></i>
-                        <p>Add more images</p>
-                        <small>JPEG, PNG, WebP · Max 4 MB each</small>
-                    </div>
-                </div>
-                <div id="imagePreview" class="image-preview-grid"></div>
-            </div>
-
-            {{-- Pricing --}}
-            <div class="form-card">
-                <h2 class="card-title"><i class="fas fa-pound-sign"></i> Pricing</h2>
-                <div class="row-2">
-                    <div class="form-group" id="sellPriceGroup">
-                        <label class="form-label">Sale Price (£)</label>
-                        <input type="number" name="price" step="0.01" min="0" class="form-control"
-                               value="{{ old('price', $product->price) }}">
-                    </div>
-                    <div class="form-group" id="rentDayGroup" style="display:none">
-                        <label class="form-label">Rental Price / Day (£)</label>
-                        <input type="number" name="rental_price_day" step="0.01" min="0" class="form-control"
-                               value="{{ old('rental_price_day', $product->rental_price_day) }}">
-                    </div>
-                    <div class="form-group" id="rentWeekGroup" style="display:none">
-                        <label class="form-label">Rental Price / Week (£)</label>
-                        <input type="number" name="rental_price_week" step="0.01" min="0" class="form-control"
-                               value="{{ old('rental_price_week', $product->rental_price_week) }}">
-                    </div>
-                    <div class="form-group" id="depositGroup" style="display:none">
-                        <label class="form-label">Deposit Amount (£)</label>
-                        <input type="number" name="deposit_amount" step="0.01" min="0" class="form-control"
-                               value="{{ old('deposit_amount', $product->deposit_amount) }}">
-                    </div>
-                    <div class="form-group" id="reserveGroup" style="display:none">
-                        <label class="form-label">Reserve Price (£)</label>
-                        <input type="number" name="reserve_price" step="0.01" min="0" class="form-control"
-                               value="{{ old('reserve_price', $product->reserve_price) }}">
-                    </div>
-                </div>
-            </div>
-
+    {{-- CARD 1: BASIC INFORMATION --}}
+    <div class="content-card mb-4">
+        <div class="content-card-header">
+            <h4 class="content-card-title"><i class="bi bi-info-circle-fill me-2 text-warning"></i> Item Details</h4>
         </div>
-
-        <div class="form-sidebar">
-            <div class="form-card">
-                <h2 class="card-title"><i class="fas fa-layer-group"></i> Listing Type</h2>
-                <div class="type-selector" id="typeSelector">
-                    @foreach(['sell' => ['Sell','fa-shopping-cart'], 'rent' => ['Rent','fa-calendar-alt'], 'auction' => ['Auction','fa-gavel']] as $val => [$label, $icon])
-                    <label class="type-option {{ old('listing_type', $product->listing_type) === $val ? 'active' : '' }}">
-                        <input type="radio" name="listing_type" value="{{ $val }}"
-                               {{ old('listing_type', $product->listing_type) === $val ? 'checked' : '' }}>
-                        <i class="fas {{ $icon }}"></i>
-                        <span>{{ $label }}</span>
-                    </label>
-                    @endforeach
-                </div>
+        <div class="content-card-body">
+            <div class="mb-3">
+                <label class="form-label" style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#555;">Listing Title <span class="text-danger">*</span></label>
+                <input type="text" name="title" class="form-control form-control-lg" value="{{ old('title', $product->title) }}" required style="border-radius:10px;font-weight:700;">
             </div>
 
-            <div class="form-card">
-                <h2 class="card-title"><i class="fas fa-tags"></i> Details</h2>
-                <div class="form-group">
-                    <label class="form-label">Category</label>
-                    <select name="category_id" class="form-control">
-                        <option value="">— Select Category —</option>
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label" style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#555;">Category</label>
+                    <select name="category_id" class="form-select" style="border-radius:10px;">
+                        <option value="">Select Category</option>
                         @foreach($categories as $cat)
                             <option value="{{ $cat->id }}" @selected(old('category_id', $product->category_id) == $cat->id)>{{ $cat->name }}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Condition <span class="req">*</span></label>
-                    <select name="condition" class="form-control" required>
-                        @foreach(['new' => 'New', 'used' => 'Used', 'refurbished' => 'Refurbished'] as $val => $label)
-                            <option value="{{ $val }}" @selected(old('condition', $product->condition) === $val)>{{ $label }}</option>
-                        @endforeach
+                <div class="col-md-6">
+                    <label class="form-label" style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#555;">Condition <span class="text-danger">*</span></label>
+                    <select name="condition" class="form-select" required style="border-radius:10px;">
+                        <option value="new" @selected(old('condition', $product->condition) === 'new')>New</option>
+                        <option value="used" @selected(old('condition', $product->condition) === 'used')>Used</option>
+                        <option value="refurbished" @selected(old('condition', $product->condition) === 'refurbished')>Refurbished</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Quantity</label>
-                    <input type="number" name="quantity" min="1" class="form-control"
-                           value="{{ old('quantity', $product->quantity) }}" required>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                    <label class="form-label" style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#555;">Brand</label>
+                    <input type="text" name="brand" class="form-control" value="{{ old('brand', $product->brand) }}" style="border-radius:10px;">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#555;">Model Number</label>
+                    <input type="text" name="model_number" class="form-control" value="{{ old('model_number', $product->model_number) }}" style="border-radius:10px;">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#555;">SKU</label>
+                    <input type="text" name="sku" class="form-control" value="{{ old('sku', $product->sku) }}" style="border-radius:10px;">
                 </div>
             </div>
 
-            <div class="form-card">
-                <h2 class="card-title"><i class="fas fa-microchip"></i> Technical Info</h2>
-                <div class="form-group">
-                    <label class="form-label">Brand</label>
-                    <input type="text" name="brand" class="form-control" value="{{ old('brand', $product->brand) }}">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Model Number</label>
-                    <input type="text" name="model_number" class="form-control" value="{{ old('model_number', $product->model_number) }}">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">SKU</label>
-                    <input type="text" name="sku" class="form-control" value="{{ old('sku', $product->sku) }}">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Year Manufactured</label>
-                    <input type="number" name="year_manufactured" class="form-control"
-                           value="{{ old('year_manufactured', $product->year_manufactured) }}" min="1900" max="{{ date('Y') }}">
-                </div>
+            <div class="mb-3">
+                <label class="form-label" style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#555;">Short Summary</label>
+                <input type="text" name="short_description" class="form-control" value="{{ old('short_description', $product->short_description) }}" style="border-radius:10px;">
             </div>
 
-            <div class="form-card">
-                <h2 class="card-title"><i class="fas fa-map-marker-alt"></i> Location & Delivery</h2>
-                <div class="form-group">
-                    <label class="form-label">Location</label>
-                    <input type="text" name="location" class="form-control" value="{{ old('location', $product->location) }}">
-                </div>
-                <div class="form-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="offers_collection" value="1" {{ old('offers_collection', $product->offers_collection) ? 'checked' : '' }}>
-                        <span>Offers collection</span>
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="offers_shipping" value="1" {{ old('offers_shipping', $product->offers_shipping) ? 'checked' : '' }}>
-                        <span>Offers shipping / delivery</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="form-card">
-                <button type="submit" class="btn btn-primary btn-full">
-                    <i class="fas fa-paper-plane"></i> Save & Re-submit
-                </button>
+            <div class="mb-3">
+                <label class="form-label" style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#555;">Full Description <span class="text-danger">*</span></label>
+                <textarea name="description" class="form-control" rows="6" required style="border-radius:10px;">{{ old('description', $product->description) }}</textarea>
             </div>
         </div>
     </div>
+
+    {{-- CARD 2: IMAGES MANAGEMENT --}}
+    <div class="content-card mb-4">
+        <div class="content-card-header">
+            <h4 class="content-card-title"><i class="bi bi-images me-2 text-warning"></i> Item Photos</h4>
+        </div>
+        <div class="content-card-body">
+            @php
+                $existingImages = is_string($product->images) ? json_decode($product->images, true) : ($product->images ?? []);
+            @endphp
+
+            @if(count($existingImages) > 0)
+                <label class="form-label mb-2" style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#555;">Current Uploaded Photos</label>
+                <p style="font-size:.8rem;color:#888;margin-bottom:1rem;">Check the box on any photo you want to delete:</p>
+                <div class="row g-3 mb-4">
+                    @foreach($existingImages as $idx => $path)
+                        @php
+                            $url = str_starts_with($path, 'http') ? $path : (str_starts_with($path, 'storage/') ? asset($path) : asset('storage/'.$path));
+                        @endphp
+                        <div class="col-6 col-sm-4 col-md-3">
+                            <div style="position:relative;border-radius:12px;overflow:hidden;border:2px solid #e5e4df;background:#f5f4ef;">
+                                <img src="{{ $url }}" alt="Photo {{ $idx+1 }}" style="width:100%;height:140px;object-fit:cover;">
+                                <div style="padding:.5rem;background:#fff;border-top:1px solid #eee;font-size:.78rem;">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="remove_images[]" value="{{ $path }}" id="rm_prod_img_{{ $idx }}">
+                                        <label class="form-check-label text-danger font-weight-bold" for="rm_prod_img_{{ $idx }}" style="font-weight:700;cursor:pointer;">
+                                            <i class="bi bi-trash me-1"></i> Remove
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+
+            <div class="mb-2">
+                <label class="form-label" style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#555;">Upload Additional Photos</label>
+                <input type="file" name="new_images[]" id="editProductImagesInput" class="form-control" multiple accept="image/jpeg,image/png,image/webp" style="border-radius:10px;">
+                <small class="text-muted mt-1 d-block">You can select multiple photos (JPEG, PNG, WebP · Max 4 MB each).</small>
+            </div>
+            <div id="editProductImagesPreview" class="row g-2 mt-2"></div>
+        </div>
+    </div>
+
+    {{-- CARD 3: PRICING & INVENTORY --}}
+    <div class="content-card mb-4">
+        <div class="content-card-header">
+            <h4 class="content-card-title"><i class="bi bi-currency-pound me-2 text-warning"></i> Pricing & Inventory</h4>
+        </div>
+        <div class="content-card-body">
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label" style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#555;">Selling Price (£) <span class="text-danger">*</span></label>
+                    <input type="number" step="0.01" min="0.01" name="price" class="form-control form-control-lg" value="{{ old('price', $product->price) }}" required style="border-radius:10px;font-weight:800;">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#555;">Stock Quantity <span class="text-danger">*</span></label>
+                    <input type="number" name="quantity" class="form-control form-control-lg" value="{{ old('quantity', $product->quantity) }}" min="1" required style="border-radius:10px;font-weight:800;">
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label" style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#555;">Location</label>
+                    <input type="text" name="location" class="form-control" value="{{ old('location', $product->location) }}" style="border-radius:10px;">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#555;">Fulfillment Options</label>
+                    <div class="pt-2 d-flex align-items-center gap-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="offers_collection" value="1" id="editOffersCollection" @checked(old('offers_collection', $product->offers_collection))>
+                            <label class="form-check-label font-weight-bold" for="editOffersCollection" style="font-size:.88rem;font-weight:700;">
+                                Collection Available
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="offers_shipping" value="1" id="editOffersShipping" @checked(old('offers_shipping', $product->offers_shipping))>
+                            <label class="form-check-label font-weight-bold" for="editOffersShipping" style="font-size:.88rem;font-weight:700;">
+                                Delivery / Shipping Available
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- SUBMIT BUTTONS --}}
+    <div style="display:flex;justify-content:flex-end;gap:.75rem;margin-top:1.5rem;">
+        <a href="{{ route('vendor.products.index') }}" class="btn btn-outline-secondary btn-lg" style="border-radius:12px;font-size:.95rem;font-weight:700;">Cancel</a>
+        <button type="submit" class="btn-brand" style="border-radius:12px;padding:.8rem 2.2rem;font-size:.95rem;font-weight:800;display:inline-flex;align-items:center;gap:.5rem;">
+            <i class="bi bi-check-lg"></i> Update & Resubmit Listing
+        </button>
+    </div>
 </form>
-@endsection
 
-@push('styles')
-<style>
-.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.5rem;gap:1rem}
-.listing-form{width:100%}
-.form-grid{display:grid;grid-template-columns:1fr 340px;gap:1.5rem;align-items:start}
-@media(max-width:900px){.form-grid{grid-template-columns:1fr}}
-.form-card{background:#fff;border-radius:1rem;padding:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:1.25rem}
-.card-title{font-size:1rem;font-weight:700;margin:0 0 1.25rem;color:#111;display:flex;align-items:center;gap:.5rem}
-.form-group{margin-bottom:1rem}
-.form-label{display:block;font-size:.875rem;font-weight:600;margin-bottom:.35rem;color:#374151}
-.req{color:#dc2626}
-.form-control{width:100%;padding:.55rem .75rem;border:1px solid #d1d5db;border-radius:.5rem;font-size:.9rem;box-sizing:border-box;transition:border .15s}
-.form-control:focus{outline:none;border-color:#1d4ed8;box-shadow:0 0 0 3px rgba(29,78,216,.1)}
-.form-control.is-invalid{border-color:#dc2626}
-.invalid-feedback{color:#dc2626;font-size:.8rem;margin-top:.25rem}
-.d-block{display:block}
-.row-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-.type-selector{display:flex;flex-direction:column;gap:.5rem}
-.type-option{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border:2px solid #e5e7eb;border-radius:.75rem;cursor:pointer;font-weight:600;transition:all .15s}
-.type-option input{display:none}
-.type-option.active,.type-option:has(input:checked){border-color:#1d4ed8;background:#eff6ff;color:#1d4ed8}
-.image-dropzone{position:relative;border:2px dashed #d1d5db;border-radius:.75rem;padding:1.5rem;text-align:center;cursor:pointer;transition:border .15s}
-.image-dropzone:hover{border-color:#1d4ed8;background:#f8faff}
-.dropzone-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.dropzone-label i{color:#9ca3af}
-.dropzone-label p{margin:.5rem 0 .25rem;font-weight:600}
-.dropzone-label small{color:#9ca3af}
-.existing-images{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:.5rem;margin-bottom:.75rem}
-.existing-thumb{position:relative}
-.existing-thumb img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:.5rem;border:1px solid #e5e7eb}
-.remove-label{position:absolute;top:2px;right:2px;cursor:pointer}
-.remove-label input{display:none}
-.remove-icon{display:flex;align-items:center;justify-content:center;width:20px;height:20px;background:rgba(220,38,38,.85);color:#fff;border-radius:50%;font-size:.65rem}
-.existing-thumb:has(input:checked) img{opacity:.4}
-.existing-thumb:has(input:checked) .remove-icon{background:#16a34a}
-.image-preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:.5rem;margin-top:.5rem}
-.preview-thumb{width:100%;aspect-ratio:1;object-fit:cover;border-radius:.5rem;border:1px solid #e5e7eb}
-.checkbox-label{display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.9rem}
-.btn-full{width:100%;justify-content:center}
-</style>
-@endpush
-
-@push('scripts')
 <script>
-document.querySelectorAll('[name="listing_type"]').forEach(radio => {
-    radio.addEventListener('change', () => {
-        togglePriceFields(radio.value);
-        document.querySelectorAll('.type-option').forEach(o => o.classList.remove('active'));
-        radio.closest('.type-option').classList.add('active');
-    });
-});
-
-function togglePriceFields(type) {
-    document.getElementById('sellPriceGroup').style.display  = type === 'sell'    ? '' : 'none';
-    document.getElementById('rentDayGroup').style.display    = type === 'rent'    ? '' : 'none';
-    document.getElementById('rentWeekGroup').style.display   = type === 'rent'    ? '' : 'none';
-    document.getElementById('depositGroup').style.display    = type === 'rent'    ? '' : 'none';
-    document.getElementById('reserveGroup').style.display    = type === 'auction' ? '' : 'none';
-}
-
-const current = document.querySelector('[name="listing_type"]:checked');
-if (current) togglePriceFields(current.value);
-
-document.getElementById('newImages').addEventListener('change', function () {
-    const preview = document.getElementById('imagePreview');
-    preview.innerHTML = '';
-    Array.from(this.files).forEach(file => {
-        const reader = new FileReader();
-        reader.onload = e => {
-            const img = document.createElement('img');
-            img.src = e.target.result;
-            img.className = 'preview-thumb';
-            preview.appendChild(img);
-        };
-        reader.readAsDataURL(file);
+document.getElementById('editProductImagesInput')?.addEventListener('change', function(e) {
+    const container = document.getElementById('editProductImagesPreview');
+    container.innerHTML = '';
+    Array.from(e.target.files).forEach(file => {
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const col = document.createElement('div');
+                col.className = 'col-6 col-sm-4 col-md-3 col-lg-2';
+                col.innerHTML = `<div style="position:relative;border-radius:10px;overflow:hidden;border:2px solid #e5e4df;background:#f5f4ef;"><img src="${evt.target.result}" style="width:100%;height:110px;object-fit:cover;"></div>`;
+                container.appendChild(col);
+            };
+            reader.readAsDataURL(file);
+        }
     });
 });
 </script>
-@endpush
+@endsection

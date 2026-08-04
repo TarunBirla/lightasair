@@ -156,6 +156,34 @@
         <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
 
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('marketplace*') ? 'active' : '' }}" href="/marketplace">
+                        <i class="bi bi-shop"></i> Marketplace
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('rentals*') ? 'active' : '' }}" href="/rentals">
+                        <i class="bi bi-calendar3"></i> Rentals
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('auctions*') ? 'active' : '' }}" href="/auctions">
+                        <i class="bi bi-hammer"></i> Auctions
+                    </a>
+                </li>
+
+                @auth
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('my-orders*') ? 'active' : '' }}" href="/my-orders">
+                        <i class="bi bi-bag-check"></i> My Orders
+                    </a>
+                </li>
+                @endauth
+
+                <li><div class="divider-nav d-none d-lg-block"></div></li>
+
                 <!-- @if(Auth::check())
 
                     <li class="nav-item">

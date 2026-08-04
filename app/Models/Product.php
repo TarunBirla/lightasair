@@ -87,13 +87,46 @@ class Product extends Model
     // ─── Image helpers ────────────────────────────────────────────────────────
     public function primaryImage(): ?string
     {
-        return $this->images[0] ?? null;
+        $images = $this->images;
+        if (is_string($images)) {
+            $images = json_decode($images, true) ?: [];
+        }
+        return is_array($images) ? ($images[0] ?? null) : null;
     }
 
     public function primaryImageUrl(): string
     {
         $img = $this->primaryImage();
-        return $img ? asset('storage/' . $img) : asset('images/placeholder.png');
+        if (!$img) {
+            return 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"><rect width="300" height="200" fill="%23f5f4ef"/><path d="M100 130l25-30 20 25 35-45 40 50H100z" fill="%23e5e4df"/><circle cx="130" cy="80" r="14" fill="%23e5e4df"/><text x="150" y="165" font-family="sans-serif" font-size="13" font-weight="bold" fill="%23888888" text-anchor="middle">No Product Image</text></svg>';
+        }
+        if (str_starts_with($img, 'http://') || str_starts_with($img, 'https://')) {
+            return $img;
+        }
+        if (str_starts_with($img, 'storage/')) {
+            return asset($img);
+        }
+        if (str_starts_with($img, '/storage/')) {
+            return asset(ltrim($img, '/'));
+        }
+        return asset('storage/' . $img);
+    }
+
+    public function allImageUrls(): array
+    {
+        $images = $this->images;
+        if (is_string($images)) {
+            $images = json_decode($images, true) ?: [];
+        }
+        if (!is_array($images) || empty($images)) {
+            return [$this->primaryImageUrl()];
+        }
+        return array_map(function($img) {
+            if (str_starts_with($img, 'http://') || str_starts_with($img, 'https://')) return $img;
+            if (str_starts_with($img, 'storage/')) return asset($img);
+            if (str_starts_with($img, '/storage/')) return asset(ltrim($img, '/'));
+            return asset('storage/' . $img);
+        }, $images);
     }
 
     // ─── Relationships ────────────────────────────────────────────────────────

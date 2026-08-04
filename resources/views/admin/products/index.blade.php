@@ -1,207 +1,219 @@
 @extends('layouts.admin')
 
-@section('title', 'Marketplace Listings')
+@section('page-title', 'Marketplace Listings')
+@section('breadcrumb', 'Admin / Marketplace / Sell Listings')
 
 @section('content')
-<div class="page-header">
-    <h1 class="page-title">Marketplace Listings</h1>
-    <div class="stats-row">
-        <div class="stat-pill stat-pending"><i class="fas fa-clock"></i> {{ $stats['pending'] }} Pending</div>
-        <div class="stat-pill stat-approved"><i class="fas fa-check"></i> {{ $stats['approved'] }} Live</div>
-        <div class="stat-pill stat-total"><i class="fas fa-list"></i> {{ $stats['total'] }} Total</div>
+
+<style>
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.8rem; }
+.stat-box { background: #fff; border-radius: 12px; padding: 1.2rem 1.4rem; border: 1px solid #E8E6DF; display: flex; align-items: center; gap: 1rem; }
+.stat-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+.stat-icon.yellow { background: #FFF3B0; color: #B38A00; }
+.stat-icon.green  { background: #EDFAF0; color: #1a7a3a; }
+.stat-icon.purple { background: #FCE7F3; color: #BE185D; }
+.stat-icon.blue   { background: #EAF3FF; color: #1a5fb4; }
+.stat-num   { font-size: 1.7rem; font-weight: 800; color: #111; line-height: 1; }
+.stat-label { font-size: .75rem; color: #888; margin-top: .15rem; }
+
+.toolbar { display: flex; gap: .75rem; flex-wrap: wrap; margin-bottom: 1.4rem; align-items: center; }
+.toolbar form { display: flex; gap: .6rem; flex-wrap: wrap; }
+.f-input, .f-select { padding: .5rem .85rem; border: 1px solid #E8E6DF; border-radius: 8px; font-size: .85rem; background: #fff; outline: none; font-family: inherit; }
+.f-input:focus, .f-select:focus { border-color: #FFC700; }
+.btn-go  { padding: .5rem 1.1rem; background: #FFC700; border: none; border-radius: 8px; font-weight: 700; font-size: .85rem; cursor: pointer; }
+.btn-clr { padding: .5rem 1rem; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 8px; font-size: .85rem; text-decoration: none; color: #555; }
+
+.auc-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #E8E6DF; }
+.auc-table th { background: #f9f8f4; font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: #888; padding: .8rem 1rem; text-align: left; border-bottom: 1px solid #E8E6DF; }
+.auc-table td { padding: .9rem 1rem; border-bottom: 1px solid #f5f4f0; font-size: .88rem; vertical-align: middle; }
+.auc-table tr:last-child td { border: none; }
+.auc-table tr:hover td { background: #fefef9; }
+
+.ab { padding: .35rem .7rem; border-radius: 6px; font-size: .75rem; font-weight: 700; text-decoration: none; border: none; cursor: pointer; transition: all .15s; display: inline-flex; align-items: center; gap: .3rem; }
+.ab-view    { background: #f3f4f6; color: #374151; }
+.ab-approve { background: #d4edda; color: #155724; }
+.ab-reject  { background: #f8d7da; color: #721c24; }
+.ab-star    { background: #fff8e1; color: #b38a00; }
+.ab-star-active { background: #FFC700; color: #111; }
+.ab-delete  { background: #fee2e2; color: #991b1b; }
+
+.reject-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 999; align-items: center; justify-content: center; }
+.reject-modal.open { display: flex; }
+.reject-box { background: #fff; border-radius: 14px; padding: 2rem; width: 450px; max-width: 95vw; }
+</style>
+
+{{-- Flash messages --}}
+@if(session('success'))
+    <div class="alert alert-success mb-3" style="border-radius:10px;">{{ session('success') }}</div>
+@endif
+@if(session('error'))
+    <div class="alert alert-danger mb-3" style="border-radius:10px;">{{ session('error') }}</div>
+@endif
+
+{{-- Stats Row --}}
+<div class="stats-row">
+    <div class="stat-box">
+        <div class="stat-icon yellow"><i class="fa-solid fa-clock"></i></div>
+        <div><div class="stat-num">{{ $stats['pending'] ?? 0 }}</div><div class="stat-label">Pending Approval</div></div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-icon green"><i class="fa-solid fa-check-double"></i></div>
+        <div><div class="stat-num">{{ $stats['approved'] ?? 0 }}</div><div class="stat-label">Live Listings</div></div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-icon blue"><i class="fa-solid fa-tags"></i></div>
+        <div><div class="stat-num">{{ $stats['total'] ?? 0 }}</div><div class="stat-label">Total Listings</div></div>
     </div>
 </div>
 
-@if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-@endif
-
-{{-- Filters --}}
-<div class="filter-bar">
-    <form method="GET" class="filter-form">
-        <input type="text" name="search" placeholder="Search title..." class="form-control" value="{{ request('search') }}">
-        <select name="status" class="form-control" onchange="this.form.submit()">
+{{-- Filter Toolbar --}}
+<div class="toolbar">
+    <form method="GET" action="/admin/products">
+        <input type="text" name="search" class="f-input" placeholder="Search title..." value="{{ request('search') }}">
+        <select name="status" class="f-select">
             <option value="">All Statuses</option>
-            @foreach(['draft','pending','approved','rejected','sold','inactive'] as $s)
-                <option value="{{ $s }}" @selected(request('status') === $s)>{{ ucfirst($s) }}</option>
+            @foreach(['pending' => 'Pending Approval', 'approved' => 'Approved', 'rejected' => 'Rejected', 'sold' => 'Sold', 'draft' => 'Draft'] as $val => $label)
+                <option value="{{ $val }}" @selected(request('status') === $val)>{{ $label }}</option>
             @endforeach
         </select>
-        <select name="type" class="form-control" onchange="this.form.submit()">
+        <select name="type" class="f-select">
             <option value="">All Types</option>
-            @foreach(['sell','rent','auction'] as $t)
-                <option value="{{ $t }}" @selected(request('type') === $t)>{{ ucfirst($t) }}</option>
+            @foreach(['sell' => 'For Sale', 'rent' => 'Rental', 'auction' => 'Auction'] as $val => $label)
+                <option value="{{ $val }}" @selected(request('type') === $val)>{{ $label }}</option>
             @endforeach
         </select>
-        <button type="submit" class="btn btn-primary btn-sm">Search</button>
+        <button type="submit" class="btn-go"><i class="fa-solid fa-filter me-1"></i>Filter</button>
+        <a href="/admin/products" class="btn-clr">Reset</a>
     </form>
 </div>
 
-{{-- Table --}}
-<div class="table-card">
-    <table class="admin-table">
+{{-- Data Table --}}
+<div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #E8E6DF;">
+    <table class="auc-table">
         <thead>
             <tr>
-                <th>Image</th>
-                <th>Title / Seller</th>
+                <th style="width:60px;">Image</th>
+                <th>Item Title / Seller</th>
                 <th>Type</th>
-                <th>Condition</th>
                 <th>Price</th>
+                <th>Condition</th>
                 <th>Status</th>
                 <th>Submitted</th>
-                <th>Actions</th>
+                <th style="width:160px;">Actions</th>
             </tr>
         </thead>
         <tbody>
             @forelse($products as $product)
             <tr>
                 <td>
-                    <img src="{{ $product->primaryImageUrl() }}" alt="" class="table-thumb">
+                    <img src="{{ $product->primaryImageUrl() }}" alt="" style="width:48px;height:48px;object-fit:cover;border-radius:8px;border:1px solid #eee;" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\' fill=\'%23eee\'><text x=\'24\' y=\'28\' font-family=\'sans-serif\' font-size=\'10\' fill=\'%23888\' text-anchor=\'middle\'>Img</text></svg>'">
                 </td>
                 <td>
-                    <div class="seller-info">
-                        <strong>{{ Str::limit($product->title, 45) }}</strong>
-                        <span class="seller-name">{{ $product->seller->name ?? 'Unknown' }}</span>
-                        @if($product->brand) <span class="seller-name">{{ $product->brand }}</span> @endif
+                    <div style="font-weight:700;font-size:.88rem;color:#111;">{{ Str::limit($product->title, 45) }}</div>
+                    <div style="font-size:.76rem;color:#888;margin-top:.1rem;">
+                        <i class="fa-solid fa-store me-1"></i> Seller: <strong>{{ $product->seller->name ?? 'Unknown' }}</strong>
+                        @if($product->category) · {{ $product->category->name }} @endif
                     </div>
                 </td>
-                <td><span class="badge badge-type-{{ $product->listing_type }}">{{ ucfirst($product->listing_type) }}</span></td>
-                <td>{{ ucfirst($product->condition) }}</td>
                 <td>
+                    @if($product->isForSale())
+                        <span class="badge bg-primary" style="font-size:.7rem;">For Sale</span>
+                    @elseif($product->isForRent())
+                        <span class="badge bg-success" style="font-size:.7rem;">Rental</span>
+                    @else
+                        <span class="badge bg-purple" style="font-size:.7rem;background:#7c3aed;color:#fff;">Auction</span>
+                    @endif
+                </td>
+                <td style="font-weight:800;color:#16a34a;">
                     @if($product->isForSale() && $product->price)
                         £{{ number_format($product->price, 2) }}
                     @elseif($product->isForRent() && $product->rental_price_day)
-                        £{{ number_format($product->rental_price_day, 2) }}/day
+                        £{{ number_format($product->rental_price_day, 2) }}<small style="color:#888;">/day</small>
                     @elseif($product->isForAuction() && $product->reserve_price)
-                        £{{ number_format($product->reserve_price, 2) }} reserve
+                        £{{ number_format($product->reserve_price, 2) }} <small style="color:#888;">res.</small>
                     @else
                         —
                     @endif
                 </td>
-                <td><span class="badge badge-status-{{ $product->status }}">{{ ucfirst($product->status) }}</span></td>
-                <td>{{ $product->created_at->format('d M Y') }}</td>
+                <td style="font-size:.82rem;color:#555;">{{ ucfirst($product->condition) }}</td>
                 <td>
-                    <div class="action-btns">
-                        <a href="{{ route('admin.products.show', $product) }}" class="btn btn-xs btn-outline" title="View">
-                            <i class="fas fa-eye"></i>
-                        </a>
+                    @if($product->isApproved())
+                        <span class="badge bg-success" style="font-size:.72rem;">Approved</span>
+                    @elseif($product->isPending())
+                        <span class="badge bg-warning text-dark" style="font-size:.72rem;">Pending</span>
+                    @elseif($product->isRejected())
+                        <span class="badge bg-danger" style="font-size:.72rem;">Rejected</span>
+                    @else
+                        <span class="badge bg-secondary" style="font-size:.72rem;">{{ ucfirst($product->status) }}</span>
+                    @endif
+                </td>
+                <td style="font-size:.82rem;color:#888;">{{ $product->created_at->format('d M Y') }}</td>
+                <td>
+                    <div style="display:flex;gap:.3rem;align-items:center;">
+                        <a href="{{ route('admin.products.show', $product->id) }}" class="ab ab-view" title="View Details"><i class="fa-solid fa-eye"></i></a>
                         @if($product->isPending())
-                        <form action="{{ route('admin.products.approve', $product) }}" method="POST" style="display:inline">
-                            @csrf
-                            <button type="submit" class="btn btn-xs btn-success" title="Approve">
-                                <i class="fas fa-check"></i>
+                            <form action="{{ route('admin.products.approve', $product->id) }}" method="POST" style="display:inline">
+                                @csrf
+                                <button type="submit" class="ab ab-approve" title="Approve"><i class="fa-solid fa-check"></i></button>
+                            </form>
+                            <button type="button" class="ab ab-reject" title="Reject" onclick="openReject({{ $product->id }}, '{{ addslashes($product->title) }}')">
+                                <i class="fa-solid fa-times"></i>
                             </button>
-                        </form>
-                        <button type="button" class="btn btn-xs btn-danger" title="Reject"
-                                onclick="showRejectModal({{ $product->id }}, '{{ addslashes($product->title) }}')">
-                            <i class="fas fa-times"></i>
-                        </button>
                         @endif
-                        <form action="{{ route('admin.products.toggle-featured', $product) }}" method="POST" style="display:inline">
+                        <form action="{{ route('admin.products.toggle-featured', $product->id) }}" method="POST" style="display:inline">
                             @csrf
-                            <button type="submit" class="btn btn-xs {{ $product->is_featured ? 'btn-warning' : 'btn-outline' }}" title="Toggle featured">
-                                <i class="fas fa-star"></i>
+                            <button type="submit" class="ab {{ $product->is_featured ? 'ab-star-active' : 'ab-star' }}" title="Toggle Featured">
+                                <i class="fa-solid fa-star"></i>
                             </button>
                         </form>
-                        <form action="{{ route('admin.products.destroy', $product) }}" method="POST"
-                              onsubmit="return confirm('Permanently delete this listing?')" style="display:inline">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="btn btn-xs btn-danger" title="Delete">
-                                <i class="fas fa-trash"></i>
-                            </button>
+                        <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Permanently delete this listing?')" style="display:inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="ab ab-delete" title="Delete"><i class="fa-solid fa-trash"></i></button>
                         </form>
                     </div>
                 </td>
             </tr>
             @empty
-            <tr><td colspan="8" class="empty-row">No listings found.</td></tr>
+            <tr>
+                <td colspan="8" class="text-center p-4 text-muted">No listings found matching your search.</td>
+            </tr>
             @endforelse
         </tbody>
     </table>
 </div>
 
-<div class="pagination-wrapper">{{ $products->appends(request()->query())->links() }}</div>
+<div class="mt-3">
+    {{ $products->appends(request()->query())->links() }}
+</div>
 
 {{-- Reject Modal --}}
-<div id="rejectModal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeRejectModal()">
-    <div class="modal-box">
-        <h3 class="modal-title"><i class="fas fa-times-circle text-danger"></i> Reject Listing</h3>
-        <p id="rejectModalProduct" class="modal-subtitle"></p>
+<div class="reject-modal" id="rejectModal">
+    <div class="reject-box">
+        <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:.5rem;color:#111;"><i class="fa-solid fa-circle-xmark me-1 text-danger"></i> Reject Listing</h3>
+        <p style="font-size:.85rem;color:#888;margin-bottom:1rem;" id="rejectModalSubtitle">Please provide a reason for rejection:</p>
         <form id="rejectForm" method="POST">
             @csrf
-            <div class="form-group">
-                <label class="form-label">Reason for rejection <span class="req">*</span></label>
-                <textarea name="rejection_reason" rows="4" class="form-control" required
-                          placeholder="Please explain why this listing is being rejected..."></textarea>
+            <div class="mb-3">
+                <textarea name="rejection_reason" class="form-control" rows="4" required minlength="10" placeholder="Explain what needs to be corrected by the vendor..." style="border-radius:10px;font-size:.88rem;"></textarea>
             </div>
-            <div class="modal-actions">
-                <button type="button" class="btn btn-outline" onclick="closeRejectModal()">Cancel</button>
-                <button type="submit" class="btn btn-danger">Confirm Rejection</button>
+            <div style="display:flex;gap:.5rem;justify-content:flex-end;">
+                <button type="button" onclick="closeReject()" class="btn btn-light" style="border-radius:8px;font-weight:600;font-size:.85rem;">Cancel</button>
+                <button type="submit" class="btn btn-danger" style="border-radius:8px;font-weight:700;font-size:.85rem;">Reject Listing</button>
             </div>
         </form>
     </div>
 </div>
-@endsection
 
-@push('styles')
-<style>
-.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
-.stats-row{display:flex;gap:.5rem;flex-wrap:wrap}
-.stat-pill{padding:.35rem .85rem;border-radius:999px;font-size:.8rem;font-weight:600;display:flex;align-items:center;gap:.4rem}
-.stat-pending{background:#fef9c3;color:#854d0e}
-.stat-approved{background:#dcfce7;color:#166534}
-.stat-total{background:#dbeafe;color:#1e40af}
-.filter-bar{margin-bottom:1.25rem}
-.filter-form{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
-.filter-form .form-control{max-width:180px}
-.table-card{background:#fff;border-radius:1rem;overflow:auto;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.admin-table{width:100%;border-collapse:collapse;font-size:.875rem}
-.admin-table th{background:#f9fafb;padding:.75rem 1rem;font-weight:600;color:#6b7280;text-transform:uppercase;font-size:.75rem;letter-spacing:.05em;border-bottom:1px solid #f3f4f6;white-space:nowrap}
-.admin-table td{padding:.75rem 1rem;border-bottom:1px solid #f9fafb;vertical-align:middle}
-.table-thumb{width:50px;height:50px;object-fit:cover;border-radius:.5rem;border:1px solid #e5e7eb}
-.seller-info{display:flex;flex-direction:column}
-.seller-name{font-size:.75rem;color:#9ca3af}
-.badge{display:inline-block;padding:.2rem .6rem;border-radius:999px;font-size:.72rem;font-weight:600;white-space:nowrap}
-.badge-type-sell{background:#dbeafe;color:#1e40af}
-.badge-type-rent{background:#dcfce7;color:#166534}
-.badge-type-auction{background:#ede9fe;color:#6d28d9}
-.badge-status-approved{background:#dcfce7;color:#166534}
-.badge-status-pending{background:#fef9c3;color:#854d0e}
-.badge-status-rejected{background:#fee2e2;color:#991b1b}
-.badge-status-draft{background:#f3f4f6;color:#6b7280}
-.badge-status-sold{background:#ede9fe;color:#6d28d9}
-.action-btns{display:flex;gap:.3rem;flex-wrap:wrap}
-.btn-xs{padding:.25rem .5rem;font-size:.75rem;border-radius:.375rem;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
-.btn-success{background:#16a34a;color:#fff}
-.btn-warning{background:#d97706;color:#fff}
-.btn-outline{border:1px solid #d1d5db;background:transparent;color:#374151}
-.btn-danger{background:#dc2626;color:#fff}
-.empty-row{text-align:center;padding:2rem;color:#9ca3af}
-.pagination-wrapper{margin-top:1rem}
-/* Modal */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:flex!important;align-items:center;justify-content:center;padding:1rem}
-.modal-box{background:#fff;border-radius:1rem;padding:2rem;max-width:500px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
-.modal-title{font-size:1.25rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
-.modal-subtitle{color:#6b7280;margin-bottom:1.25rem;font-size:.875rem}
-.modal-actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:1rem}
-.text-danger{color:#dc2626}
-.req{color:#dc2626}
-.form-label{display:block;font-weight:600;font-size:.875rem;margin-bottom:.35rem}
-.form-control{width:100%;padding:.55rem .75rem;border:1px solid #d1d5db;border-radius:.5rem;box-sizing:border-box;font-size:.9rem}
-.btn-primary{background:#1d4ed8;color:#fff;padding:.5rem 1rem;border-radius:.5rem;border:none;cursor:pointer}
-.btn-sm{padding:.4rem .8rem;font-size:.875rem}
-.form-group{margin-bottom:1rem}
-</style>
-@endpush
-
-@push('scripts')
 <script>
-function showRejectModal(id, title) {
-    document.getElementById('rejectModalProduct').textContent = '"' + title + '"';
+function openReject(id, title) {
     document.getElementById('rejectForm').action = '/admin/products/' + id + '/reject';
-    document.getElementById('rejectModal').style.display = 'flex';
+    document.getElementById('rejectModalSubtitle').textContent = 'Rejecting: ' + title;
+    document.getElementById('rejectModal').classList.add('open');
 }
-function closeRejectModal() {
-    document.getElementById('rejectModal').style.display = 'none';
+function closeReject() {
+    document.getElementById('rejectModal').classList.remove('open');
 }
 </script>
-@endpush
+
+@endsection
