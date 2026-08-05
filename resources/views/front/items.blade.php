@@ -576,9 +576,29 @@
 
     <div class="container py-5">
 
-        <h2 class="mb-4">
-            All Rental Equipment
-        </h2>
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            <h2 class="m-0 fw-bold">
+                Product Catalog
+            </h2>
+
+            {{-- Product Type Tabs (Sell / Rental) --}}
+            <ul class="nav nav-pills gap-2 m-0">
+                <li class="nav-item">
+                    <a class="nav-link {{ request('type') !== 'rental' ? 'active bg-warning text-dark fw-bold shadow-sm' : 'bg-light text-dark fw-bold border' }}"
+                       href="{{ url('/items?type=sell' . (request('category') ? '&category='.request('category') : '') . (request('search') ? '&search='.request('search') : '')) }}"
+                       style="border-radius:30px;padding:.45rem 1.3rem;">
+                        <i class="bi bi-cart-check-fill me-1 text-success"></i> Selling Products
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request('type') === 'rental' ? 'active bg-warning text-dark fw-bold shadow-sm' : 'bg-light text-dark fw-bold border' }}"
+                       href="{{ url('/items?type=rental' . (request('category') ? '&category='.request('category') : '') . (request('search') ? '&search='.request('search') : '')) }}"
+                       style="border-radius:30px;padding:.45rem 1.3rem;">
+                        <i class="bi bi-calendar-event-fill me-1 text-primary"></i> Rental Products
+                    </a>
+                </li>
+            </ul>
+        </div>
         <div class="mb-4">
 
             <h5 class="fw-bold mb-3">
@@ -731,7 +751,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5>Request Item</h5>
+                    <h5 class="fw-bold m-0"><i class="bi bi-box-seam text-warning me-1"></i> Request Item</h5>
                     <button class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
@@ -740,30 +760,38 @@
                     <input type="hidden" id="item_id">
 
                     <div class="mb-3">
-                        <label>Name *</label>
+                        <label class="form-label fw-bold">Request Type *</label>
+                        <select id="request_product_type" class="form-select fw-bold" style="background:#f8f9fa;border-color:#ffc700;">
+                            <option value="sell" {{ ($type ?? 'sell') == 'sell' ? 'selected' : '' }}> Selling Request</option>
+                            <option value="rental" {{ ($type ?? '') == 'rental' ? 'selected' : '' }}> Rental Request</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Name *</label>
                         <input type="text" id="name" class="form-control">
                         <small class="text-danger" id="name_error"></small>
                     </div>
 
                     <div class="mb-3">
-                        <label>Email *</label>
+                        <label class="form-label">Email *</label>
                         <input type="email" id="email" class="form-control">
                         <small class="text-danger" id="email_error"></small>
                     </div>
 
                     <div class="mb-3">
-                        <label>Phone *</label>
+                        <label class="form-label">Phone *</label>
                         <input type="text" id="phone" class="form-control">
                         <small class="text-danger" id="phone_error"></small>
                     </div>
 
                     <div class="mb-3">
-                        <label>Message</label>
+                        <label class="form-label">Message</label>
                         <textarea id="message" class="form-control"></textarea>
                     </div>
 
-                    <button class="btn btn-warning w-100" onclick="submitRequest()">
-                        Send Request
+                    <button class="btn btn-warning w-100 fw-bold" onclick="submitRequest()">
+                        <i class="bi bi-send-fill me-1"></i> Send Request
                     </button>
 
                 </div>
@@ -785,11 +813,8 @@
 
             toast.show();
         }
-
-
-
-
     </script>
+
     <div class="position-fixed top-0 end-0 p-3" style="z-index:99999">
 
         <div id="liveToast" class="toast border-0 shadow">
@@ -805,52 +830,37 @@
         </div>
 
     </div>
+
     <script>
         async function submitRequest() {
             document.getElementById('name_error').innerHTML = '';
             document.getElementById('email_error').innerHTML = '';
             document.getElementById('phone_error').innerHTML = '';
 
-            let name =
-                document.getElementById('name').value.trim();
-
-            let email =
-                document.getElementById('email').value.trim();
-
-            let phone =
-                document.getElementById('phone').value.trim();
+            let name = document.getElementById('name').value.trim();
+            let email = document.getElementById('email').value.trim();
+            let phone = document.getElementById('phone').value.trim();
 
             let valid = true;
 
             if (!name) {
-                document.getElementById('name_error')
-                    .innerHTML = 'Name is required';
-
+                document.getElementById('name_error').innerHTML = 'Name is required';
                 valid = false;
             }
 
             if (!email) {
-                document.getElementById('email_error')
-                    .innerHTML = 'Email is required';
-
+                document.getElementById('email_error').innerHTML = 'Email is required';
                 valid = false;
-            }
-            else {
-                let emailRegex =
-                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
+            } else {
+                let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailRegex.test(email)) {
-                    document.getElementById('email_error')
-                        .innerHTML = 'Enter valid email';
-
+                    document.getElementById('email_error').innerHTML = 'Enter valid email';
                     valid = false;
                 }
             }
 
             if (!phone) {
-                document.getElementById('phone_error')
-                    .innerHTML = 'Phone number is required';
-
+                document.getElementById('phone_error').innerHTML = 'Phone number is required';
                 valid = false;
             }
 
@@ -859,36 +869,24 @@
             }
 
             try {
+                let reqType = document.getElementById('request_product_type') ? document.getElementById('request_product_type').value : 'sell';
 
-                const response =
-                    await fetch('/guest-request', {
-
-                        method: 'POST',
-
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'X-CSRF-TOKEN': document
-                                .querySelector('meta[name="csrf-token"]')
-                                .content
-                        },
-
-                        body: JSON.stringify({
-
-                            // item_id:
-                            // document.getElementById('item_id').value,
-                            items: JSON.parse(
-                                localStorage.getItem('requests')
-                            ),
-
-                            name: name,
-                            email: email,
-                            phone: phone,
-
-                            message:
-                                document.getElementById('message').value
-                        })
-                    });
+                const response = await fetch('/guest-request', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        items: JSON.parse(localStorage.getItem('requests')),
+                        product_type: reqType,
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        message: document.getElementById('message').value
+                    })
+                });
 
                 const data = await response.json();
 
@@ -897,51 +895,27 @@
                     return;
                 }
 
-                let msg =
+                let typeTitle = (reqType === 'rental') ? 'RENTAL REQUEST' : 'SELLING REQUEST';
+                let msg = `🔥 NEW LIGHT AS AIR REQUEST (${typeTitle})\n\nRequest Type: ${typeTitle}\n\nItems:\n${data.items}\nName: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\nMessage: ${document.getElementById('message').value || 'N/A'}`;
 
-                    `🔥 NEW LIGHT AS AIR REQUEST
+                window.open(`https://wa.me/447879175585?text=${encodeURIComponent(msg)}`, '_blank');
 
-    Items:
-    ${data.items}
-
-    Name: ${data.name}
-
-    Email: ${data.email}
-
-    Phone: ${data.phone}`;
-
-                window.open(
-                    `https://wa.me/447879175585?text=${encodeURIComponent(msg)}`,
-                    '_blank'
-                );
-
-                bootstrap.Modal
-                    .getInstance(
-                        document.getElementById('requestModal')
-                    ).hide();
+                bootstrap.Modal.getInstance(document.getElementById('requestModal')).hide();
 
                 document.getElementById('name').value = '';
                 document.getElementById('email').value = '';
                 document.getElementById('phone').value = '';
                 document.getElementById('message').value = '';
 
-                // Request list clear
                 localStorage.removeItem('requests');
+                if (typeof updateRequestCount === 'function') {
+                    updateRequestCount();
+                }
 
-                // Count update
-                updateRequestCount();
-
-                showToast(
-                    '✅ Request submitted successfully.'
-                );
-
-            }
-            catch (error) {
+                showToast('✅ Request submitted successfully.');
+            } catch (error) {
                 console.log(error);
-
-                showToast(
-                    '❌ Something went wrong. Please try again.'
-                );
+                showToast('❌ Something went wrong. Please try again.');
             }
         }
     </script>

@@ -46,7 +46,9 @@
             background: #fff;
             border-radius: 14px;
             border: 1px solid #E8E6DF;
-            overflow: hidden;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
         }
 
         .table-card table {
@@ -339,125 +341,125 @@
     </div>
 
     <div class="table-card">
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Image</th>
-                    <th>Title</th>
-                    <th>Category</th>
-                    <th>Sort Order</th>
-                    <th>Qty</th>
-                    <th>Available</th>
-                    <th>Price/Day</th>
-                    <th>Status</th>
-
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($items as $item)
+        <div class="table-responsive" style="overflow-x:auto;">
+            <table class="table align-middle mb-0">
+                <thead>
                     <tr>
-                        <td><span class="id-badge">{{ $item->id }}</span></td>
-                        <td>
-                            @php
+                        <th>#</th>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Product Type</th>
+                        <th>Price Details</th>
+                        <th>Qty</th>
+                        <th>Sort</th>
+                        <th>Status</th>
+                        <th style="min-width:130px;text-align:right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($items as $item)
+                        <tr>
+                            <td><span class="id-badge">{{ $item->id }}</span></td>
+                            <td>
+                                @php
+                                    $images = $item->image ?? [];
+                                    if (!is_array($images)) { $images = [$images]; }
+                                    $firstImage = $images[0] ?? null;
+                                @endphp
 
-                                $images = $item->image ?? [];
-
-                                if (!is_array($images)) {
-                                    $images = [$images];
-                                }
-
-                                $firstImage = $images[0] ?? null;
-
-                            @endphp
-
-                            <div style="position:relative">
-
-                                @if($firstImage)
-
-                                    <img src="{{ asset('uploads/items/' . $firstImage) }}" class="item-img">
-
-                                @endif
-
-                                @if(count($images) > 1)
-
-                                    <span style="
-                                                position:absolute;
-                                                top:-5px;
-                                                right:-5px;
-                                                background:#FFC700;
-                                                color:#111;
-                                                padding:3px 8px;
-                                                border-radius:20px;
-                                                font-size:11px;
-                                                font-weight:700;">
-                                        +{{ count($images) - 1 }}
+                                <div style="position:relative">
+                                    @if($firstImage)
+                                        <img src="{{ asset('uploads/items/' . $firstImage) }}" class="item-img">
+                                    @endif
+                                    @if(count($images) > 1)
+                                        <span style="position:absolute;top:-5px;right:-5px;background:#FFC700;color:#111;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:700;">
+                                            +{{ count($images) - 1 }}
+                                        </span>
+                                    @endif
+                                </div>
+                            </td>
+                            <td>
+                                <span class="item-title" style="font-weight:700;">
+                                    {{ $item->title }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="cat-tag">{{ $item->category->name ?? '—' }}</span>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-column gap-1">
+                                    @if($item->is_sell)
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle" style="font-size:.72rem;">
+                                            <i class="fa-solid fa-cart-shopping me-1"></i> Sell
+                                        </span>
+                                    @endif
+                                    @if($item->is_rental)
+                                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle" style="font-size:.72rem;">
+                                            <i class="fa-solid fa-calendar-check me-1"></i> Rental
+                                        </span>
+                                    @endif
+                                    @if(!$item->is_sell && !$item->is_rental)
+                                        <span class="badge bg-secondary-subtle text-secondary" style="font-size:.72rem;">Sell</span>
+                                    @endif
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-column gap-1" style="font-size:.85rem;">
+                                    @if($item->is_sell && $item->selling_price)
+                                        <div class="text-success fw-bold">Sell: £{{ number_format($item->selling_price, 2) }}</div>
+                                    @endif
+                                    @if($item->is_rental && ($item->rental_price || $item->price_per_day))
+                                        <div class="text-primary fw-bold">Rent: £{{ number_format($item->rental_price ?? $item->price_per_day, 2) }}/day</div>
+                                    @endif
+                                    @if(!$item->is_sell && !$item->is_rental && $item->price_per_day)
+                                        <div class="fw-bold">£{{ number_format($item->price_per_day, 2) }}</div>
+                                    @endif
+                                </div>
+                            </td>
+                            <td>
+                                <span class="qty-pill">{{ $item->qty }}</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-light text-dark border">{{ $item->sort_order }}</span>
+                            </td>
+                            <td>
+                                @if($item->status == 'active')
+                                    <span class="badge-status badge-active">
+                                        <i class="fa-solid fa-circle" style="font-size:7px"></i> Active
                                     </span>
-
+                                @else
+                                    <span class="badge-status badge-inactive">
+                                        <i class="fa-regular fa-circle" style="font-size:7px"></i> Inactive
+                                    </span>
                                 @endif
-
-                            </div>
-                        </td>
-                        <td>
-                            <span class="item-title">
-                                {{ $item->title }}
-                            </span>
-                        </td>
-                        <td>
-                            <span class="cat-tag">{{ $item->category->name ?? '—' }}</span>
-                        </td>
-                        <td>
-                            <span class="badge bg-info">
-                                {{ $item->sort_order }}
-                            </span>
-                        </td>
-                        <td>
-                            <span class="qty-pill">{{ $item->qty }}</span>
-                        </td>
-                        <td>
-                            <span class="avail-pill">{{ $item->available_qty }}</span>
-                        </td>
-                        <td>
-                            <span class="price-tag">£{{ $item->price_per_day }}<span>/day</span></span>
-                        </td>
-                        <td>
-                            @if($item->status == 'active')
-                                <span class="badge-status badge-active">
-                                    <i class="fa-solid fa-circle" style="font-size:7px"></i> Active
-                                </span>
-                            @else
-                                <span class="badge-status badge-inactive">
-                                    <i class="fa-regular fa-circle" style="font-size:7px"></i> Inactive
-                                </span>
-                            @endif
-                        </td>
-                        <td>
-                            <div class="action-group">
-                                <a href="{{ route('items.edit', $item->id) }}" class="btn-edit">
-                                    <i class="fa-solid fa-pen"></i> Edit
-                                </a>
-                                <form action="{{ route('items.destroy', $item->id) }}" method="POST" style="display:inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn-del" onclick="return confirm('Delete this item?')">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                @empty
-                    <tr class="empty-row">
-                        <td colspan="9">
-                            <i class="fa-solid fa-box-open" style="font-size:36px;display:block;margin-bottom:10px"></i>
-                            No items yet. <a href="{{ route('items.create') }}" style="color:#FFC700;font-weight:600">Add
-                                one?</a>
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                            </td>
+                            <td style="text-align:right;">
+                                <div class="action-group d-inline-flex gap-1">
+                                    <a href="{{ route('items.edit', $item->id) }}" class="btn-edit">
+                                        <i class="fa-solid fa-pen"></i> Edit
+                                    </a>
+                                    <form action="{{ route('items.destroy', $item->id) }}" method="POST" style="display:inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn-del" onclick="return confirm('Delete this item?')">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr class="empty-row">
+                            <td colspan="10">
+                                <i class="fa-solid fa-box-open" style="font-size:36px;display:block;margin-bottom:10px"></i>
+                                No items yet. <a href="{{ route('items.create') }}" style="color:#FFC700;font-weight:600">Add one?</a>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
         <div class="pagination-wrap">
             {{ $items->appends(request()->query())->links('pagination::bootstrap-5') }}
         </div>

@@ -21,30 +21,35 @@ class CategoryController extends Controller
         );
     }
 
-
     public function show(Request $request, $id)
-{
-    $category = Category::with('images')->findOrFail($id);
+    {
+        $category = Category::with('images')->findOrFail($id);
 
-    $categories = Category::where('status', 'active')
-        ->orderBy('number', 'asc')
-        ->get();
+        $categories = Category::where('status', 'active')
+            ->orderBy('number', 'asc')
+            ->get();
 
-    $items = Item::where('category_id', $id)
-        ->where('status', 'active');
+        $query = Item::where('category_id', $id)
+            ->where('status', 'active');
 
-    // Search
-    if ($request->filled('search')) {
-        $items->where('title', 'LIKE', '%' . $request->search . '%');
+        $type = $request->query('type', 'all');
+        if ($type === 'sell') {
+            $query->where(function($q) {
+                $q->where('is_sell', 1)->orWhereNull('is_sell');
+            });
+        } elseif ($type === 'rental') {
+            $query->where('is_rental', 1);
+        }
+
+        if ($request->filled('search')) {
+            $query->where('title', 'LIKE', '%' . $request->search . '%');
+        }
+
+        $items = $query->orderBy('sort_order', 'asc')->paginate(12);
+
+        return view(
+            'front.category-items',
+            compact('category', 'items', 'categories', 'type')
+        );
     }
-
-    $items = $items
-        ->orderBy('sort_order', 'asc')
-        ->paginate(12);
-
-    return view(
-        'front.category-items',
-        compact('category', 'items', 'categories')
-    );
-}
 }

@@ -294,7 +294,13 @@
 
         <div class="nav-item">
             <a href="/vendor/orders" class="nav-link {{ request()->is('vendor/orders*') ? 'active' : '' }}">
-                <i class="bi bi-bag-check-fill"></i> Orders
+                <i class="bi bi-bag-check-fill"></i> Marketplace Orders
+            </a>
+        </div>
+
+        <div class="nav-item">
+            <a href="/vendor/rental-bookings" class="nav-link {{ request()->is('vendor/rental-bookings*') ? 'active' : '' }}">
+                <i class="bi bi-calendar-event-fill"></i> Rental Bookings
             </a>
         </div>
 

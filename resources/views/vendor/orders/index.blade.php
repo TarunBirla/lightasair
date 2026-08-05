@@ -86,6 +86,9 @@
                         <td style="font-size:.8rem;color:#888;">{{ $order->created_at->format('d M Y') }}</td>
                         <td>
                             <a href="{{ route('vendor.orders.show', $order->id) }}" class="btn btn-sm btn-outline-dark" style="border-radius:8px;">View</a>
+                            <a href="/invoices/order/{{ $order->id }}" target="_blank" class="btn btn-sm btn-dark" style="border-radius:8px;font-weight:700;" title="Invoice">
+                                <i class="bi bi-printer"></i>
+                            </a>
                         </td>
                     </tr>
                     @endforeach

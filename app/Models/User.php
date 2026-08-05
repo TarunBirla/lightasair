@@ -78,6 +78,11 @@ class User extends Authenticatable
         return $this->hasMany(AuctionBid::class);
     }
 
+    public function rentalBookings()
+    {
+        return $this->hasMany(RentalBooking::class, 'customer_id');
+    }
+
     public function products()
     {
         return $this->hasMany(Product::class, 'user_id');

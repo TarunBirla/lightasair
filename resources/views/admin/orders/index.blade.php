@@ -120,7 +120,10 @@
             </td>
             <td style="font-size:.8rem;color:#888;">{{ $order->created_at->format('d M Y') }}</td>
             <td>
-                <a href="{{ route('admin.orders.show', $order->id) }}" class="ab-view"><i class="fa-solid fa-eye me-1"></i> View</a>
+                <div style="display:flex;gap:.3rem;">
+                    <a href="{{ route('admin.orders.show', $order->id) }}" class="ab-view"><i class="fa-solid fa-eye me-1"></i> View</a>
+                    <a href="/invoices/order/{{ $order->id }}" target="_blank" class="ab-view" style="background:#111;color:#FFC700;"><i class="fa-solid fa-file-invoice me-1"></i> Invoice</a>
+                </div>
             </td>
         </tr>
         @empty

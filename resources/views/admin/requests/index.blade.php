@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Requests')
-@section('breadcrumb', 'Admin / Requests')
+@section('page-title', 'Customer Product Requests')
+@section('breadcrumb', 'Admin / Customer Requests')
 
 @section('content')
 
@@ -19,34 +19,13 @@
             color: #111;
         }
 
-        .btn-add {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #FFC700;
-            color: #111;
-            font-size: 14px;
-            font-weight: 600;
-            padding: 10px 20px;
-            border-radius: 10px;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: background .2s, transform .15s;
-            font-family: 'Akshar', sans-serif;
-        }
-
-        .btn-add:hover {
-            background: #E6B200;
-            color: #111;
-            transform: translateY(-1px);
-        }
-
         .table-card {
             background: #fff;
             border-radius: 14px;
             border: 1px solid #E8E6DF;
-            overflow: hidden;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
         }
 
         .table-card table {
@@ -67,6 +46,7 @@
             letter-spacing: .8px;
             color: #888;
             text-align: left;
+            white-space: nowrap;
         }
 
         .table-card tbody tr {
@@ -89,61 +69,6 @@
             vertical-align: middle;
         }
 
-        .thumb-img {
-            width: 80px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid #E8E6DF;
-        }
-
-        .badge-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .badge-active {
-            background: #EDFAF0;
-            color: #1a7a3a;
-        }
-
-        .badge-inactive {
-            background: #F5F5F5;
-            color: #888;
-        }
-
-        .action-group {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn-edit {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 7px 14px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            text-decoration: none;
-            background: #FFF3B0;
-            color: #B38A00;
-            border: none;
-            cursor: pointer;
-            font-family: 'Akshar', sans-serif;
-            transition: background .2s;
-        }
-
-        .btn-edit:hover {
-            background: #FFC700;
-            color: #111;
-        }
-
         .btn-del {
             display: inline-flex;
             align-items: center;
@@ -156,7 +81,7 @@
             color: #c0392b;
             border: none;
             cursor: pointer;
-            font-family: 'Akshar', sans-serif;
+            font-family: inherit;
             transition: background .2s;
         }
 
@@ -165,140 +90,93 @@
             color: #fff;
         }
 
-        .id-badge {
-            display: inline-block;
-            background: #F7F6F1;
-            color: #888;
-            border-radius: 6px;
-            padding: 3px 9px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .empty-row td {
-            text-align: center;
-            padding: 60px 0;
-            color: #bbb;
-            font-size: 14px;
-        }
         .custom-pagination {
-    display: flex;
-    justify-content: center;
-    margin: 25px 0;
-}
+            display: flex;
+            justify-content: center;
+            margin: 25px 0;
+        }
 
-.custom-pagination nav {
-    display: flex;
-}
-
-.custom-pagination .pagination {
-    display: flex;
-    gap: 8px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.custom-pagination .page-item .page-link {
-    min-width: 42px;
-    height: 42px;
-    border-radius: 10px;
-    border: 1px solid #E8E6DF;
-    background: #fff;
-    color: #111;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    transition: all .2s ease;
-}
-
-.custom-pagination .page-item .page-link:hover {
-    background: #FFC700;
-    border-color: #FFC700;
-    color: #111;
-}
-
-.custom-pagination .page-item.active .page-link {
-    background: #FFC700;
-    border-color: #FFC700;
-    color: #111;
-}
-
-.custom-pagination .page-item.disabled .page-link {
-    background: #f5f5f5;
-    color: #aaa;
-    cursor: not-allowed;
-}
-
-.custom-pagination svg {
-    width: 16px;
-    height: 16px;
-}
+        .custom-pagination .pagination {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
     </style>
 
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold m-0"><i class="fa-solid fa-envelope-open-text text-warning me-2"></i> Customer Product Requests</h3>
+            <div class="text-muted" style="font-size:.88rem;">Manage inquiries, purchase requests, and rental quotes submitted by customers</div>
+        </div>
+    </div>
 
+    @if(session('success'))
+        <div class="alert alert-success mb-4" style="border-radius:10px;">{{ session('success') }}</div>
+    @endif
 
     <div class="table-card">
-        <table>
-            <thead>
-                <tr>
-
-                    <th>Title</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Message</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($requests as $request)
-
+        <div class="table-responsive" style="overflow-x:auto;">
+            <table class="table align-middle mb-0">
+                <thead>
                     <tr>
-                        <td>{{ $request->item_name }}</td>
-                        <td>{{ $request->name }}</td>
-                        <td>{{ $request->email }}</td>
-                        <td>{{ $request->phone }}</td>
-                        <td>{{ $request->message }}</td>
-                         <td>
-
-        <form
-            action="{{ route('admin.requests.delete',$request->id) }}"
-            method="POST"
-            onsubmit="return confirm('Delete this request?')"
-        >
-            @csrf
-            @method('DELETE')
-
-            <button
-                type="submit"
-                class="btn-del"
-            >
-                <i class="fa-solid fa-trash"></i>
-                Delete
-            </button>
-
-        </form>
-
-    </td>
+                        <th>#</th>
+                        <th>Product / Item</th>
+                        <th>Product Type</th>
+                        <th>Customer Name</th>
+                        <th>Contact Email</th>
+                        <th>Phone</th>
+                        <th>Customer Message</th>
+                        <th>Date Submitted</th>
+                        <th style="min-width:100px;text-align:right;">Action</th>
                     </tr>
-
-                @empty
-
-                    <tr class="empty-row">
-                        <td colspan="5">
-                            No Request Found
-                        </td>
-                    </tr>
-
-                @endforelse
-            </tbody>
-        </table>
-      <div class="custom-pagination">
-    {{ $requests->onEachSide(1)->links() }}
-</div>
+                </thead>
+                <tbody>
+                    @forelse($requests as $request)
+                        <tr>
+                            <td><span class="badge bg-light text-dark border">{{ $request->id }}</span></td>
+                            <td style="font-weight:700;color:#111;">{{ $request->item_name }}</td>
+                            <td>
+                                @if($request->product_type === 'rental' || str_contains(strtolower($request->product_type ?? ''), 'rent'))
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2.5 py-1.5" style="font-size:.78rem;border-radius:20px;font-weight:700;">
+                                        <i class="fa-solid fa-calendar-check me-1"></i> Rental
+                                    </span>
+                                @else
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5" style="font-size:.78rem;border-radius:20px;font-weight:700;">
+                                        <i class="fa-solid fa-cart-shopping me-1"></i> Sell
+                                    </span>
+                                @endif
+                            </td>
+                            <td style="font-weight:600;">{{ $request->name }}</td>
+                            <td><a href="mailto:{{ $request->email }}" class="text-decoration-none" style="color:#2563eb;">{{ $request->email }}</a></td>
+                            <td><a href="tel:{{ $request->phone }}" class="text-decoration-none" style="color:#111;font-weight:600;">{{ $request->phone }}</a></td>
+                            <td style="max-width:250px;font-size:.85rem;color:#555;">{{ Str::limit($request->message, 80) ?: '—' }}</td>
+                            <td style="font-size:.82rem;color:#888;">{{ $request->created_at?->format('d M Y, H:i') ?? '—' }}</td>
+                            <td style="text-align:right;">
+                                <form action="{{ route('admin.requests.delete', $request->id) }}" method="POST" onsubmit="return confirm('Delete this request?')" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-del">
+                                        <i class="fa-solid fa-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr class="empty-row">
+                            <td colspan="9" style="text-align:center;padding:50px 0;color:#aaa;">
+                                <i class="fa-solid fa-inbox fa-2x mb-2 d-block opacity-50"></i>
+                                No product requests received yet.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        <div class="custom-pagination p-3">
+            {{ $requests->onEachSide(1)->links('pagination::bootstrap-5') }}
+        </div>
     </div>
 
 @endsection

@@ -1,20 +1,21 @@
-{{-- resources/views/front/login.blade.php --}}
 @extends('front.layouts.app')
 
 @section('content')
 
 <style>
 .auth-section {
-    min-height: 80vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
-    padding: 3rem 0;
+    justify-content: center;
+    padding: 2rem 1rem;
+    background: whitesmoke;
 }
 .auth-card {
     background: var(--white);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: 0 25px 60px rgba(0,0,0,.5);
+    border: 1px solid rgba(255,255,255,.1);
     overflow: hidden;
     width: 100%;
     max-width: 440px;
@@ -24,7 +25,23 @@
     background: linear-gradient(135deg, var(--dark) 0%, #2a2a2a 100%);
     padding: 2.2rem 2rem 1.8rem;
     text-align: center;
+    position: relative;
 }
+.auth-back-link {
+    position: absolute;
+    top: 1.2rem;
+    left: 1.2rem;
+    color: rgba(255,255,255,.7);
+    text-decoration: none;
+    font-size: .82rem;
+    font-weight: 700;
+    transition: color .2s;
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+}
+.auth-back-link:hover { color: var(--brand); }
+
 .auth-logo-circle {
     width: 68px; height: 68px;
     background: var(--brand);
@@ -56,6 +73,7 @@
     letter-spacing: .06em;
     color: var(--dark);
     margin-bottom: .4rem;
+    display: block;
 }
 .auth-input {
     border: 1.5px solid var(--border);
@@ -116,6 +134,7 @@
     border-top: 1px solid var(--border);
     font-size: .83rem;
     color: var(--muted);
+    background: #fafafa;
 }
 .auth-footer a {
     color: var(--dark);
@@ -126,13 +145,14 @@
 </style>
 
 <div class="auth-section">
-    <div class="container">
+    <div class="container d-flex justify-content-center">
         <div class="auth-card">
 
             <div class="auth-card-top">
+                <a href="/" class="auth-back-link"><i class="bi bi-arrow-left"></i> Home</a>
                 <div class="auth-logo-circle"><i class="bi bi-person-fill"></i></div>
                 <h2 class="auth-title">Welcome Back</h2>
-                <p class="auth-sub">Sign in to manage your rentals</p>
+                <p class="auth-sub">Sign in to Light As Air</p>
             </div>
 
             <div class="auth-body">

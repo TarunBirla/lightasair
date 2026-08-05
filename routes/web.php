@@ -35,6 +35,7 @@ use App\Http\Controllers\Admin\GeneratorBannerController;
 
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\AuthController as FrontAuthController;
+use App\Http\Controllers\Front\InvoiceController;
 
 use App\Http\Controllers\Front\MarketplaceController;
 use App\Http\Controllers\Front\CategoryController as FrontCategoryController;
@@ -157,12 +158,12 @@ Route::middleware(['auth', 'vendor'])
         // ─── Rental listings ──────────────────────────────────────────────
         Route::resource('rentals', VendorRentalController::class);
         // Calendar management
-        Route::get('rentals/{rental}/calendar',       [VendorRentalController::class, 'calendar'])->name('vendor.rentals.calendar');
-        Route::post('rentals/{rental}/block-date',    [VendorRentalController::class, 'blockDate'])->name('vendor.rentals.block-date');
-        Route::post('rentals/{rental}/unblock-date',  [VendorRentalController::class, 'unblockDate'])->name('vendor.rentals.unblock-date');
+        Route::get('rentals/{rental}/calendar',       [VendorRentalController::class, 'calendar'])->name('rentals.calendar');
+        Route::post('rentals/{rental}/block-date',    [VendorRentalController::class, 'blockDate'])->name('rentals.block-date');
+        Route::post('rentals/{rental}/unblock-date',  [VendorRentalController::class, 'unblockDate'])->name('rentals.unblock-date');
         // Rental bookings (vendor side)
-        Route::get('rental-bookings',                         [VendorRentalController::class, 'bookings'])->name('vendor.rental-bookings');
-        Route::post('rental-bookings/{booking}/status',       [VendorRentalController::class, 'updateBookingStatus'])->name('vendor.rental-bookings.status');
+        Route::get('rental-bookings',                         [VendorRentalController::class, 'bookings'])->name('rental-bookings');
+        Route::post('rental-bookings/{booking}/status',       [VendorRentalController::class, 'updateBookingStatus'])->name('rental-bookings.status');
         // ─── Auction listings ─────────────────────────────────────────────
         Route::resource('auctions', VendorAuctionController::class);
 
@@ -184,6 +185,7 @@ Route::post('/rentals/{rental}/check-availability', [FrontRentalController::clas
 Route::middleware('auth')->group(function () {
     Route::post('/rentals/{rental}/book',          [FrontRentalController::class, 'book'])->name('front.rentals.book');
     Route::get('/my-rentals',                      [FrontRentalController::class, 'myRentals'])->name('front.my-rentals');
+    Route::get('/my-bookings',                     [FrontRentalController::class, 'myRentals'])->name('front.my-bookings');
     Route::post('/my-rentals/{booking}/cancel',    [FrontRentalController::class, 'cancel'])->name('front.rentals.cancel');
 });
 
@@ -198,6 +200,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout', [FrontOrderController::class, 'placeOrder'])->name('front.place-order');
     Route::get('/my-orders', [FrontOrderController::class, 'myOrders'])->name('front.my-orders');
     Route::get('/my-orders/{order}', [FrontOrderController::class, 'show'])->name('front.orders.show');
+
+    // Invoices & User Bids
+    Route::get('/my-invoices', [InvoiceController::class, 'index'])->name('front.my-invoices');
+    Route::get('/invoices/order/{order}', [InvoiceController::class, 'orderInvoice'])->name('front.invoices.order');
+    Route::get('/invoices/booking/{booking}', [InvoiceController::class, 'bookingInvoice'])->name('front.invoices.booking');
+    Route::get('/my-bids', [InvoiceController::class, 'myBids'])->name('front.my-bids');
 });
 Route::get(
     '/admin/login',

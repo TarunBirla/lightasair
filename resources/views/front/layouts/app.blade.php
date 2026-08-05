@@ -231,17 +231,22 @@
 </head>
 <body>
 
+@unless(request()->is('login') || request()->is('register'))
 @include('front.layouts.navbar')
+@endunless
 
 <main>
     @yield('content')
 </main>
 
+@unless(request()->is('login') || request()->is('register'))
 @include('front.layouts.footer')
+@endunless
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+@unless(request()->is('login') || request()->is('register'))
 <a href="javascript:void(0)"
    onclick="openRequestModal()"
    class="whatsapp-float1">
@@ -263,6 +268,7 @@
     <i class="bi bi-whatsapp"></i>
 
 </a>
+@endunless
 <script>
     function openRequestModal()
 {

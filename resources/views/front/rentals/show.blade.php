@@ -40,9 +40,10 @@
 .btn-book-now {
     width: 100%; padding: 1rem; border: none; border-radius: 12px;
     background: #16a34a; color: #fff; font-weight: 900; font-size: 1rem;
-    cursor: pointer; transition: background .2s;
+    cursor: pointer; transition: all .2s;
 }
 .btn-book-now:hover { background: #15803d; }
+.btn-book-now:disabled { background: #9ca3af !important; cursor: not-allowed !important; opacity: .6; }
 
 .rd-desc { background: #fff; border-radius: 16px; border: 1px solid #e5e4df; padding: 1.8rem; margin-top: 1.5rem; }
 .rd-desc h2 { font-size: 1.1rem; font-weight: 800; margin-bottom: 1rem; padding-bottom: .4rem; border-bottom: 2px solid #22c55e; display: inline-block; }
@@ -50,9 +51,9 @@
 
 <div class="rd-breadcrumb">
     <div class="container">
-        <a href="/">Home</a><span>/</span>
-        <a href="{{ route('front.rentals') }}">Rental Marketplace</a><span>/</span>
-        {{ Str::limit($rental->title, 45) }}
+        <a href="/">Home</a> <span>/</span>
+        <a href="{{ route('front.rentals') }}">Rentals</a> <span>/</span>
+        <strong>{{ $rental->title }}</strong>
     </div>
 </div>
 
@@ -60,30 +61,23 @@
     <div class="container">
         <div class="rd-grid">
 
+            {{-- Gallery & Details --}}
             <div>
-                {{-- Gallery --}}
                 <div class="rd-gallery">
-                    @if($rental->images && count($rental->images))
-                        <img src="{{ asset('storage/' . $rental->images[0]) }}" id="rdMainImg" class="rd-main-img" alt="{{ $rental->title }}">
-                        @if(count($rental->images) > 1)
+                    @php $imageUrls = $rental->allImageUrls(); @endphp
+                    <img id="mainRentalImg" src="{{ $rental->primaryImageUrl() }}" alt="{{ $rental->title }}" class="rd-main-img">
+                    @if(count($imageUrls) > 1)
                         <div class="rd-thumbs">
-                            @foreach($rental->images as $i => $img)
-                            <img src="{{ asset('storage/' . $img) }}" class="rd-thumb {{ $i === 0 ? 'active' : '' }}"
-                                 onclick="document.getElementById('rdMainImg').src=this.src; document.querySelectorAll('.rd-thumb').forEach(t=>t.classList.remove('active')); this.classList.add('active')">
+                            @foreach($imageUrls as $url)
+                                <img src="{{ $url }}" class="rd-thumb {{ $loop->first ? 'active' : '' }}" onclick="document.getElementById('mainRentalImg').src='{{ $url }}'; document.querySelectorAll('.rd-thumb').forEach(t=>t.classList.remove('active')); this.classList.add('active')">
                             @endforeach
-                        </div>
-                        @endif
-                    @else
-                        <div style="height:380px;display:flex;align-items:center;justify-content:center;background:#f8f8f6;color:#ccc;">
-                            <i class="bi bi-image" style="font-size:3rem;"></i>
                         </div>
                     @endif
                 </div>
 
-                {{-- Description --}}
                 <div class="rd-desc">
                     <h2>Equipment Description</h2>
-                    <div style="font-size:.92rem;line-height:1.8;color:#444;white-space:pre-line;">{{ $rental->description }}</div>
+                    <div style="font-size:.95rem;line-height:1.75;color:#374151;white-space:pre-line;">{{ $rental->description }}</div>
                 </div>
             </div>
 
@@ -103,9 +97,21 @@
                         @endif
                     </div>
 
-                    @if($errors->any())
-                        <div class="alert alert-danger mb-3" style="font-size:.85rem;border-radius:10px;">{{ $errors->first() }}</div>
+                    @if(session('error'))
+                        <div class="alert alert-danger mb-3" style="font-size:.85rem;border-radius:10px;">{{ session('error') }}</div>
                     @endif
+
+                    @if($errors->any())
+                        <div class="alert alert-danger mb-3" style="font-size:.85rem;border-radius:10px;">
+                            <ul class="mb-0 ps-3">
+                                @foreach($errors->all() as $err)
+                                    <li>{{ $err }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <div id="periodWarning" class="alert alert-danger mb-3" style="display:none;font-size:.83rem;border-radius:10px;font-weight:600;"></div>
 
                     <form method="POST" action="{{ route('front.rentals.book', $rental->id) }}" id="bookingForm">
                         @csrf
@@ -118,6 +124,11 @@
                                 <label class="form-label">End Date</label>
                                 <input type="date" name="end_date" id="endDate" class="rd-input" min="{{ date('Y-m-d') }}" required onchange="calculateTotal()">
                             </div>
+                        </div>
+
+                        <div style="font-size:.78rem;color:#795548;background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:.4rem .7rem;margin-bottom:1rem;">
+                            <i class="bi bi-info-circle-fill me-1 text-warning"></i>
+                            Rental Rules: Min {{ $rental->min_rental_days ?? 1 }} day(s) @if($rental->max_rental_days) | Max {{ $rental->max_rental_days }} day(s) @endif
                         </div>
 
                         <label class="form-label">Quantity (Max {{ $rental->total_qty }})</label>
@@ -142,11 +153,11 @@
                             @if($rental->deposit_amount > 0)
                                 <div class="calc-row"><span>Security Deposit:</span><span>£{{ number_format($rental->deposit_amount, 2) }}</span></div>
                             @endif
-                            <div class="calc-row total"><span>Total Payable:</span><span id="summaryTotal">£{{ number_format($rental->price_per_day + $rental->deposit_amount, 2) }}</span></div>
+                            <div class="calc-row total"><span>Total Payable:</span><span id="summaryTotal">£{{ number_format($rental->price_per_day + ($rental->deposit_amount ?: 0), 2) }}</span></div>
                         </div>
 
                         @auth
-                            <button type="submit" class="btn-book-now">
+                            <button type="submit" class="btn-book-now" id="submitBookingBtn">
                                 <i class="bi bi-calendar-check-fill me-2"></i> Submit Booking Request
                             </button>
                         @else
@@ -168,9 +179,16 @@ function calculateTotal() {
     const endStr = document.getElementById('endDate').value;
     const qty = parseInt(document.getElementById('qtyInput').value) || 1;
     const deliveryCheck = document.getElementById('deliveryCheck');
+    const submitBtn = document.getElementById('submitBookingBtn');
+    const periodWarning = document.getElementById('periodWarning');
+
+    if (startStr) {
+        document.getElementById('endDate').min = startStr;
+    }
 
     if (deliveryCheck) {
-        document.getElementById('deliveryAddressWrap').style.display = deliveryCheck.checked ? 'block' : 'none';
+        const wrap = document.getElementById('deliveryAddressWrap');
+        if (wrap) wrap.style.display = deliveryCheck.checked ? 'block' : 'none';
     }
 
     if (!startStr || !endStr) return;
@@ -180,7 +198,27 @@ function calculateTotal() {
     const timeDiff = end.getTime() - start.getTime();
     if (timeDiff < 0) return;
 
-    const days = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
+    const days = Math.max(1, Math.floor(timeDiff / (1000 * 3600 * 24)) + 1);
+    const minDays = {{ $rental->min_rental_days ?? 1 }};
+    const maxDays = {{ $rental->max_rental_days ?? 0 }};
+
+    if (minDays && days < minDays) {
+        if (periodWarning) {
+            periodWarning.textContent = `Selected rental duration (${days} days) is less than the required minimum period of ${minDays} days.`;
+            periodWarning.style.display = 'block';
+        }
+        if (submitBtn) submitBtn.disabled = true;
+    } else if (maxDays > 0 && days > maxDays) {
+        if (periodWarning) {
+            periodWarning.textContent = `Selected rental duration (${days} days) exceeds the maximum allowed limit of ${maxDays} days for this equipment.`;
+            periodWarning.style.display = 'block';
+        }
+        if (submitBtn) submitBtn.disabled = true;
+    } else {
+        if (periodWarning) periodWarning.style.display = 'none';
+        if (submitBtn) submitBtn.disabled = false;
+    }
+
     const ratePerDay = {{ $rental->price_per_day }};
     const deposit = {{ $rental->deposit_amount ?? 0 }};
     const deliveryFee = (deliveryCheck && deliveryCheck.checked) ? {{ $rental->delivery_fee ?? 0 }} : 0;

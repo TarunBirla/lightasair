@@ -7,13 +7,15 @@
     min-height: 100vh;
     display: flex;
     align-items: center;
-    padding: 3rem 0;
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #111 100%);
+    justify-content: center;
+    padding: 2.5rem 1rem;
+    background: whitesmoke;
 }
 .auth-card {
     background: #fff;
     border-radius: 20px;
-    box-shadow: 0 25px 60px rgba(0,0,0,.4);
+    box-shadow: 0 25px 60px rgba(0,0,0,.5);
+    border: 1px solid rgba(255,255,255,.1);
     overflow: hidden;
     width: 100%;
     max-width: 560px;
@@ -26,6 +28,22 @@
     position: relative;
     overflow: hidden;
 }
+.auth-back-link {
+    position: absolute;
+    top: 1.2rem;
+    left: 1.2rem;
+    color: rgba(255,255,255,.7);
+    text-decoration: none;
+    font-size: .82rem;
+    font-weight: 700;
+    transition: color .2s;
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    z-index: 10;
+}
+.auth-back-link:hover { color: #ffc700; }
+
 .auth-card-top::before {
     content: '';
     position: absolute;
@@ -103,11 +121,12 @@
 </style>
 
 <div class="auth-section">
-<div class="container">
+<div class="container d-flex justify-content-center">
 <div class="auth-card">
 
     <!-- Top header -->
     <div class="auth-card-top">
+        <a href="/" class="auth-back-link"><i class="bi bi-arrow-left"></i> Home</a>
         <div class="auth-logo-circle"><i class="bi bi-person-plus-fill"></i></div>
         <h2 class="auth-title">Create Your Account</h2>
         <p class="auth-sub">Join the UK's #1 film lighting marketplace</p>

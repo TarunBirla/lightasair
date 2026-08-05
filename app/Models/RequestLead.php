@@ -14,6 +14,7 @@ class RequestLead extends Model
         'name',
         'email',
         'phone',
-        'message'
+        'message',
+        'product_type'
     ];
 }
