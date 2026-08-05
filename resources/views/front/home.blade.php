@@ -1184,4 +1184,231 @@
         });
     </script>
 
+    <div class="modal fade" id="requestModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5>Request Item</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <input type="hidden" id="item_id">
+
+                    <div class="mb-3">
+                        <label>Request Type *</label>
+                        <select id="request_product_type" class="form-select fw-bold" style="background:#f8f9fa;">
+                            <option value="sell" {{ ($productType ?? 'sell') == 'sell' ? 'selected' : '' }}> Selling Request</option>
+                            <option value="rental" {{ ($productType ?? '') == 'rental' ? 'selected' : '' }}> Rental Request</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Name *</label>
+                        <input type="text" id="name" class="form-control">
+                        <small class="text-danger" id="name_error"></small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Email *</label>
+                        <input type="email" id="email" class="form-control">
+                        <small class="text-danger" id="email_error"></small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Phone *</label>
+                        <input type="text" id="phone" class="form-control">
+                        <small class="text-danger" id="phone_error"></small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Message</label>
+                        <textarea id="message" class="form-control"></textarea>
+                    </div>
+
+                    <button class="btn btn-warning w-100" onclick="submitRequest()">
+                        Send Request
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        function showToast(message) {
+            document.getElementById('toastMessage').innerHTML = message;
+
+            let toastEl =
+                document.getElementById('liveToast');
+
+            let toast =
+                new bootstrap.Toast(toastEl, {
+                    delay: 3000
+                });
+
+            toast.show();
+        }
+    </script>
+    <div class="position-fixed top-0 end-0 p-3" style="z-index:99999">
+
+        <div id="liveToast" class="toast border-0 shadow">
+
+            <div class="toast-header bg-success text-white">
+                <strong class="me-auto">Light As AIR</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+
+            <div class="toast-body" id="toastMessage">
+            </div>
+
+        </div>
+
+    </div>
+    <script>
+        async function submitRequest() {
+            document.getElementById('name_error').innerHTML = '';
+            document.getElementById('email_error').innerHTML = '';
+            document.getElementById('phone_error').innerHTML = '';
+
+            let name =
+                document.getElementById('name').value.trim();
+
+            let email =
+                document.getElementById('email').value.trim();
+
+            let phone =
+                document.getElementById('phone').value.trim();
+
+            let valid = true;
+
+            if (!name) {
+                document.getElementById('name_error')
+                    .innerHTML = 'Name is required';
+
+                valid = false;
+            }
+
+            if (!email) {
+                document.getElementById('email_error')
+                    .innerHTML = 'Email is required';
+
+                valid = false;
+            }
+            else {
+                let emailRegex =
+                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (!emailRegex.test(email)) {
+                    document.getElementById('email_error')
+                        .innerHTML = 'Enter valid email';
+
+                    valid = false;
+                }
+            }
+
+            if (!phone) {
+                document.getElementById('phone_error')
+                    .innerHTML = 'Phone number is required';
+
+                valid = false;
+            }
+
+            if (!valid) {
+                return;
+            }
+
+            try {
+
+                let reqType = document.getElementById('request_product_type') ? document.getElementById('request_product_type').value : '{{ $productType ?? 'sell' }}';
+
+                const response =
+                    await fetch('/guest-request', {
+
+                        method: 'POST',
+
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document
+                                .querySelector('meta[name="csrf-token"]')
+                                .content
+                        },
+
+                        body: JSON.stringify({
+
+                            items: JSON.parse(
+                                localStorage.getItem('requests')
+                            ),
+                            product_type: reqType,
+
+                            name: name,
+                            email: email,
+                            phone: phone,
+
+                            message:
+                                document.getElementById('message').value
+                        })
+                    });
+
+                const data = await response.json();
+
+                if (!data.status) {
+                    showToast('Request failed.');
+                    return;
+                }
+
+                let msg =
+
+                    `🔥 NEW LIGHT AS AIR REQUEST (${data.product_type})
+
+Request Type: ${data.product_type}
+
+Items:
+${data.items}
+
+Name: ${data.name}
+
+Email: ${data.email}
+
+Phone: ${data.phone}`;
+
+                window.open(
+                    `https://wa.me/447879175585?text=${encodeURIComponent(msg)}`,
+                    '_blank'
+                );
+
+                bootstrap.Modal
+                    .getInstance(
+                        document.getElementById('requestModal')
+                    ).hide();
+
+                document.getElementById('name').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('phone').value = '';
+                document.getElementById('message').value = '';
+
+                // Request list clear
+                localStorage.removeItem('requests');
+
+                // Count update
+                updateRequestCount();
+
+                showToast(
+                    '✅ Request submitted successfully.'
+                );
+
+            }
+            catch (error) {
+                console.log(error);
+
+                showToast(
+                    '❌ Something went wrong. Please try again.'
+                );
+            }
+        }
+    </script>
+
 @endsection
